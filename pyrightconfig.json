@@ -1,0 +1,67 @@
+{
+    // ------------------------------------------------------------------------------------------
+    // IMPORTANT:
+    // Pyright *does* support JSONC (JSON with comments), but ONLY when the file is named
+    // "pyrightconfig.json". If you rename it to ".jsonc", Pyright will NOT read it.
+    // ------------------------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------------------------
+    // NOTE ABOUT JSON / MOVABLE DATA FILES:
+    // JSON files (and other dynamic data formats) do not have static structure, so Pyright
+    // treats loaded JSON as "Any" by default. If your code relies on a stable JSON schema,
+    // define TypedDict models to make the structure explicit and type-safe.
+    //
+    // Alternatively, for heavier or more structured data, you can load and validate JSON using
+    // dataclasses or a library like Pydantic, then operate on strongly-typed objects instead of
+    // raw dictionaries.
+    //
+    // This prevents Pyright from losing type information and avoids "unknown" type errors.
+    // ------------------------------------------------------------------------------------------
+
+
+    // Directories to type-check
+    "include": [
+        "src",
+        "tests"
+    ],
+    // Directories Pyright should ignore
+    "exclude": [
+        "**/__pycache__",
+        ".venv",
+        ".ruff_cache",
+        ".pytest_cache",
+        "build",
+        "dist",
+        "docs/_build"
+    ],
+    // Virtual environment settings
+    "venvPath": ".",
+
+    // Folder containing the venv
+    "venv": ".venv",
+
+    // Name of the environment inside venvPath
+
+    // Target Python version for analysis
+    "pythonVersion": "3.10",
+
+    // Global strictness level
+    "typeCheckingMode": "strict",
+
+    // ------------------------------------------------------------------------------------------
+    // Diagnostics tuning (balanced strictness — friendly, not annoying)
+    // ------------------------------------------------------------------------------------------
+
+    // Warn when types or stubs are missing in third-party libs
+    "reportMissingTypeStubs": false,
+
+    // Warn when imports can’t be resolved (often a venv / tooling issue)
+    "reportMissingImports": "warning",
+
+    // Unused imports/variables (Ruff also helps here, but Pyright is type-aware)
+    "reportUnusedImport": "warning",
+    "reportUnusedVariable": "warning",
+
+    // Warn when a "# type: ignore" comment isn't needed anymore
+    "reportUnnecessaryTypeIgnoreComment": "warning"
+}

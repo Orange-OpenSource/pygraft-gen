@@ -1,19 +1,129 @@
+# ------------------------------------------------- BUILD ------------------------------------------------ #
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["hatchling>=1.26", "hatch-vcs>=0.5"]
+build-backend = "hatchling.build"
 
-[tool.black]
-line-length = 120
-target-version = ["py37", "py38", "py39", "py310", "py311"]
-
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 120
-include_trailing_comma = true
-reverse_relative = true
-
+# ------------------------------------------- PROJECT METADATA ------------------------------------------- #
 [project]
 name = "pygraft"
-authors = [{name = "Nicolas Hubert", email = "nicolas.hubert@univ-lorraine.fr"}]
-dynamic = ["version", "description"]
+dynamic = ["version"]
+description = "PyGraft: Configurable generation of Schemas & Knowledge Graphs"
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+
+authors = [
+    { name = "Nicolas Hubert", email = "nicotab540@gmail.com" },
+    { name = "Ovidiu Pascal", email = "ovidiu.pascal@orange.com" },
+    { name = "Lionel Tailhardat", email = "lionel.tailhardat@orange.com" },
+]
+
+maintainers = [
+    { name = "Nicolas Hubert", email = "nicotab540@gmail.com" },
+    { name = "Ovidiu Pascal", email = "ovidiu.pascal@orange.com" },
+    { name = "Lionel Tailhardat", email = "lionel.tailhardat@orange.com" },
+]
+
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy>=1.24.0",
+    "Owlready2>=0.41",
+    "rdflib>=6.2.0",
+    "pyyaml",
+    "tabulate",
+    "art",
+    "tqdm",
+]
+
+keywords = [
+    "Knowledge Graph",
+    "Ontology",
+    "Schema",
+    "Semantic Web",
+    "Synthetic Data Generator",
+]
+
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Software Development :: Build Tools",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+[project.urls]
+Homepage = "https://github.com/nicolas-hbt/pygraft"
+Repository = "https://github.com/nicolas-hbt/pygraft.git"
+Issues = "https://github.com/nicolas-hbt/pygraft/issues"
+
+
+# ------------------------------------------- CLI ENTRY POINTS ------------------------------------------- #
+[project.scripts]
+pygraft = "pygraft.cli:main"
+
+# ---------------------------------------- DEV & DOCS DEPENDENCIES --------------------------------------- #
+[dependency-groups] # UV
+dev = [
+    "pytest",
+    "ruff",
+    "codespell",
+    "pyright",
+    "prek>=0.2.19",
+    "basedpyright>=1.34.0",
+]
+
+docs = [
+    "sphinx>=7.4,<8.2",
+    "furo>=2024.1.29",
+]
+
+
+[project.optional-dependencies]     # Pip & Poetry (TODO: manually update when Pygraft = latest final version & released)
+dev = [
+    "pytest",
+    "ruff",
+    "codespell",
+    "pyright",
+    "prek>=0.2.19",
+    "basedpyright>=1.34.0",
+]
+
+docs = [
+    "sphinx>=7.4,<8.2",
+    "furo>=2024.1.29",
+]
+
+
+# ------------------------------------------ VERSIONING ------------------------------------------ #
+# Use Git tags (VCS) as the authoritative source for the project version
+[tool.hatch.version]
+source = "vcs"
+
+# --------------------------------------- BUILD CONFIG (HATCHLING) -------------------------------- #
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pygraft"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/pygraft/**",
+    "README.md",
+    "LICENSE.txt",
+    "pyproject.toml",
+    "docs/"
+]
+exclude = [".venv/"]
+
+[tool.hatch.build]
+include = [
+    "src/pygraft/**",
+    "README.md",
+    "LICENSE.txt",
+]

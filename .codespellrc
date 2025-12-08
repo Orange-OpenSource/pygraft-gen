@@ -1,0 +1,43 @@
+[codespell]
+# Skip binary + asset + build files
+skip =
+    .git,
+    .venv,
+    .ruff_cache,
+    .pytest_cache,
+    build,
+    dist,
+    docs/_build,
+    *.svg,
+    *.png,
+    *.jpg,
+    *.gif,
+    *.json,
+    *.toml,
+    *.lock
+
+# Ignore project-specific words that are not typos
+ignore-words-list =
+    pygraft,
+    rdflib,
+    pyyaml,
+    tabulate,
+    art,
+    tqdm,
+    ontology,
+    ontologies,
+    owlready,
+    hermit,
+    kg,
+    kgs,
+    schema,
+    schemas,
+    yaml
+
+# quiet-level controls verbosity:
+#   0 = very verbose (debug output, prints everything)
+#   1 = normal verbose (prints filenames + suggestions)
+#   2 = recommended for pre-commit (only typo findings, no extra noise)
+#   3 = minimal (only shows findings without suggestions)
+#   4 = silent except for summary/counts
+quiet-level = 2

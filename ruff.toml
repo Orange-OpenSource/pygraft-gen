@@ -1,0 +1,185 @@
+# ============================================================================================================ #
+#                                                RUFF CONFIG                                                   #
+# Root-level ruff.toml (overrides pyproject.toml). Centralized so config never drifts.
+# ============================================================================================================ #
+
+# --------------------------------------------- PATHS & DISCOVERY --------------------------------------------- #
+
+# Files/folders Ruff should never process.
+exclude = [
+    ".idea",
+    ".vscode",
+    ".git",
+    ".venv",
+    "__pycache__",
+    ".ipynb_checkpoints",
+    "build",
+    "dist",
+    "node_modules",
+    "htmlcov"
+]
+
+# Respect excludes even if paths are passed explicitly (prevents surprises in CI and local scripts).
+force-exclude = true
+
+# Source roots (for imports, isort, etc.).
+src = ["src"]
+
+# -------------------------------------------- PYTHON TARGET / STYLE ------------------------------------------- #
+# Python
+target-version = "py310"
+line-length = 100
+indent-width = 4
+
+# Ruff
+cache-dir = ".ruff_cache"
+fix = false
+required-version = ">=0.14.0"
+
+# ============================================================================================================ #
+#                                                   RULESETS                                                   #
+# ============================================================================================================ #
+
+[lint]
+select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes correctness (unused/undefined, etc.)
+    "I", # isort: import ordering/cleanup
+    "UP", # modernization for newer Python
+    "B", # flake8-bugbear (common bugs/bad practices)
+    "COM", # comma formatting
+    "ISC", # implicit string concatenation
+    "ICN", # import naming conventions
+    "PGH", # noqa / pragma hygiene
+    "RUF", # Ruff-specific rules
+    "D", # docstrings (Google style via pydocstyle)
+    "N", # naming conventions
+    "ARG", # unused arguments
+    "SIM", # simplify expressions / constructs
+    "RET", # return statement consistency
+    "S", # security checks
+    "G", # logging best practices
+    "T20", # debug leftovers (print, pdb, breakpoint)
+    "BLE", # broad/bare excepts
+    "PT", # pytest style
+    "TCH", # type-checking-only imports
+    "A", # builtins shadowing
+    "DTZ", # timezone-aware datetimes
+    "TID", # tidy imports (relative import restrictions)
+    "C4", # comprehension clarity
+    "PTH", # prefer pathlib over os.path
+    "TRY", # try/except/else/finally structure
+    "RSE", # raise statement consistency
+    "PERF", # performance-minded patterns
+]
+
+ignore = [
+    "E501", # line length -> formatter handles
+    "COM812", # trailing comma -> formatter handles
+    "S311", # ignore cryptographic purposes warning
+    "TC006", # allow unquoted typing.cast type expressions
+]
+
+fixable = [
+    "I", # import sort/group
+    "UP", # safe syntax upgrades
+    "E", # basic style
+    "W", # basic style warnings
+    "COM", # commas / minor format tweaks
+    "F401", # unused imports
+    "F841", # unused local variables
+]
+
+unfixable = [
+    "B", # bugbear: can change logic
+    "ISC", # implicit string concat semantics
+    "ICN", # import renames may break API
+    "PGH", # noqa edits can hide/expose warnings
+    "RUF015", # list(...)[0] -> next(iter(...)) behavior change
+    "PERF", # perf rewrites may alter runtime behavior
+]
+
+
+
+
+dummy-variable-rgx = "^(_|unused_).*"   # Treat underscore / unused_* as intentionally unused.
+task-tags = ["TODO", "FIXME"]           # Keep the tags recognized as task comments.
+future-annotations = true               # Allow Ruff to add `from __future__ import annotations` when it enables safer fixes.
+
+# ============================================================================================================ #
+#                                              DOCSTRING CONFIG                                                #
+# ============================================================================================================ #
+[lint.pydocstyle]
+convention = "google"
+
+[lint.pycodestyle]
+max-doc-length = 110
+
+# ============================================================================================================ #
+#                                           IMPORT ORDERING / HYGIENE                                          #
+# ============================================================================================================ #
+[lint.isort]
+known-first-party = ["pygraft"]
+combine-as-imports = true
+force-sort-within-sections = true
+
+# Always require modern annotations import (Python 3.10 baseline).
+required-imports = ["from __future__ import annotations"]
+
+# Enforce clean, standard import grouping.
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+    "testing",
+]
+
+# Map custom sections to the modules/packages they should catch.
+[lint.isort.sections]
+testing = ["pytest", "tests", "test"]
+
+[lint.flake8-tidy-imports]
+ban-relative-imports = "all"          # "all" | "parents" | "none"
+
+[lint.flake8-builtins]
+# builtins-ignorelist is deprecated — use 'ignorelist'.
+ignorelist = []
+
+# ============================================================================================================ #
+#                                           PYTEST / TEST-RELATED RULES                                        #
+# ============================================================================================================ #
+[lint.flake8-pytest-style]
+fixture-parentheses = true
+parametrize-names-type = "tuple"
+
+[lint.per-file-ignores]
+"tests/**" = ["F841", "S101"]       # allow unused vars and bare 'assert' in tests
+"docs/**/*.py" = ["E402"]           # allow "import not at top" in docs
+"**/__init__.py" = ["F401"]         # allow re-export patterns
+
+# ============================================================================================================ #
+#                                                    FORMATTER                                                  #
+# ============================================================================================================ #
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+# ============================================================================================================ #
+#                                          TYPE-CHECKING IMPORT MANAGEMENT                                    #
+# ============================================================================================================ #
+[lint.flake8-type-checking]
+# If moving an import would break runtime, quote the annotation to make it safe.
+quote-annotations = true
+# These are cheap/stdlib; keep them at runtime
+exempt-modules = ["typing", "typing_extensions", "collections.abc"]
+
+runtime-evaluated-base-classes = []      # Add e.g. "pydantic.BaseModel" or "sqlalchemy.orm.DeclarativeBase" if you use them.
+runtime-evaluated-decorators = []        # Add e.g. "pydantic.validate_call" etc. if present in your stack.
+strict = true                            # Enforce TC001–TC003 even when a runtime import exists; pairs well with Pyright strict.
