@@ -12,13 +12,11 @@ readme = "README.md"
 license = { file = "LICENSE.txt" }
 
 authors = [
-    { name = "Nicolas Hubert", email = "nicotab540@gmail.com" },
     { name = "Ovidiu Pascal", email = "ovidiu.pascal@orange.com" },
     { name = "Lionel Tailhardat", email = "lionel.tailhardat@orange.com" },
 ]
 
 maintainers = [
-    { name = "Nicolas Hubert", email = "nicotab540@gmail.com" },
     { name = "Ovidiu Pascal", email = "ovidiu.pascal@orange.com" },
     { name = "Lionel Tailhardat", email = "lionel.tailhardat@orange.com" },
 ]
