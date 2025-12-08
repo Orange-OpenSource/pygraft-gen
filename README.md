@@ -4,7 +4,7 @@ The **PyGraft-gen** framework is a tool for generating RDFS/OWL ontologies and k
 It helps to test AI pipelines by creating synthetic data with reliable knowledge structure and characteristic graph patterns.
 It also aims to advance the topic of generating realistic RDF Knowledge Graphs through parametric generation.
 
-Fundamentally, *PyGraft-gen* is a major evolution of the *[PyGraft](https://github.com/nicolas-hbt/pygraft) project initially developed by Nicolas HUBERT.
+Fundamentally, *PyGraft-gen* is a major evolution of the *[PyGraft](https://github.com/nicolas-hbt/pygraft)* project initially developed by Nicolas HUBERT.
 At the core of *PyGraft-gen*, a stochastic generation approach is used to produce ontologies and knowledge graphs.
 
 Typical workflows with *PyGraft-gen* are:
@@ -28,6 +28,7 @@ See also the *Repository Structure* for navigating into this repository:
 ```
 pygraft-gen
 ├───docs <code and usage directions>
+├───evaluation <subgraph matching patterns and tools>
 └───src <the PyGraft-gen implementation>
 ```
 
