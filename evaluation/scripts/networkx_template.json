@@ -1,0 +1,10 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes":
+  MY_NODES
+  ,
+  "links":
+  MY_LINKS
+}

@@ -1,0 +1,57 @@
+{
+    "mappings": {
+        "1": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_S1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_S1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_S1)-->(http://example.org/pygraft-gen/object/RES_S1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_S2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_S2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_S2)-->(http://example.org/pygraft-gen/object/RES_S2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/EventRecord",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/event/AIS_T0",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/EventRecord",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/event/AIS_T0",
+                "VqVd_class": "(https://w3id.org/noria/ontology/EventRecord)-->(https://w3id.org/noria/ontology/EventRecord)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/event/AIS_T0)-->(http://example.org/pygraft-gen/event/AIS_T0)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/EventRecord",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/event/AIS_T1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/EventRecord",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/event/AIS_T1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/EventRecord)-->(https://w3id.org/noria/ontology/EventRecord)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/event/AIS_T1)-->(http://example.org/pygraft-gen/event/AIS_T1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Application",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_APP1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Application",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_APP1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Application)-->(https://w3id.org/noria/ontology/Application)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_APP1)-->(http://example.org/pygraft-gen/object/RES_APP1)"
+            }
+        ]
+    },
+    "type": 0,
+    "queryGraph": "./nx_query_graph.json",
+    "dataGraph": "./nx_data_graph_extended.json",
+    "classProp": "class",
+    "iriProp": "iri",
+    "classList": [
+        "https://w3id.org/noria/ontology/Resource",
+        "https://w3id.org/noria/ontology/EventRecord",
+        "https://w3id.org/noria/ontology/Application",
+        "https://w3id.org/noria/ontology/NetworkLink"
+    ]
+}

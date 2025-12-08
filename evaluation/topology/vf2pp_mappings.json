@@ -1,0 +1,1981 @@
+{
+    "mappings": {
+        "1": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            }
+        ],
+        "2": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            }
+        ],
+        "3": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            }
+        ],
+        "4": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            }
+        ],
+        "5": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            }
+        ],
+        "6": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            }
+        ],
+        "7": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            }
+        ],
+        "8": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            }
+        ],
+        "9": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            }
+        ],
+        "10": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            }
+        ],
+        "11": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            }
+        ],
+        "12": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            }
+        ],
+        "13": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            }
+        ],
+        "14": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            }
+        ],
+        "15": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            }
+        ],
+        "16": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            }
+        ],
+        "17": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            }
+        ],
+        "18": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            }
+        ],
+        "19": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            }
+        ],
+        "20": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            }
+        ],
+        "21": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            }
+        ],
+        "22": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            }
+        ],
+        "23": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            }
+        ],
+        "24": [
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R4)-->(http://example.org/pygraft-gen/object/RES_R1)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R3)-->(http://example.org/pygraft-gen/object/RES_R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R2)-->(http://example.org/pygraft-gen/object/RES_R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R1",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/Resource",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/RES_R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/Resource)-->(https://w3id.org/noria/ontology/Resource)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/RES_R1)-->(http://example.org/pygraft-gen/object/RES_R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R3)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R2)-->(http://example.org/pygraft-gen/object/NL_R3-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R3-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R2)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R4)-->(http://example.org/pygraft-gen/object/NL_R1-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R1-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R4)"
+            },
+            {
+                "query_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "query_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "data_graph_node_class": "https://w3id.org/noria/ontology/NetworkLink",
+                "data_graph_node_iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+                "VqVd_class": "(https://w3id.org/noria/ontology/NetworkLink)-->(https://w3id.org/noria/ontology/NetworkLink)",
+                "VqVd_iri": "(http://example.org/pygraft-gen/object/NL_R2-R3)-->(http://example.org/pygraft-gen/object/NL_R2-R3)"
+            }
+        ]
+    },
+    "type": 0,
+    "queryGraph": "./nx_query_graph.json",
+    "dataGraph": "./nx_data_graph_extended.json",
+    "classProp": "class",
+    "iriProp": "iri",
+    "classList": [
+        "https://w3id.org/noria/ontology/Resource",
+        "https://w3id.org/noria/ontology/NetworkLink"
+    ]
+}

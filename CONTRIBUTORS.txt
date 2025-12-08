@@ -1,0 +1,3 @@
+Nicolas HUBERT, the PyGraft project initiator.
+Ovidiu PASCAL, PyGraft-gen lead developer.
+Lionel TAILHARDAT, PyGraft-gen product lead.

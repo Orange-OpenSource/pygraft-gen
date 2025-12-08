@@ -1,0 +1,179 @@
+@prefix : <http://example.org/pygraft-gen/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix mykg-doc: <http://example.org/pygraft-gen/document/> .
+@prefix mykg-event: <http://example.org/pygraft-gen/event/> .
+@prefix mykg-object: <http://example.org/pygraft-gen/object/> .
+@prefix noria: <https://w3id.org/noria/ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:Access a owl:Class ;
+    rdfs:label "Access" .
+
+<http://example.org/pygraft-gen/Distribution/Core> a owl:Class ;
+    rdfs:label "Core" .
+
+:Terminalpoints a owl:Class ;
+    rdfs:label "Terminalpoints" .
+
+mykg-doc:TT_APP1 a owl:NamedIndividual,
+        noria:TroubleTicket ;
+    noria:troubleTicketRelatedResource mykg-object:RES_APP1 .
+
+mykg-event:AIS_APP2T0 a owl:NamedIndividual,
+        noria:EventRecord ;
+    noria:logOriginatingManagedObject mykg-object:RES_APP2 ;
+    noria:loggingTime "PlaceHolderDateTime"^^xsd:DateTime .
+
+mykg-event:AIS_R2T0 a owl:NamedIndividual,
+        noria:EventRecord ;
+    noria:logOriginatingManagedObject mykg-object:RES_R2 ;
+    noria:loggingTime "PlaceHolderDateTime"^^xsd:DateTime .
+
+mykg-event:AIS_T0 a owl:NamedIndividual,
+        noria:EventRecord ;
+    noria:logOriginatingManagedObject mykg-object:RES_AS1 ;
+    noria:loggingTime "PlaceHolderDateTime"^^xsd:DateTime .
+
+mykg-event:AIS_T1 a owl:NamedIndividual,
+        noria:EventRecord ;
+    noria:logOriginatingManagedObject mykg-object:RES_S1 ;
+    noria:loggingTime "PlaceHolderDateTime"^^xsd:DateTime .
+
+mykg-event:AIS_T2 a owl:NamedIndividual,
+        noria:EventRecord ;
+    noria:logOriginatingManagedObject mykg-object:RES_APP1 ;
+    noria:loggingTime "PlaceHolderDateTime"^^xsd:DateTime .
+
+mykg-object:NL_AS1-R1 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_AS1,
+        mykg-object:RES_R1 .
+
+mykg-object:NL_AS1-R2 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_AS1,
+        mykg-object:RES_R2 .
+
+mykg-object:NL_AS2-R1 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_AS2,
+        mykg-object:RES_R1 .
+
+mykg-object:NL_AS2-R2 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_AS2,
+        mykg-object:RES_R2 .
+
+mykg-object:NL_R1-R2 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R2 .
+
+mykg-object:NL_S1-AS1 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_AS1,
+        mykg-object:RES_S1 .
+
+mykg-object:NL_S2-AS2 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_AS2,
+        mykg-object:RES_S2 .
+
+mykg-object:NL_S3-AS2 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_AS2,
+        mykg-object:RES_S3 .
+
+<http://example.org/pygraft-gen/unreach-extended/> a owl:Ontology ;
+    dc:contributor <https://orcid.org/0009-0001-4074-2100> ;
+    dc:created "2025-04-17"^^xsd:date ;
+    dc:creator <https://orcid.org/0000-0001-5887-899X> ;
+    dc:description "A dataset for the PyGraft-gen project."@en ;
+    dc:title "The PyGraft-gen unreach ontology (ontology)"@en ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:created a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:description a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+noria:logOriginatingManagedObject a owl:ObjectProperty ;
+    rdfs:label "log originating managed object" .
+
+noria:loggingTime a owl:DatatypeProperty ;
+    rdfs:label "logging time" .
+
+noria:networkLinkTerminationResource a owl:ObjectProperty ;
+    rdfs:label "network link termination resource" .
+
+noria:resourceForApplication a owl:ObjectProperty ;
+    rdfs:label "resource for application" .
+
+noria:resourceHostname a owl:DatatypeProperty ;
+    rdfs:label "resource hostname" .
+
+noria:troubleTicketRelatedResource a owl:ObjectProperty ;
+    rdfs:label "trouble ticket related resource" .
+
+mykg-object:RES_S2 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceForApplication mykg-object:RES_APP1,
+        mykg-object:RES_APP2 ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_S3 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceForApplication mykg-object:RES_APP2 ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+noria:TroubleTicket a owl:Class ;
+    rdfs:label "Trouble Ticket" .
+
+mykg-object:RES_S1 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceForApplication mykg-object:RES_APP1 ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+noria:Application a owl:Class ;
+    rdfs:label "Application" .
+
+mykg-object:RES_APP2 a owl:NamedIndividual,
+        noria:Application .
+
+mykg-object:RES_R1 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_APP1 a owl:NamedIndividual,
+        noria:Application .
+
+mykg-object:RES_AS1 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_AS2 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R2 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+noria:EventRecord a owl:Class ;
+    rdfs:label "Event Record" .
+
+noria:Resource a owl:Class ;
+    rdfs:label "Resource" .
+
+noria:NetworkLink a owl:Class ;
+    rdfs:label "Network Link" .
+
+

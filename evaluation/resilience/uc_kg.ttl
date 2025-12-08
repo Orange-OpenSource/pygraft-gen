@@ -1,0 +1,72 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix mykg-event: <http://example.org/pygraft-gen/event/> .
+@prefix mykg-object: <http://example.org/pygraft-gen/object/> .
+@prefix noria: <https://w3id.org/noria/ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mykg-event:AIS_T0 a owl:NamedIndividual,
+        noria:EventRecord ;
+    noria:logOriginatingManagedObject mykg-object:RES_S1 ;
+    noria:loggingTime "PlaceHolderDateTime"^^xsd:DateTime .
+
+mykg-event:AIS_T1 a owl:NamedIndividual,
+        noria:EventRecord ;
+    noria:logOriginatingManagedObject mykg-object:RES_APP1 ;
+    noria:loggingTime "PlaceHolderDateTime"^^xsd:DateTime .
+
+mykg-object:RES_S2 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceForApplication mykg-object:RES_APP1 ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+<http://example.org/pygraft-gen/resilience/> a owl:Ontology ;
+    dc:contributor <https://orcid.org/0009-0001-4074-2100> ;
+    dc:created "2025-02-20"^^xsd:date ;
+    dc:creator <https://orcid.org/0000-0001-5887-899X> ;
+    dc:description "A dataset for the PyGraft-gen project."@en ;
+    dc:title "The PyGraft-gen resilience ontology"@en ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:created a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:description a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+noria:logOriginatingManagedObject a owl:ObjectProperty ;
+    rdfs:label "log originating managed object" .
+
+noria:loggingTime a owl:DatatypeProperty ;
+    rdfs:label "logging time" .
+
+noria:resourceForApplication a owl:ObjectProperty ;
+    rdfs:label "resource for application" .
+
+noria:resourceHostname a owl:DatatypeProperty ;
+    rdfs:label "resource hostname" .
+
+mykg-object:RES_S1 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceForApplication mykg-object:RES_APP1 ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+noria:Application a owl:Class ;
+    rdfs:label "Application" .
+
+noria:EventRecord a owl:Class ;
+    rdfs:label "Event Record" .
+
+noria:Resource a owl:Class ;
+    rdfs:label "Resource" .
+
+mykg-object:RES_APP1 a owl:NamedIndividual,
+        noria:Application .
+
+

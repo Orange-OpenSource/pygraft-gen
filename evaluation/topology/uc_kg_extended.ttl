@@ -1,0 +1,85 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix mykg-object: <http://example.org/pygraft-gen/object/> .
+@prefix noria: <https://w3id.org/noria/ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mykg-object:NL_R1-R2 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R2 .
+
+mykg-object:NL_R1-R3 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R3 .
+
+mykg-object:NL_R1-R4 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R4 .
+
+mykg-object:NL_R2-R3 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R2,
+        mykg-object:RES_R3 .
+
+mykg-object:NL_R2-R4 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R2,
+        mykg-object:RES_R4 .
+
+mykg-object:NL_R3-R4 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R3,
+        mykg-object:RES_R4 .
+
+<http://example.org/pygraft-gen/topology-extended/> a owl:Ontology ;
+    dc:contributor <https://orcid.org/0009-0001-4074-2100> ;
+    dc:created "2025-04-17"^^xsd:date ;
+    dc:creator <https://orcid.org/0000-0001-5887-899X> ;
+    dc:description "A dataset for the PyGraft-gen project."@en ;
+    dc:title "The PyGraft-gen topology ontology (extended)"@en ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:created a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:description a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+noria:networkLinkTerminationResource a owl:ObjectProperty ;
+    rdfs:label "network link termination resource" .
+
+noria:resourceHostname a owl:DatatypeProperty ;
+    rdfs:label "resource hostname" .
+
+mykg-object:RES_R1 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R2 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R3 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R4 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+noria:Resource a owl:Class ;
+    rdfs:label "Resource" .
+
+noria:NetworkLink a owl:Class ;
+    rdfs:label "Network Link" .
+
+

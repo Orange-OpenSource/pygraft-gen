@@ -1,0 +1,151 @@
+@prefix dash:        <http://datashapes.org/dash#> .
+@prefix dc:          <http://purl.org/dc/elements/1.1/> .
+@prefix ex:          <http://example.com/ns#> .
+@prefix graphql:     <http://datashapes.org/graphql#> .
+@prefix mod:         <https://w3id.org/mod#> .
+@prefix mykg-object: <http://example.org/pygraft-gen/object/> .
+@prefix noria:       <https://w3id.org/noria/ontology/> .
+@prefix owl:         <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:          <http://www.w3.org/ns/shacl#> .
+@prefix swa:         <http://topbraid.org/swa#> .
+@prefix tosh:        <http://topbraid.org/tosh#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+ex:MeshTopologyShape  <https://shacl-play.sparna.fr/ontology#hasFocusNode>
+                mykg-object:RES_R3 , mykg-object:RES_R2 , mykg-object:RES_R1 , mykg-object:RES_R4 .
+
+[ rdf:type     sh:ValidationReport ;
+  sh:conforms  false ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  mykg-object:NL_R2-R4 ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  mykg-object:NL_R2-R3 ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  dc:description ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  dc:title ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  <http://example.org/pygraft-gen/topology/> ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  dc:created ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  noria:NetworkLink ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  mykg-object:NL_R1-R3 ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  dc:creator ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  dc:contributor ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  noria:resourceHostname ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  noria:Resource ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  mykg-object:NL_R1-R2 ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  mykg-object:NL_R3-R4 ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  mykg-object:NL_R1-R4 ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  sh:result    [ rdf:type                      sh:ValidationResult ;
+                 sh:focusNode                  noria:networkLinkTerminationResource ;
+                 sh:resultMessage              "Subject of a triple was not validated by any shape"@en ;
+                 sh:resultPath                 []  ;
+                 sh:resultSeverity             sh:Warning ;
+                 sh:sourceConstraintComponent  sh:MinCountConstraintComponent ;
+                 sh:sourceShape                <https://shacl-play.sparna.fr/shapes#hasInverseFocusNodeMandatory>
+               ] ;
+  <https://shacl-play.sparna.fr/ontology#hasMatched>
+          true
+] .

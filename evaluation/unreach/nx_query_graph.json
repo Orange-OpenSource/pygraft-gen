@@ -1,0 +1,80 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes":
+[
+{
+  "id": "http://example.org/pygraft-gen/object/RES_APP1",
+  "iri": "http://example.org/pygraft-gen/object/RES_APP1",
+  "class": "https://w3id.org/noria/ontology/Application"
+},
+{
+  "id": "http://example.org/pygraft-gen/event/AIS_T2",
+  "iri": "http://example.org/pygraft-gen/event/AIS_T2",
+  "class": "https://w3id.org/noria/ontology/EventRecord"
+},
+{
+  "id": "http://example.org/pygraft-gen/event/AIS_T1",
+  "iri": "http://example.org/pygraft-gen/event/AIS_T1",
+  "class": "https://w3id.org/noria/ontology/EventRecord"
+},
+{
+  "id": "http://example.org/pygraft-gen/event/AIS_T0",
+  "iri": "http://example.org/pygraft-gen/event/AIS_T0",
+  "class": "https://w3id.org/noria/ontology/EventRecord"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/NL_S1-AS1",
+  "iri": "http://example.org/pygraft-gen/object/NL_S1-AS1",
+  "class": "https://w3id.org/noria/ontology/NetworkLink"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/RES_AS1",
+  "iri": "http://example.org/pygraft-gen/object/RES_AS1",
+  "class": "https://w3id.org/noria/ontology/Resource"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/RES_S1",
+  "iri": "http://example.org/pygraft-gen/object/RES_S1",
+  "class": "https://w3id.org/noria/ontology/Resource"
+},
+{
+  "id": "http://example.org/pygraft-gen/document/TT_APP1",
+  "iri": "http://example.org/pygraft-gen/document/TT_APP1",
+  "class": "https://w3id.org/noria/ontology/TroubleTicket"
+}
+]
+  ,
+  "links":
+[
+{
+  "source": "http://example.org/pygraft-gen/event/AIS_T2",
+  "target": "http://example.org/pygraft-gen/object/RES_APP1"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_S1-AS1",
+  "target": "http://example.org/pygraft-gen/object/RES_AS1"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_S1-AS1",
+  "target": "http://example.org/pygraft-gen/object/RES_S1"
+},
+{
+  "source": "http://example.org/pygraft-gen/document/TT_APP1",
+  "target": "http://example.org/pygraft-gen/object/RES_APP1"
+},
+{
+  "source": "http://example.org/pygraft-gen/event/AIS_T1",
+  "target": "http://example.org/pygraft-gen/object/RES_S1"
+},
+{
+  "source": "http://example.org/pygraft-gen/event/AIS_T0",
+  "target": "http://example.org/pygraft-gen/object/RES_AS1"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/RES_S1",
+  "target": "http://example.org/pygraft-gen/object/RES_APP1"
+}
+]
+}

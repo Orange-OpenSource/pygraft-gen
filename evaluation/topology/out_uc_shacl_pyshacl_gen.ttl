@@ -1,0 +1,286 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix mykg-object: <http://example.org/pygraft-gen/object/> .
+@prefix noria: <https://w3id.org/noria/ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mykg-object:NL_R1-R2 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R2 .
+
+mykg-object:NL_R1-R3 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R3 .
+
+#mykg-object:NL_R1-R4 a owl:NamedIndividual,
+#        noria:NetworkLink ;
+#    noria:networkLinkTerminationResource mykg-object:RES_R1,
+#        mykg-object:RES_R4 .
+#
+mykg-object:NL_R2-R3 a owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R2,
+        mykg-object:RES_R3 .
+#
+#mykg-object:NL_R2-R4 a owl:NamedIndividual,
+#        noria:NetworkLink ;
+#    noria:networkLinkTerminationResource mykg-object:RES_R2,
+#        mykg-object:RES_R4 .
+#
+#mykg-object:NL_R3-R4 a owl:NamedIndividual,
+#        noria:NetworkLink ;
+#    noria:networkLinkTerminationResource mykg-object:RES_R3,
+#        mykg-object:RES_R4 .
+
+<http://example.org/pygraft-gen/topology/> a owl:Ontology ;
+    dc:contributor <https://orcid.org/0009-0001-4074-2100> ;
+    dc:created "2025-03-14"^^xsd:date ;
+    dc:creator <https://orcid.org/0000-0001-5887-899X> ;
+    dc:description "A dataset for the PyGraft-gen project."@en ;
+    dc:title "The PyGraft-gen topology ontology"@en ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+dc:contributor a owl:AnnotationProperty .
+
+dc:created a owl:AnnotationProperty .
+
+dc:creator a owl:AnnotationProperty .
+
+dc:description a owl:AnnotationProperty .
+
+dc:title a owl:AnnotationProperty .
+
+noria:networkLinkTerminationResource a owl:ObjectProperty ;
+    rdfs:label "network link termination resource" .
+
+noria:resourceHostname a owl:DatatypeProperty ;
+    rdfs:label "resource hostname" .
+
+mykg-object:RES_R1 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R2 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R3 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R4 a owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+noria:Resource a owl:Class ;
+    rdfs:label "Resource" .
+
+noria:NetworkLink a owl:Class ;
+    rdfs:label "Network Link" .
+
+
+
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix noria:  <https://w3id.org/noria/ontology/> .
+@prefix ex:     <http://example.com/ns#> .
+
+ex:MeshTopologyShape  # The 'k out-of n' resilience issue
+    a sh:NodeShape ;
+    sh:targetClass noria:Resource ;  # Looking for Resources
+#    sh:property [   # Looking for at least three direct NetworkLink entities
+#        sh:path [ sh:inversePath noria:networkLinkTerminationResource ] ;
+#        sh:class noria:NetworkLink ;
+#        sh:nodeKind sh:IRI ;
+#        sh:minCount 3 ;
+#    ] ;
+#    sh:property [   # Looking for at least three  (R_focus)<=[NetworkLink]=>(R_x) paths
+#        sh:path ( [ sh:inversePath noria:networkLinkTerminationResource ] noria:networkLinkTerminationResource ) ;
+#        sh:class noria:Resource ;
+#        sh:nodeKind sh:IRI ;
+#        sh:minCount 3 ;  # TODO : understand why 4 links are detected
+#    ] ;
+    sh:property [   # Looking for at least three  (R_focus)<=[NetworkLink]=>(R_x)<=[NetworkLink]=>(R_y) paths
+        sh:path ( [ sh:inversePath noria:networkLinkTerminationResource ] noria:networkLinkTerminationResource [ sh:inversePath noria:networkLinkTerminationResource ] noria:networkLinkTerminationResource ) ;
+        sh:class noria:Resource ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 6 ;  # TODO : understand why 4 links are detected
+    ] ;
+#    sh:property [   # Looking for at least three  (Focus Resource)<=[NetworkLink]=>(Resource) paths
+#        sh:path ( sh:inversePath noria:networkLinkTerminationResource noria:networkLinkTerminationResource ) ;
+#        sh:class noria:NetworkLink ;
+#        sh:nodeKind sh:IRI ;
+#        sh:minCount 3 ;
+#    ] ;
+#    sh:rule [   # Tag the focus node with an alert
+#        rdf:type sh:SPARQLRule ;
+#        # With the CONSTRUCT verb below, we only tag the focus node.
+#        # We do not aim to connect all the nodes of the SHACL pattern to be detected,
+#        # as that would mean reproducing the SHACL pattern in the SPARQL query,
+#        # which would be redundant with the direct use of the SPARQL query to detect the situation.
+#        sh:construct """
+#            PREFIX noria: <https://w3id.org/noria/ontology/>
+#            PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+#            CONSTRUCT {
+#                $this rdfs:comment "Vertice part of a mesh topology" .
+#            } WHERE {
+#                $this a noria:Resource .
+#            }
+#        """ ;
+#    ] ;
+.
+
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix mod: <https://w3id.org/mod#> .
+@prefix mykg-object: <http://example.org/pygraft-gen/object/> .
+@prefix noria: <https://w3id.org/noria/ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mykg-object:NL_R1-R2 a rdfs:Resource,
+        owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R2 .
+
+mykg-object:NL_R1-R3 a rdfs:Resource,
+        owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R1,
+        mykg-object:RES_R3 .
+
+mykg-object:NL_R2-R3 a rdfs:Resource,
+        owl:NamedIndividual,
+        noria:NetworkLink ;
+    noria:networkLinkTerminationResource mykg-object:RES_R2,
+        mykg-object:RES_R3 .
+
+mykg-object:RES_R4 a rdfs:Resource,
+        owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+<http://example.org/pygraft-gen/topology/> a rdfs:Resource,
+        owl:Ontology ;
+    dc:contributor <https://orcid.org/0009-0001-4074-2100> ;
+    dc:created "2025-03-14"^^xsd:date ;
+    dc:creator <https://orcid.org/0000-0001-5887-899X> ;
+    dc:description "A dataset for the PyGraft-gen project."@en ;
+    dc:title "The PyGraft-gen topology ontology"@en ;
+    mod:createdWith <https://chowlk.linkeddata.es/> .
+
+dc:contributor a rdf:Property,
+        rdfs:Resource,
+        owl:AnnotationProperty ;
+    rdfs:subPropertyOf dc:contributor .
+
+dc:created a rdf:Property,
+        rdfs:Resource,
+        owl:AnnotationProperty ;
+    rdfs:subPropertyOf dc:created .
+
+dc:creator a rdf:Property,
+        rdfs:Resource,
+        owl:AnnotationProperty ;
+    rdfs:subPropertyOf dc:creator .
+
+dc:description a rdf:Property,
+        rdfs:Resource,
+        owl:AnnotationProperty ;
+    rdfs:subPropertyOf dc:description .
+
+dc:title a rdf:Property,
+        rdfs:Resource,
+        owl:AnnotationProperty ;
+    rdfs:subPropertyOf dc:title .
+
+rdf:type a rdf:Property ;
+    rdfs:subPropertyOf rdf:type .
+
+rdfs:label a rdf:Property ;
+    rdfs:subPropertyOf rdfs:label .
+
+rdfs:subPropertyOf a rdf:Property ;
+    rdfs:subPropertyOf rdfs:subPropertyOf .
+
+owl:DatatypeProperty a rdfs:Resource .
+
+owl:ObjectProperty a rdfs:Resource .
+
+owl:Ontology a rdfs:Resource .
+
+<https://chowlk.linkeddata.es/> a rdfs:Resource .
+
+<https://orcid.org/0000-0001-5887-899X> a rdfs:Resource .
+
+<https://orcid.org/0009-0001-4074-2100> a rdfs:Resource .
+
+mod:createdWith a rdf:Property ;
+    rdfs:subPropertyOf mod:createdWith .
+
+noria:networkLinkTerminationResource a rdf:Property,
+        rdfs:Resource,
+        owl:ObjectProperty ;
+    rdfs:label "network link termination resource" ;
+    rdfs:subPropertyOf noria:networkLinkTerminationResource .
+
+noria:resourceHostname a rdf:Property,
+        rdfs:Resource,
+        owl:DatatypeProperty ;
+    rdfs:label "resource hostname" ;
+    rdfs:subPropertyOf noria:resourceHostname .
+
+"2025-03-14"^^xsd:date a rdfs:Resource .
+
+"Network Link" a rdfs:Resource .
+
+"Resource" a rdfs:Resource .
+
+"network link termination resource" a rdfs:Resource .
+
+"resource hostname" a rdfs:Resource .
+
+"A dataset for the PyGraft-gen project."@en a rdfs:Resource .
+
+"The PyGraft-gen topology ontology"@en a rdfs:Resource .
+
+mykg-object:RES_R1 a rdfs:Resource,
+        owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R2 a rdfs:Resource,
+        owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+mykg-object:RES_R3 a rdfs:Resource,
+        owl:NamedIndividual,
+        noria:Resource ;
+    noria:resourceHostname "PlaceHolderHostName"^^xsd:String .
+
+owl:Class a rdfs:Resource .
+
+noria:NetworkLink a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "Network Link" .
+
+noria:Resource a rdfs:Resource,
+        owl:Class ;
+    rdfs:label "Resource" .
+
+"PlaceHolderHostName"^^xsd:String a rdfs:Resource .
+
+owl:AnnotationProperty a rdfs:Resource .
+
+owl:NamedIndividual a rdfs:Resource .
+
+

@@ -1,0 +1,44 @@
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix noria:  <https://w3id.org/noria/ontology/> .
+@prefix ex:     <http://example.com/ns#> .
+
+ex:ResilienceShape  # The 'k out-of n' resilience issue
+    a sh:NodeShape ;
+    sh:targetClass noria:Application ;  # Looking for Applications
+    sh:property [   # Looking for an alarm at the Application node level
+        sh:path [ sh:inversePath noria:logOriginatingManagedObject ] ;
+        sh:class noria:EventRecord ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [   # Looking for at least two Resources serving the Application
+        sh:path [ sh:inversePath noria:resourceForApplication ] ;
+        sh:class noria:Resource ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 2 ;
+    ] ;
+    sh:property [   # Looking for at least one faulty Resource serving the Application
+        sh:path ( sh:inversePath noria:resourceForApplication sh:inversePath noria:logOriginatingManagedObject ) ;
+        sh:class noria:EventRecord ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+    ] ;
+    sh:rule [   # Tag the focus node with an alert
+        rdf:type sh:SPARQLRule ;
+        # With the CONSTRUCT verb below, we only tag the focus node.
+        # We do not aim to connect all the nodes of the SHACL pattern to be detected,
+        # as that would mean reproducing the SHACL pattern in the SPARQL query,
+        # which would be redundant with the direct use of the SPARQL query to detect the situation.
+        sh:construct """
+            PREFIX noria: <https://w3id.org/noria/ontology/>
+            CONSTRUCT {
+                $this noria:atRisk "K out-of N" .
+            } WHERE {
+                ?this a noria:Application .
+            }
+        """ ;
+    ] ;
+.

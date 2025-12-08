@@ -1,0 +1,44 @@
+# Software Name: PyGraft-gen
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
+# SPDX-License-Identifier: MIT
+#
+# This software is distributed under the MIT license,
+# the text of which is available at https://opensource.org/license/MIT/
+# or see the "LICENSE" file for more details.
+#
+# Authors: See CONTRIBUTORS.txt
+# Software description: A RDF Knowledge Graph stochastic generation solution.
+
+# GRLC metadata
+#+ summary: Subgraph matching for the 'resilience' use case
+#+ method: GET
+#+ tags:
+#+   - PyGraft-gen
+
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX mod: <https://w3id.org/mod#>
+PREFIX mykg-object: <http://example.org/pygraft-gen/object/>
+PREFIX noria: <https://w3id.org/noria/ontology/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+SELECT ?app ?res1 ?res2 ?ais_t0 ?ais_t1
+WHERE {
+    ?app a noria:Application .
+
+    ?ais_t1 a noria:EventRecord ;
+        noria:logOriginatingManagedObject ?app .
+
+    ?res1 a noria:Resource ;
+        noria:resourceForApplication ?app .
+
+    ?res2 a noria:Resource ;
+        noria:resourceForApplication ?app .
+
+    FILTER (?res1 != ?res2)
+
+    ?ais_t0 a noria:EventRecord ;
+        noria:logOriginatingManagedObject ?res1 .
+}

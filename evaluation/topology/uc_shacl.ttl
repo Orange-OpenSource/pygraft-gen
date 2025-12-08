@@ -1,0 +1,78 @@
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix noria:  <https://w3id.org/noria/ontology/> .
+@prefix ex:     <http://example.com/ns#> .
+
+ex:ResourceCornerShape
+    a sh:NodeShape ;
+    sh:property [   # Looking for at least three direct NetworkLink entities
+        sh:path [ sh:inversePath noria:networkLinkTerminationResource ] ;
+        sh:class noria:NetworkLink ;
+        sh:minCount 3 ;
+    ] ;
+.
+
+ex:TwoSidedNetworkLinkShape
+    a sh:NodeShape ;
+    sh:property [
+                sh:path noria:networkLinkTerminationResource  ;
+                sh:class noria:Resource ;
+                sh:minCount 2 ;
+                sh:maxCount 2 ;
+                sh:node ex:ResourceCornerShape ;
+  ] ;
+.
+
+ex:MeshTopologyShape  # The topology issue
+    a sh:NodeShape ;
+    sh:targetClass noria:Resource ;  # Looking for Resources
+#    sh:property [   # Looking for at least three direct NetworkLink entities
+#        sh:path [ sh:inversePath noria:networkLinkTerminationResource ] ;
+#        sh:class noria:NetworkLink ;
+#        sh:nodeKind sh:IRI ;
+#        sh:minCount 3 ;
+#    ] ;
+    sh:property [   # Looking for at least three direct NetworkLink entities
+        sh:path [ sh:inversePath noria:networkLinkTerminationResource ] ;
+        sh:class noria:NetworkLink ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 3 ;
+        sh:node ex:TwoSidedNetworkLinkShape ;
+    ] ;
+#    sh:property [   # Looking for at least three  (R_focus)<=[NetworkLink]=>(R_x) paths
+#        sh:path ( [ sh:inversePath noria:networkLinkTerminationResource ] noria:networkLinkTerminationResource ) ;
+#        sh:class noria:Resource ;
+#        sh:nodeKind sh:IRI ;
+#        sh:minCount 3 ;  # TODO : understand why 4 links are detected
+#    ] ;
+#    sh:property [   # Looking for at least three  (R_focus)<=[NetworkLink]=>(R_x)<=[NetworkLink]=>(R_y) paths
+#        sh:path ( [ sh:inversePath noria:networkLinkTerminationResource ] noria:networkLinkTerminationResource [ sh:inversePath noria:networkLinkTerminationResource ] noria:networkLinkTerminationResource ) ;
+#        sh:class noria:Resource ;
+#        sh:nodeKind sh:IRI ;
+#        sh:minCount 6 ;  # TODO : understand why 4 links are detected
+#    ] ;
+#    sh:property [   # Looking for at least three  (Focus Resource)<=[NetworkLink]=>(Resource) paths
+#        sh:path ( sh:inversePath noria:networkLinkTerminationResource noria:networkLinkTerminationResource ) ;
+#        sh:class noria:NetworkLink ;
+#        sh:nodeKind sh:IRI ;
+#        sh:minCount 3 ;
+#    ] ;
+#    sh:rule [   # Tag the focus node with an alert
+#        rdf:type sh:SPARQLRule ;
+#        # With the CONSTRUCT verb below, we only tag the focus node.
+#        # We do not aim to connect all the nodes of the SHACL pattern to be detected,
+#        # as that would mean reproducing the SHACL pattern in the SPARQL query,
+#        # which would be redundant with the direct use of the SPARQL query to detect the situation.
+#        sh:construct """
+#            PREFIX noria: <https://w3id.org/noria/ontology/>
+#            PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+#            CONSTRUCT {
+#                $this rdfs:comment "Vertice part of a mesh topology" .
+#            } WHERE {
+#                $this a noria:Resource .
+#            }
+#        """ ;
+#    ] ;
+.

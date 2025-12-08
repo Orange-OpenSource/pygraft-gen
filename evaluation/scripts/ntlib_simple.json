@@ -1,0 +1,492 @@
+{
+    "directed": true,
+    "multigraph": true,
+    "graph": {},
+    "nodes": [
+        {
+            "name": "US_r",
+            "iata": "US",
+            "geopos": [
+                -79.47978088965024,
+                37.24342656063829
+            ],
+            "routerActive": true,
+            "id": 0
+        },
+        {
+            "name": "CA_r",
+            "iata": "CA",
+            "geopos": [
+                -86.94457117853138,
+                45.913941529999995
+            ],
+            "routerActive": true,
+            "id": 1
+        },
+        {
+            "name": "AF_r",
+            "iata": "AF",
+            "geopos": [
+                27.56752580761792,
+                -2.532332893396227
+            ],
+            "routerActive": true,
+            "id": 2
+        },
+        {
+            "name": "OC_r",
+            "iata": "OC",
+            "geopos": [
+                147.6400041618854,
+                -31.46053987444444
+            ],
+            "routerActive": true,
+            "id": 3
+        },
+        {
+            "name": "EU_r",
+            "iata": "EU",
+            "geopos": [
+                8.933941870323597,
+                49.09355665562339
+            ],
+            "routerActive": true,
+            "id": 4
+        },
+        {
+            "name": "SA_r",
+            "iata": "SA",
+            "geopos": [
+                -55.75459174300951,
+                -20.053451989673924
+            ],
+            "routerActive": true,
+            "id": 5
+        },
+        {
+            "name": "NA_r",
+            "iata": "NA",
+            "geopos": [
+                -68.13630596899714,
+                15.84728515263158
+            ],
+            "routerActive": true,
+            "id": 6
+        },
+        {
+            "name": "AS_r",
+            "iata": "AS",
+            "geopos": [
+                92.34543434593851,
+                20.427447063900424
+            ],
+            "routerActive": true,
+            "id": 7
+        },
+        {
+            "name": "MX_r",
+            "iata": "MX",
+            "geopos": [
+                -100.03454909999999,
+                21.097901913333335
+            ],
+            "routerActive": true,
+            "id": 8
+        }
+    ],
+    "links": [
+        {
+            "cost": 1,
+            "weight": 2040000,
+            "capa": 13488,
+            "delay": 6.333333333333333,
+            "name_a": "US_r",
+            "name_b": "CA_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 0,
+            "target": 1,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1098000,
+            "capa": 13000,
+            "delay": 97.5,
+            "name_a": "US_r",
+            "name_b": "AS_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 0,
+            "target": 7,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 986200,
+            "capa": 12256,
+            "delay": 105.6,
+            "name_a": "US_r",
+            "name_b": "SA_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 0,
+            "target": 5,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 3074000,
+            "capa": 2244,
+            "delay": 143,
+            "name_a": "US_r",
+            "name_b": "OC_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 0,
+            "target": 3,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 127000,
+            "capa": 4000,
+            "delay": 34.333333333333336,
+            "name_a": "US_r",
+            "name_b": "MX_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 0,
+            "target": 8,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1081555.5555555555,
+            "capa": 12050,
+            "delay": 52.44444444444444,
+            "name_a": "US_r",
+            "name_b": "NA_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 0,
+            "target": 6,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1066666.6666666667,
+            "capa": 30000,
+            "delay": 68,
+            "name_a": "US_r",
+            "name_b": "EU_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 0,
+            "target": 4,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 2040000,
+            "capa": 13488,
+            "delay": 6.333333333333333,
+            "name_a": "CA_r",
+            "name_b": "US_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 1,
+            "target": 0,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 3214428.5714285714,
+            "capa": 2770,
+            "delay": 56.142857142857146,
+            "name_a": "AF_r",
+            "name_b": "AS_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 2,
+            "target": 7,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 2455578.2608695654,
+            "capa": 12089,
+            "delay": 124.82608695652173,
+            "name_a": "AF_r",
+            "name_b": "EU_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 2,
+            "target": 4,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 10526128.4,
+            "capa": 2190,
+            "delay": 98.8,
+            "name_a": "OC_r",
+            "name_b": "AS_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 3,
+            "target": 7,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 3074000,
+            "capa": 2244,
+            "delay": 143,
+            "name_a": "OC_r",
+            "name_b": "US_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 3,
+            "target": 0,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1489792.105263158,
+            "capa": 76832,
+            "delay": 83.8157894736842,
+            "name_a": "EU_r",
+            "name_b": "AS_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 4,
+            "target": 7,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 212400,
+            "capa": 20465,
+            "delay": 3,
+            "name_a": "EU_r",
+            "name_b": "SA_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 4,
+            "target": 5,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 2455578.2608695654,
+            "capa": 12089,
+            "delay": 124.82608695652173,
+            "name_a": "EU_r",
+            "name_b": "AF_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 4,
+            "target": 2,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1066666.6666666667,
+            "capa": 30000,
+            "delay": 68,
+            "name_a": "EU_r",
+            "name_b": "US_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 4,
+            "target": 0,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 100000,
+            "capa": 20000,
+            "delay": 0,
+            "name_a": "EU_r",
+            "name_b": "NA_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 4,
+            "target": 6,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 102666.66666666667,
+            "capa": 11222,
+            "delay": 23.666666666666668,
+            "name_a": "SA_r",
+            "name_b": "NA_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 5,
+            "target": 6,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 212400,
+            "capa": 20465,
+            "delay": 3,
+            "name_a": "SA_r",
+            "name_b": "EU_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 5,
+            "target": 4,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 986200,
+            "capa": 12256,
+            "delay": 105.6,
+            "name_a": "SA_r",
+            "name_b": "US_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 5,
+            "target": 0,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1081555.5555555555,
+            "capa": 12050,
+            "delay": 52.44444444444444,
+            "name_a": "NA_r",
+            "name_b": "US_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 6,
+            "target": 0,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 102666.66666666667,
+            "capa": 11222,
+            "delay": 23.666666666666668,
+            "name_a": "NA_r",
+            "name_b": "SA_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 6,
+            "target": 5,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 100000,
+            "capa": 20000,
+            "delay": 0,
+            "name_a": "NA_r",
+            "name_b": "EU_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 6,
+            "target": 4,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 10526128.4,
+            "capa": 2190,
+            "delay": 98.8,
+            "name_a": "AS_r",
+            "name_b": "OC_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 7,
+            "target": 3,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 3214428.5714285714,
+            "capa": 2770,
+            "delay": 56.142857142857146,
+            "name_a": "AS_r",
+            "name_b": "AF_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 7,
+            "target": 2,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1098000,
+            "capa": 13000,
+            "delay": 97.5,
+            "name_a": "AS_r",
+            "name_b": "US_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 7,
+            "target": 0,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 1489792.105263158,
+            "capa": 76832,
+            "delay": 83.8157894736842,
+            "name_a": "AS_r",
+            "name_b": "EU_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 7,
+            "target": 4,
+            "key": 0
+        },
+        {
+            "cost": 1,
+            "weight": 127000,
+            "capa": 4000,
+            "delay": 34.333333333333336,
+            "name_a": "MX_r",
+            "name_b": "US_r",
+            "flow": [],
+            "saturation": [],
+            "linkActive": true,
+            "source": 8,
+            "target": 0,
+            "key": 0
+        }
+    ],
+    "capacity_unit": 1000000
+}

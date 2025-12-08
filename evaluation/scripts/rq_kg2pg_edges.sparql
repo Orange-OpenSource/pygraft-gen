@@ -1,0 +1,24 @@
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX mod: <https://w3id.org/mod#>
+PREFIX mykg-object: <http://example.org/pygraft-gen/object/>
+PREFIX noria: <https://w3id.org/noria/ontology/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+SELECT ?source ?target
+WHERE {
+    ?source ?prop ?target.
+
+    # Excluding data type properties and ontology implementation statements
+    MINUS {
+        ?source a owl:Ontology
+    }
+    FILTER (
+        isURI(?target) &&
+        ?prop != rdf:type &&
+        !strstarts(str(?prop), "http://www.w3.org/2002/07/owl#")
+    )
+}

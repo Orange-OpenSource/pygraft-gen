@@ -1,0 +1,51 @@
+# Software Name: PyGraft-gen
+# SPDX-FileCopyrightText: Copyright (c) Orange SA
+# SPDX-License-Identifier: MIT
+#
+# This software is distributed under the MIT license,
+# the text of which is available at https://opensource.org/license/MIT/
+# or see the "LICENSE" file for more details.
+#
+# Authors: See CONTRIBUTORS.txt
+# Software description: A RDF Knowledge Graph stochastic generation solution.
+
+# GRLC metadata
+#+ summary: Subgraph matching for the 'unreach' use case
+#+ method: GET
+#+ tags:
+#+   - PyGraft-gen
+
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX noria: <https://w3id.org/noria/ontology/>
+
+SELECT ?res_s1 ?res_as1 ?res_app1 ?ais_s1 ?ais_as1 ?tt_app1
+WHERE {
+
+    ?res_s1 a noria:Resource ;
+        noria:resourceForApplication ?res_app1 .
+
+    ?res_as1 a noria:Resource .
+
+    ?res_app1 a noria:Application .
+
+    ?nl_s1_as1 a noria:NetworkLink ;
+        noria:networkLinkTerminationResource ?res_s1 ;
+        noria:networkLinkTerminationResource ?res_as1 .
+
+    FILTER (?res_s1 != ?res_as1)
+
+    ?ais_s1 a noria:EventRecord ;
+        noria:logOriginatingManagedObject ?res_s1 .
+
+    ?ais_as1 a noria:EventRecord ;
+        noria:logOriginatingManagedObject ?res_as1 .
+
+    ?ais_app1 a noria:EventRecord ;
+        noria:logOriginatingManagedObject ?res_app1 .
+
+    ?tt_app1 a noria:TroubleTicket ;
+        noria:troubleTicketRelatedResource ?res_app1 .
+
+}

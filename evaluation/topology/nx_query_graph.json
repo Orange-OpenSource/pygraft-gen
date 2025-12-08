@@ -1,0 +1,110 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes":
+[
+{
+  "id": "http://example.org/pygraft-gen/object/NL_R2-R3",
+  "iri": "http://example.org/pygraft-gen/object/NL_R2-R3",
+  "class": "https://w3id.org/noria/ontology/NetworkLink"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/NL_R1-R3",
+  "iri": "http://example.org/pygraft-gen/object/NL_R1-R3",
+  "class": "https://w3id.org/noria/ontology/NetworkLink"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/NL_R1-R4",
+  "iri": "http://example.org/pygraft-gen/object/NL_R1-R4",
+  "class": "https://w3id.org/noria/ontology/NetworkLink"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/NL_R3-R4",
+  "iri": "http://example.org/pygraft-gen/object/NL_R3-R4",
+  "class": "https://w3id.org/noria/ontology/NetworkLink"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/NL_R1-R2",
+  "iri": "http://example.org/pygraft-gen/object/NL_R1-R2",
+  "class": "https://w3id.org/noria/ontology/NetworkLink"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/NL_R2-R4",
+  "iri": "http://example.org/pygraft-gen/object/NL_R2-R4",
+  "class": "https://w3id.org/noria/ontology/NetworkLink"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/RES_R1",
+  "iri": "http://example.org/pygraft-gen/object/RES_R1",
+  "class": "https://w3id.org/noria/ontology/Resource"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/RES_R2",
+  "iri": "http://example.org/pygraft-gen/object/RES_R2",
+  "class": "https://w3id.org/noria/ontology/Resource"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/RES_R3",
+  "iri": "http://example.org/pygraft-gen/object/RES_R3",
+  "class": "https://w3id.org/noria/ontology/Resource"
+},
+{
+  "id": "http://example.org/pygraft-gen/object/RES_R4",
+  "iri": "http://example.org/pygraft-gen/object/RES_R4",
+  "class": "https://w3id.org/noria/ontology/Resource"
+}
+]
+  ,
+  "links":
+[
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R2-R3",
+  "target": "http://example.org/pygraft-gen/object/RES_R2"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R2-R3",
+  "target": "http://example.org/pygraft-gen/object/RES_R3"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R1-R3",
+  "target": "http://example.org/pygraft-gen/object/RES_R1"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R1-R3",
+  "target": "http://example.org/pygraft-gen/object/RES_R3"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R1-R4",
+  "target": "http://example.org/pygraft-gen/object/RES_R1"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R1-R4",
+  "target": "http://example.org/pygraft-gen/object/RES_R4"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R3-R4",
+  "target": "http://example.org/pygraft-gen/object/RES_R3"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R3-R4",
+  "target": "http://example.org/pygraft-gen/object/RES_R4"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R1-R2",
+  "target": "http://example.org/pygraft-gen/object/RES_R1"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R1-R2",
+  "target": "http://example.org/pygraft-gen/object/RES_R2"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R2-R4",
+  "target": "http://example.org/pygraft-gen/object/RES_R2"
+},
+{
+  "source": "http://example.org/pygraft-gen/object/NL_R2-R4",
+  "target": "http://example.org/pygraft-gen/object/RES_R4"
+}
+]
+}
