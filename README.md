@@ -24,6 +24,13 @@ To install the *PyGraft-gen* framework:
 To run the *PyGraft-gen* tool:
 - Call the tool from a terminal and check for the available CLI options: `pygraft`
 
+> [!NOTE] PyGraft-gen features  
+> We are currently cleaning the PyGraft-gen code to provide a nice user experience.
+> Please hold on a few days for the upcoming releases:
+> - v0.0.7 CLI Modernization
+> - v0.0.8 Ontology Extraction feature
+> - etc.
+
 See also the *Repository Structure* for navigating into this repository:
 ```
 pygraft-gen
