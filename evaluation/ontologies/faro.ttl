@@ -1,0 +1,382 @@
+@prefix : <http://purl.org/faro/> .
+@prefix faro: <http://purl.org/faro/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://purl.org/faro/> .
+
+<http://purl.org/faro/> rdf:type owl:Ontology ;
+                         <http://purl.org/dc/elements/1.1/description> "Ontology for representing different types of relationships between events and conditions" ;
+                         <http://purl.org/dc/elements/1.1/title> "FARO: Facts and Events Relationship Ontology" ;
+                         <http://purl.org/dc/terms/created> "2022-05-25"^^xsd:date ;
+                         <http://purl.org/dc/terms/creator> "EURECOM" ;
+                         <http://purl.org/dc/terms/license> <http://www.apache.org/licenses/LICENSE-2.0> ;
+                         <http://purl.org/vocab/vann/preferredNamespaceUri> "http://purl.org/faro/" ;
+                         <http://purl.org/vocab/vann/vann:preferredNamespacePrefix> "faro" ;
+                         rdfs:label "FARO" ;
+                         owl:versionInfo "0.1" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/elements/1.1/description
+<http://purl.org/dc/elements/1.1/description> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/elements/1.1/title
+<http://purl.org/dc/elements/1.1/title> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/created
+<http://purl.org/dc/terms/created> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+<http://purl.org/dc/terms/creator> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+<http://purl.org/dc/terms/license> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/preferredNamespaceUri
+<http://purl.org/vocab/vann/preferredNamespaceUri> rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/vocab/vann/vann:preferredNamespacePrefix
+<http://purl.org/vocab/vann/vann:preferredNamespacePrefix> rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2002/07/owl#maxCardinality
+owl:maxCardinality rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  http://www.w3.org/2001/XMLSchema#date
+xsd:date rdf:type rdfs:Datatype .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://purl.org/faro/alternative_to
+:alternative_to rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :comparatively_related_to ,
+                                   [ owl:inverseOf :comparatively_related_to
+                                   ] ;
+                owl:inverseOf :alternative_to ;
+                rdf:type owl:SymmetricProperty ;
+                rdfs:comment """This property connects two Relata entities which are altenative one each other, and cannot be happened together.
+
+Example: The result of the final will decide if *Italy would obtain its second Euro Cup*, or if *England would be the one to get the title*."""@en .
+
+
+###  http://purl.org/faro/before
+:before rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf :temporally_related_to ;
+        owl:propertyDisjointWith :contains ,
+                                 :simoultaneous_to ;
+        rdfs:comment "Connects an event happening before with one happening after"@en .
+
+
+###  http://purl.org/faro/causes
+:causes rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf :contingently_related_to ;
+        rdf:type owl:AsymmetricProperty ;
+        rdfs:domain :Event ;
+        owl:propertyDisjointWith :does_not_cause ;
+#        owl:propertyChainAxiom ( :correlates_with
+#                                 :causes
+#                               ) ;
+        rdfs:comment "Connect an event with its effect"@en .
+
+
+###  http://purl.org/faro/comparatively_related_to
+:comparatively_related_to rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf :related_to .
+
+
+###  http://purl.org/faro/compared_to
+:compared_to rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :comparatively_related_to ;
+             rdf:type owl:SymmetricProperty ;
+             rdfs:comment """This property connects two Relata entities which are somehow compared.
+
+Example: this financial crisis have points in commons with the one of 2007."""@en .
+
+
+###  http://purl.org/faro/contains
+:contains rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :temporally_related_to ;
+          rdfs:comment "Connects with an event happening during the subject"@en .
+
+
+###  http://purl.org/faro/contingently_related_to
+:contingently_related_to rdf:type owl:ObjectProperty ;
+                         rdfs:subPropertyOf :related_to .
+
+
+###  http://purl.org/faro/contrasting_version_of
+:contrasting_version_of rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf :comparatively_related_to ;
+                        rdfs:comment "This property connects two Relata entities which are two contrasting version of the same real-world event."@en .
+
+
+###  http://purl.org/faro/coreference_of
+:coreference_of rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :mereologically_related_to ,
+                                   [ owl:inverseOf :mereologically_related_to
+                                   ] ;
+                owl:inverseOf :coreference_of ;
+                rdf:type owl:SymmetricProperty ;
+                rdfs:comment "This property connects 2 different mentions of the same event in the text."@en .
+
+
+###  http://purl.org/faro/correlates_with
+:correlates_with rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf :contingently_related_to ,
+                                    [ owl:inverseOf :contingently_related_to
+                                    ] ;
+                 owl:inverseOf :correlates_with ;
+                 rdf:type owl:SymmetricProperty ,
+                          owl:TransitiveProperty ;
+                 rdfs:comment "Connects two Relata entities with a common cause"@en .
+
+
+###  http://purl.org/faro/dissimilar_to
+:dissimilar_to rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :compared_to ,
+                                  [ owl:inverseOf :compared_to
+                                  ] ;
+               owl:inverseOf :dissimilar_to ;
+               rdf:type owl:SymmetricProperty ;
+               rdfs:comment "This property connects two Relata entities which are dissimilar."@en .
+
+
+###  http://purl.org/faro/does_not_cause
+:does_not_cause rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf :contingently_related_to ;
+                rdfs:domain :Event ;
+                rdfs:comment """Connects an event with a Relata entity which is declared to not be an effect of it.
+
+Example: Doctors exclude that *vaccination* was the cause of *his death*."""@en .
+
+
+###  http://purl.org/faro/does_not_prevent
+:does_not_prevent rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :contingently_related_to ;
+                  rdfs:comment "Connects with a event which happened despite the subject."@en .
+
+
+###  http://purl.org/faro/enables
+:enables rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf :contingently_related_to ;
+         rdf:type owl:AsymmetricProperty ;
+         rdfs:comment """Connect a condition with the event it is contributing to realise as an enabling factor.
+
+Example: *Having 1,90m of height* helped the golkeeper to *easily save the goal*."""@en .
+
+
+###  http://purl.org/faro/ends
+:ends rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf :contains ;
+      rdfs:comment "Connects with an event starting during the subject, with which shares the end."@en .
+
+
+###  http://purl.org/faro/immediately_before
+:immediately_before rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :before ;
+                    rdfs:comment "Connects an event happening immediately before with one happening after"@en .
+
+
+###  http://purl.org/faro/intends_to_cause
+:intends_to_cause rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :contingently_related_to ;
+                  rdfs:domain :Event ;
+                  rdfs:comment """Connects an Event with the effect it is intended to cause (independently if the result is achieved or not).
+
+Example: The government *voted a law*, in the attempt of *reducing unemployment*."""@en .
+
+
+###  http://purl.org/faro/meets
+:meets rdf:type owl:ObjectProperty ;
+       rdfs:subPropertyOf :immediately_before ;
+       rdfs:comment "Connects with an event which has the start coincident with the end of the subject"@en .
+
+
+###  http://purl.org/faro/mereologically_related_to
+:mereologically_related_to rdf:type owl:ObjectProperty ;
+                           rdfs:subPropertyOf :related_to .
+
+
+###  http://purl.org/faro/opposite_to
+:opposite_to rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :dissimilar_to ,
+                                [ owl:inverseOf :dissimilar_to
+                                ] ;
+             owl:inverseOf :opposite_to ;
+             rdf:type owl:SymmetricProperty ;
+             rdfs:comment """This property connects two Relata entities which are declared to be opposite, even if they may be both happened.
+
+Example: *the performance of Michael* has been the opposite of *Edward's one*."""@en .
+
+
+###  http://purl.org/faro/overlaps
+:overlaps rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :temporally_related_to ;
+          rdf:type owl:SymmetricProperty ;
+          rdfs:comment "Connects two events happening together for a portion of the lifetime of both of them."@en .
+
+
+###  http://purl.org/faro/part_of
+:part_of rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf :mereologically_related_to ;
+         rdf:type owl:TransitiveProperty ;
+         rdfs:comment "This property connects an Event with is sub-event"@en .
+
+
+###  http://purl.org/faro/prevents
+:prevents rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :does_not_cause ;
+          rdf:type owl:AsymmetricProperty ;
+          rdfs:range :Event ;
+          rdfs:comment """Connect a Relata entity with the event for which is the cause of not happening.
+
+Example: the *strike* was sufficient to block the *changement in working conditions*."""@en .
+
+
+###  http://purl.org/faro/re-emerges_in
+:re-emerges_in rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf :mereologically_related_to ;
+               rdfs:domain :Event ;
+               rdfs:range :Event ;
+               rdfs:comment """This property connects recurrent events.
+
+Example: Olympic games, frequent natural disasters, ..."""@en .
+
+
+###  http://purl.org/faro/related_to
+:related_to rdf:type owl:ObjectProperty ;
+            rdfs:domain :Relata ;
+            rdfs:range :Relata .
+
+
+###  http://purl.org/faro/results_in
+:results_in rdf:type owl:ObjectProperty ;
+            rdfs:domain :Condition ;
+            rdfs:range rdf:Statement ;
+            rdfs:comment "The RDF triple which represents the condition." .
+
+
+###  http://purl.org/faro/similar_to
+:similar_to rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :compared_to ,
+                               [ owl:inverseOf :compared_to
+                               ] ;
+            owl:inverseOf :similar_to ;
+            rdf:type owl:SymmetricProperty ;
+            rdfs:comment "This property connects two Relata entities which are similar."@en .
+
+
+###  http://purl.org/faro/simoultaneous_to
+:simoultaneous_to rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf :temporally_related_to ;
+                  rdf:type owl:SymmetricProperty ;
+                  rdfs:comment "Connects two events which happen in the same time, sharing both start and end."@en .
+
+
+###  http://purl.org/faro/starts
+:starts rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf :contains ;
+        rdfs:comment "Connects with an event starting during the subject, with which shares the start."@en .
+
+
+###  http://purl.org/faro/status
+:status rdf:type owl:ObjectProperty ;
+        rdfs:domain :Relata ;
+        rdfs:range :Status ;
+        rdfs:comment "The current status of a Relata" ;
+        owl:maxCardinality "1"^^xsd:nonNegativeInteger .
+
+
+###  http://purl.org/faro/temporally_related_to
+:temporally_related_to rdf:type owl:ObjectProperty ;
+                       rdfs:subPropertyOf :related_to ;
+                       rdfs:domain :Event ;
+                       rdfs:range :Event .
+
+
+###  http://purl.org/faro/variation_of
+:variation_of rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf :mereologically_related_to ;
+              rdfs:comment """Connects with an event wich is thought to be a variation of.
+
+Example: Two tribunal cases which are referring each other"""@en .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://purl.org/faro/Condition
+:Condition rdf:type owl:Class ;
+           rdfs:subClassOf :Relata ;
+           rdfs:comment "The fact of having certain qualities, which may trigger events." ;
+           rdfs:label "Condition" .
+
+
+###  http://purl.org/faro/Event
+:Event rdf:type owl:Class ;
+       rdfs:subClassOf :Relata ;
+       rdfs:comment "A possible or actual event, which can possibly be defined by precise time and space coordinates." ;
+       rdfs:label "Event" .
+
+
+###  http://purl.org/faro/Relata
+:Relata rdf:type owl:Class ;
+        rdfs:comment "Any of the element which can be included in a causal or temporal relationships, being them events (immanent) or facts / conditions  (trascendent)," ;
+        rdfs:label "Relata" .
+
+
+###  http://purl.org/faro/Status
+:Status rdf:type owl:Class ;
+        rdfs:comment "Status of a Relata, which can potentially change in time." ;
+        rdfs:label "Status" .
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement
+rdf:Statement rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://purl.org/faro/happened
+:happened rdf:type owl:NamedIndividual ,
+                   :Status .
+
+
+###  http://purl.org/faro/not_happened
+:not_happened rdf:type owl:NamedIndividual ,
+                       :Status .
+
+
+###  http://purl.org/faro/planned
+:planned rdf:type owl:NamedIndividual ,
+                  :Status .
+
+
+###  http://purl.org/faro/potential
+:potential rdf:type owl:NamedIndividual ,
+                    :Status .
+
+
+###  Generated by the OWL API (version 5.1.18) https://github.com/owlcs/owlapi/
