@@ -1,0 +1,67 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : inverseof_relations.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-15
+# PURPOSE   : Retrieve explicit owl:inverseOf links between ontology-local
+#             object properties as pairs (?prop_uri -> ?inverse_uri).
+#
+# INTENT    :
+#   Capture only the owl:inverseOf axioms explicitly present in the ontology.
+#   The property universe is defined once by relations.rq and materialized by
+#   relations.py as:
+#
+#       <propIRI> rdf:type pygraft:ChosenRelation .
+#
+#   This query consumes that universe and does not repeat seeding logic.
+#   Symmetry is NOT assumed at query time.
+#
+# LOGIC     :
+#   1) Restrict ?prop_uri to the precomputed object-property universe:
+#        ?prop_uri a pygraft:ChosenRelation
+#
+#   2) Match explicit inverseOf triples (one direction only):
+#        ?prop_uri owl:inverseOf ?inverse_uri
+#
+#   3) Restrict ?inverse_uri to the same universe:
+#        ?inverse_uri a pygraft:ChosenRelation
+#
+# OUTPUT    :
+#   - ?prop_uri    : IRI of the source property
+#   - ?inverse_uri : IRI of its explicitly declared inverse property
+#
+# NOTES     :
+#   - Explicit-only extraction: no UNION to add the reverse direction.
+#   - Pure SPARQL 1.1, no OWL reasoning.
+#
+# ------------------------------------------------------------------------------
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX pygraft: <http://pygraft.org/schema#>
+
+SELECT DISTINCT
+    ?prop_uri
+    ?inverse_uri
+WHERE {
+    # 1) Precomputed object-property universe (materialized by relations.py)
+    ?prop_uri a pygraft:ChosenRelation .
+    FILTER (isIRI(?prop_uri))
+
+    # 2) Explicit inverseOf direction only
+    ?prop_uri owl:inverseOf ?inverse_uri .
+    FILTER (isIRI(?inverse_uri))
+
+    # 3) Ensure the inverse is also in the chosen relation universe
+    ?inverse_uri a pygraft:ChosenRelation .
+}
+ORDER BY STR(?prop_uri)
+STR(?inverse_uri)

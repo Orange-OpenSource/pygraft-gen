@@ -1,0 +1,81 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : class2disjoints_extended.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-11
+# PURPOSE   : Enumerate every class and all classes disjoint via inheritance
+#             as pairs (?class_uri -> ?disjoint_extended_uri).
+#
+# INTENT    :
+#   This query captures "inherited" disjointness between named classes. Starting
+#   from explicit owl:disjointWith axioms between A and B, it propagates the
+#   disjointness downward along the subclass hierarchy on both sides:
+#
+#       A' ⊑* A    and    B' ⊑* B    ⇒    A' ⟂ B'
+#
+#   Both directions of the base disjointness (A ⟂ B and B ⟂ A) are considered,
+#   and only subclass-side propagation is applied. Upward propagation is
+#   deliberately avoided to prevent generating Subclass ⟂ Superclass pairs.
+#
+# LOGIC     :
+#   1) Start from explicit owl:disjointWith edges:
+#        ?a owl:disjointWith ?b
+#   2) Expand downward along rdfs:subClassOf* on both sides:
+#        ?class_uri           rdfs:subClassOf* ?a
+#        ?disjoint_extended   rdfs:subClassOf* ?b
+#      and symmetrically with a/b swapped.
+#   3) Keep only named IRIs, no self-pairs, and avoid Subclass ⟂ Superclass:
+#        FILTER(isIRI(?class_uri) && isIRI(?disjoint_extended_uri))
+#        FILTER(?class_uri != ?disjoint_extended_uri)
+#        FILTER NOT EXISTS { ?class_uri rdfs:subClassOf+ ?disjoint_extended_uri }
+#
+# OUTPUT    :
+#   - ?class_uri             : IRI of the source class
+#   - ?disjoint_extended_uri : IRI of a class disjoint with ?class_uri by inheritance
+#
+# NOTES     :
+#   - This query is pure SPARQL 1.1; no vendor extensions are used.
+#   - Namespace, prefix, and identifier handling are delegated to Python.
+#   - Only explicit owl:disjointWith axioms and explicit rdfs:subClassOf links
+#     in the ontology graph are used. No additional OWL reasoning is applied.
+#
+# ------------------------------------------------------------------------------
+
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT
+  ?class_uri
+  ?disjoint_extended_uri
+WHERE {
+  ### 1) Base explicit disjointness between named classes
+  ?a owl:disjointWith ?b .
+
+  ### 2) Downward propagation of disjointness on both sides
+  {
+    ### A -> B branch: subclasses of A are disjoint from subclasses of B
+    ?class_uri           rdfs:subClassOf* ?a .
+    ?disjoint_extended_uri rdfs:subClassOf* ?b .
+  }
+  UNION
+  {
+    ### B -> A branch: subclasses of B are disjoint from subclasses of A
+    ?class_uri           rdfs:subClassOf* ?b .
+    ?disjoint_extended_uri rdfs:subClassOf* ?a .
+  }
+
+  ### 3) Safety filters: IRIs only, no self-pairs, avoid Subclass ⟂ Superclass
+  FILTER(isIRI(?class_uri) && isIRI(?disjoint_extended_uri))
+  FILTER(?class_uri != ?disjoint_extended_uri)
+  FILTER NOT EXISTS { ?class_uri rdfs:subClassOf+ ?disjoint_extended_uri }
+}
+ORDER BY
+  STR(?class_uri)
+  STR(?disjoint_extended_uri)

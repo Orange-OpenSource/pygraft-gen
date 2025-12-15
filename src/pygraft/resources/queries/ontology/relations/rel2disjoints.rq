@@ -1,0 +1,72 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : rel2disjoints.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-15
+# PURPOSE   : Enumerate explicit owl:propertyDisjointWith relations between
+#             ontology-local object-style properties as pairs
+#             (?prop_uri -> ?disjoint_uri).
+#
+# INTENT    :
+#   Extract direct property-level disjointness for relation_info, restricted to
+#   the precomputed object-property universe selected by relations.rq.
+#
+#   The universe is materialized by relations.py as membership triples:
+#
+#       <propIRI> rdf:type pygraft:ChosenRelation .
+#
+#   This query consumes that universe and does not repeat seeding / filtering.
+#
+# LOGIC     :
+#   1) Restrict both sides to the precomputed object-property universe:
+#        ?prop_uri     a pygraft:ChosenRelation
+#        ?disjoint_uri a pygraft:ChosenRelation
+#
+#   2) Select explicit disjointness assertions:
+#        ?prop_uri owl:propertyDisjointWith ?disjoint_uri
+#
+#   3) Keep only IRIs and ignore trivial self-disjointness.
+#
+# OUTPUT    :
+#   - ?prop_uri     : IRI of the first property
+#   - ?disjoint_uri : IRI of a property declared disjoint with ?prop_uri
+#
+# NOTES     :
+#   - Pure SPARQL 1.1, no vendor extensions.
+#   - owl:propertyDisjointWith is symmetric in OWL, but this query returns only
+#     explicit triples as stated. Any symmetric view is derived later in Python.
+#   - Only explicit owl:propertyDisjointWith axioms are considered; no OWL
+#     reasoning is applied.
+#
+# ------------------------------------------------------------------------------
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX pygraft: <http://pygraft.org/schema#>
+
+SELECT DISTINCT
+    ?prop_uri
+    ?disjoint_uri
+WHERE {
+    # 1) Precomputed object-property universe (materialized by relations.py)
+    ?prop_uri a pygraft:ChosenRelation .
+    FILTER (isIRI(?prop_uri))
+
+    # 2) Explicit propertyDisjointWith assertion (explicit direction only)
+    ?prop_uri owl:propertyDisjointWith ?disjoint_uri .
+    FILTER (isIRI(?disjoint_uri))
+    FILTER (?prop_uri != ?disjoint_uri)
+
+    # 3) Ensure disjoint side is also in the chosen relation universe
+    ?disjoint_uri a pygraft:ChosenRelation .
+}
+ORDER BY STR(?prop_uri)
+STR(?disjoint_uri)

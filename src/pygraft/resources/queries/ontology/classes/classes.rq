@@ -1,0 +1,101 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : classes.rq
+# AUTHOR    : Ovidiu PASCAL – Orange INNOV
+# DATE      : 2025-12-11
+# PURPOSE   : Enumerate every named class IRI (declared or referenced) in an ontology.
+#
+# INTENT    :
+#   This query is designed for code generation and ontology summarisation. It
+#   enumerates only *named* classes (IRIs) that participate in standard OWL/RDFS
+#   axioms. Anonymous (blank-node) class expressions are deliberately ignored,
+#   because they cannot be represented as "prefix:LocalName" identifiers and are
+#   not supported by the current generator.
+#
+# LOGIC     :
+#   1) Gather candidate class IRIs via:
+#        - explicit class declarations (owl:Class, rdfs:Class)
+#        - usage in rdfs:subClassOf (as subclass or superclass)
+#        - usage in rdfs:domain
+#        - usage in rdfs:range
+#        - usage in owl:equivalentClass (either side)
+#        - usage in owl:disjointWith (either side)
+#   2) Exclude:
+#        - non-IRI values (blank nodes, literals)
+#        - XSD datatypes
+#        - the built-in owl:Thing
+#
+# OUTPUT    :
+#   - ?class_uri : full IRI of each discovered named class
+#
+# NOTES     :
+#   - This query is SPARQL 1.1 compliant and does NOT rely on any vendor
+#     extensions (e.g. Apache Jena ARQ afn:namespace/localname).
+#   - Namespace / local-name / prefix handling must be done by the caller
+#     (for example, in Python using rdflib and the ontology's namespace
+#     declarations).
+
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?class_uri
+WHERE {
+  ### 1) Explicit class declarations (owl:Class or rdfs:Class)
+  {
+    ?class_uri rdf:type ?type .
+    VALUES ?type { owl:Class rdfs:Class }
+  }
+  UNION
+  ### 2) Classes appearing as subclasses
+  {
+    ?class_uri rdfs:subClassOf ?superclass .
+  }
+  UNION
+  ### 3) Classes appearing as superclasses
+  {
+    ?subclass rdfs:subClassOf ?class_uri .
+  }
+  UNION
+  ### 4) Classes used as rdfs:domain
+  {
+    ?property rdfs:domain ?class_uri .
+  }
+  UNION
+  ### 5) Classes used as rdfs:range
+  {
+    ?property rdfs:range ?class_uri .
+  }
+  UNION
+  ### 6) Classes participating in owl:equivalentClass (either side)
+  {
+    ?class_uri owl:equivalentClass ?otherClass .
+  }
+  UNION
+  {
+    ?otherClass owl:equivalentClass ?class_uri .
+  }
+  UNION
+  ### 7) Classes participating in owl:disjointWith (either side)
+  {
+    ?class_uri owl:disjointWith ?otherClass .
+  }
+  UNION
+  {
+    ?otherClass owl:disjointWith ?class_uri .
+  }
+
+  ### Global filters: IRIs only, no XSD types, no owl:Thing
+  FILTER( isIRI(?class_uri) )
+  FILTER( !STRSTARTS(STR(?class_uri), STR(xsd:)) )
+  FILTER( ?class_uri != owl:Thing )
+}
+ORDER BY STR(?class_uri)

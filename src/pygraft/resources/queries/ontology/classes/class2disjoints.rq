@@ -1,0 +1,60 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : class2disjoints.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-11
+# PURPOSE   : Enumerate all explicit owl:disjointWith relations between
+#             named classes as pairs (?class_uri -> ?disjoint_uri).
+#
+# INTENT    :
+#   This query is designed for class-level disjointness analysis and KG
+#   consistency checks. It extracts only explicit owl:disjointWith
+#   assertions between named classes present in the ontology graph.
+#   Anonymous (blank-node) class expressions are ignored.
+#
+# LOGIC     :
+#   1) Select explicit disjointness assertions:
+#        ?class_uri owl:disjointWith ?disjoint_uri
+#      Since owl:disjointWith is symmetric by definition, one direction
+#      is enough. Any symmetric or extended mappings are derived later
+#      in Python.
+#   2) Keep only named IRIs and ignore self-disjointness:
+#        FILTER(isIRI(?class_uri) && isIRI(?disjoint_uri))
+#        FILTER(?class_uri != ?disjoint_uri)
+#
+# OUTPUT    :
+#   - ?class_uri    : IRI of the first class
+#   - ?disjoint_uri : IRI of a class declared disjoint with ?class_uri
+#
+# NOTES     :
+#   - This query is pure SPARQL 1.1 and does not rely on any vendor
+#     extensions.
+#   - Namespace, prefix, and identifier handling are delegated to Python.
+#   - Only explicit owl:disjointWith axioms present in the ontology
+#     graph are considered. No OWL reasoning is applied.
+#
+# ------------------------------------------------------------------------------
+
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT
+  ?class_uri
+  ?disjoint_uri
+WHERE {
+  ### Explicit disjointness assertion (single direction is enough)
+  ?class_uri owl:disjointWith ?disjoint_uri .
+
+  ### Only named IRIs, no blank nodes or literals, no self-disjointness
+  FILTER(isIRI(?class_uri) && isIRI(?disjoint_uri))
+  FILTER(?class_uri != ?disjoint_uri)
+}
+ORDER BY
+  STR(?class_uri)
+  STR(?disjoint_uri)

@@ -1,0 +1,65 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : subrelations.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-15
+# PURPOSE   : Retrieve all rdfs:subPropertyOf links between declared OWL
+#             object properties as pairs (?subprop_uri -> ?superprop_uri).
+#
+# INTENT    :
+#   Extract the explicit, one-hop subproperty hierarchy between ontology-local
+#   object-style properties for relation_info extraction and KG generation.
+#
+#   The property universe is defined once by relations.rq and materialized by
+#   relations.py as:
+#
+#       <propIRI> rdf:type pygraft:ChosenRelation .
+#
+#   This query consumes that universe (no repeated seeding / filtering).
+#
+# LOGIC     :
+#   1) Extract explicit subPropertyOf links (one-hop only):
+#        ?subprop_uri rdfs:subPropertyOf ?superprop_uri
+#   2) Require both sides to be part of the precomputed object-property universe:
+#        ?subprop_uri a pygraft:ChosenRelation
+#        ?superprop_uri a pygraft:ChosenRelation
+#   3) Keep only IRIs on both sides (defensive).
+#
+# OUTPUT    :
+#   - ?subprop_uri   : IRI of the sub-property
+#   - ?superprop_uri : IRI of the super-property
+#
+# NOTES     :
+#   - Pure SPARQL 1.1, no vendor extensions.
+#   - Only explicit (asserted) rdfs:subPropertyOf triples are returned.
+#   - No transitive closure is computed here; rdfs:subPropertyOf* should be
+#     derived later if needed.
+#
+# ------------------------------------------------------------------------------
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX pygraft: <http://pygraft.org/schema#>
+
+SELECT DISTINCT
+    ?subprop_uri
+    ?superprop_uri
+WHERE {
+    # 1) Explicit subPropertyOf link (one-hop)
+    ?subprop_uri rdfs:subPropertyOf ?superprop_uri .
+    FILTER (isIRI(?subprop_uri) && isIRI(?superprop_uri))
+
+    # 2) Restrict both sides to the precomputed object-property universe
+    ?subprop_uri a pygraft:ChosenRelation .
+    ?superprop_uri a pygraft:ChosenRelation .
+}
+ORDER BY STR(?subprop_uri)
+STR(?superprop_uri)

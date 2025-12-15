@@ -1,0 +1,63 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : direct_class2subclasses.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-11
+# PURPOSE   : Enumerate every direct subclass relation in an ontology
+#             as pairs (?subClass_uri -> ?class_uri).
+#
+# INTENT    :
+#   This query is designed for code generation and ontology summarisation.
+#   It extracts only direct subclass axioms using rdfs:subClassOf. Both
+#   the subclass and the superclass must be IRIs. Blank nodes and other
+#   anonymous expressions are intentionally ignored because they cannot
+#   be represented as prefix:LocalName identifiers and are handled
+#   separately by the pipeline.
+#
+# LOGIC     :
+#   1) Select direct rdfs:subClassOf assertions:
+#        ?subClass_uri rdfs:subClassOf ?class_uri
+#   2) Keep only IRIs:
+#        FILTER(isIRI(?class_uri) && isIRI(?subClass_uri))
+#   3) Namespace and local-name extraction must be performed by the caller
+#      (e.g. Python code using rdflib). This SPARQL file does not use any
+#      vendor extensions such as Jena ARQ afn:namespace/localname.
+#
+# OUTPUT    :
+#   - ?class_uri      : IRI of the parent/superclass
+#   - ?subClass_uri   : IRI of the direct subclass
+#
+# NOTES     :
+#   - This query is pure SPARQL 1.1 and uses no ARQ-specific functionality.
+#   - Namespace, prefix, and identifier handling are delegated to Python.
+#   - Only direct subclass axioms are returned. No RDFS/OWL reasoning is
+#     performed (e.g. no transitive closure of subclass chains).
+#   - Unlike classes.rq, owl:Thing is NOT filtered out here. It is kept
+#     intentionally because it is a legitimate superclass in direct
+#     subclass relations. Filtering owl:Thing out in classes.rq is correct
+#     (it is not a named class for code generation), but filtering it
+#     out here would remove valid subclass edges.
+#
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT
+  ?class_uri
+  ?subClass_uri
+WHERE {
+  ### Direct subclass relationship
+  ?subClass_uri rdfs:subClassOf ?class_uri .
+
+  ### Only IRIs are kept (exclude blank nodes and literals)
+  FILTER(isIRI(?class_uri) && isIRI(?subClass_uri))
+}
+ORDER BY
+  STR(?class_uri)
+  STR(?subClass_uri)

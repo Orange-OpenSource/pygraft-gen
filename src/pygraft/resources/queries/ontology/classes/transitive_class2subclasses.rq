@@ -1,0 +1,53 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : transitive_class2subclasses.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-11
+# PURPOSE   : Enumerate every class and all its transitive subclasses
+#             as pairs (?subClass_uri -> ?class_uri).
+#
+# INTENT    :
+#   Extract the full subclass reachability between named classes using
+#   rdfs:subClassOf+ paths. Blank-node class expressions are skipped and
+#   may be handled separately in a later pipeline phase.
+#
+# LOGIC     :
+#   1) Select transitive subclass assertions:
+#        ?subClass_uri rdfs:subClassOf+ ?class_uri
+#   2) Keep only IRIs:
+#        FILTER(isIRI(?class_uri) && isIRI(?subClass_uri))
+#
+# OUTPUT    :
+#   - ?class_uri    : IRI of the ancestor/superclass
+#   - ?subClass_uri : IRI of the (possibly indirect) subclass
+#
+# NOTES     :
+#   - Pure SPARQL 1.1; uses standard property paths.
+#   - Prefix and local-name handling is done in Python.
+#   - Only explicit rdfs:subClassOf links found in the ontology are used.
+#     No OWL reasoning or external ontology expansion is applied.
+#   - owl:Thing is kept, as it may appear as a valid ancestor.
+#
+
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT
+  ?class_uri
+  ?subClass_uri
+WHERE {
+  ### Transitive subclass relationship (one or more rdfs:subClassOf steps)
+  ?subClass_uri rdfs:subClassOf+ ?class_uri .
+
+  ### Only IRIs are kept (exclude blank nodes and literals)
+  FILTER(isIRI(?class_uri) && isIRI(?subClass_uri))
+}
+ORDER BY
+  STR(?class_uri)
+  STR(?subClass_uri)

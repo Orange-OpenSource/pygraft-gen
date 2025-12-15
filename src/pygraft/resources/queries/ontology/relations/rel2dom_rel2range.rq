@@ -1,0 +1,113 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# FILE      : rel2dom_rel2range.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-15
+# PURPOSE   : Retrieve OWL object properties and their rdfs:domain / rdfs:range,
+#             including inheritance via rdfs:subPropertyOf*, while keeping only
+#             the most specific domain and range classes per property.
+#
+# INTENT    :
+#   This query is designed for relation_info extraction and KG generation. It
+#   consumes the precomputed object-property universe selected by relations.rq
+#   and materialized by relations.py as:
+#
+#       <propIRI> rdf:type pygraft:ChosenRelation .
+#
+#   For each candidate property in that universe, it computes the property's
+#   effective domain and range by:
+#     - following rdfs:subPropertyOf* to inherit domain/range from superproperties,
+#     - discarding owl:Thing and non-IRI domain/range values,
+#     - keeping only the most specific domain and range classes per property
+#       (drops redundant superclasses when a stricter subclass is also present).
+#
+#   Namespace, prefix, and local-name handling are delegated to Python code.
+#
+# LOGIC     :
+#   1) Candidate properties:
+#        ?prop_uri a pygraft:ChosenRelation
+#
+#   2) Inherit domain/range via rdfs:subPropertyOf*:
+#        - walk up superproperties (identity allowed),
+#        - collect rdfs:domain / rdfs:range from those superproperties,
+#        - exclude owl:Thing and non-IRIs.
+#
+#   3) Minimalization:
+#        - DOMAIN: keep only domain_uri such that there is no STRICT subclass
+#          domain_uri2 with rdfs:subClassOf+ domain_uri for the same property.
+#        - RANGE: same rule for range_uri.
+#
+# OUTPUT    :
+#   - ?prop_uri   : IRI of the property (from relations.rq universe)
+#   - ?domain_uri : IRI of a most specific domain class (may be unbound)
+#   - ?range_uri  : IRI of a most specific range class (may be unbound)
+#
+# NOTES     :
+#   - Pure SPARQL 1.1, no vendor extensions.
+#   - Only explicit rdfs:domain / rdfs:range axioms, propagated along
+#     rdfs:subPropertyOf*, are considered. No additional OWL reasoning is applied.
+#   - The caller is responsible for:
+#       - IRI -> prefix:LocalName normalization,
+#       - mapping unbound domain/range to empty lists in relation_info.
+#
+# ------------------------------------------------------------------------------
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX pygraft: <http://pygraft.org/schema#>
+
+SELECT DISTINCT
+    ?prop_uri
+    ?domain_uri
+    ?range_uri
+WHERE {
+    # 1) Candidate object properties (precomputed universe)
+    ?prop_uri a pygraft:ChosenRelation .
+    FILTER (isIRI(?prop_uri))
+
+    # 2) Inherited DOMAIN candidates via superproperties
+    OPTIONAL {
+        ?prop_uri (rdfs:subPropertyOf)* ?p_sup_d .
+        ?p_sup_d rdfs:domain ?domain_uri .
+        FILTER (isIRI(?domain_uri) && ?domain_uri != owl:Thing)
+
+        # Keep only the MOST SPECIFIC domain classes for this property
+        FILTER NOT EXISTS {
+            ?prop_uri (rdfs:subPropertyOf)* ?p_sup_d2 .
+            ?p_sup_d2 rdfs:domain ?domain_uri2 .
+            FILTER (isIRI(?domain_uri2) && ?domain_uri2 != owl:Thing)
+            FILTER (?domain_uri2 != ?domain_uri)
+            ?domain_uri2 rdfs:subClassOf+ ?domain_uri .
+        }
+    }
+
+    # 3) Inherited RANGE candidates via superproperties
+    OPTIONAL {
+        ?prop_uri (rdfs:subPropertyOf)* ?p_sup_r .
+        ?p_sup_r rdfs:range ?range_uri .
+        FILTER (isIRI(?range_uri) && ?range_uri != owl:Thing)
+
+        # Keep only the MOST SPECIFIC range classes for this property
+        FILTER NOT EXISTS {
+            ?prop_uri (rdfs:subPropertyOf)* ?p_sup_r2 .
+            ?p_sup_r2 rdfs:range ?range_uri2 .
+            FILTER (isIRI(?range_uri2) && ?range_uri2 != owl:Thing)
+            FILTER (?range_uri2 != ?range_uri)
+            ?range_uri2 rdfs:subClassOf+ ?range_uri .
+        }
+    }
+}
+ORDER BY STR(?prop_uri)
+    # NOTE:
+    # ?domain_uri and ?range_uri are OPTIONAL and may be unbound. COALESCE ensures
+    # stable ordering and prevents RDFLib from failing on unbound sort keys.
+COALESCE(STR(?domain_uri), "")
+COALESCE(STR(?range_uri), "")
