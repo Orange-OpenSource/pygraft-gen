@@ -1,3 +1,13 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+
 """Schema construction utilities for PyGraft.
 
 This module sits at the end of the schema-generation pipeline. It takes the
@@ -369,16 +379,15 @@ class SchemaGraphBuilder:
     def _add_classes(self, graph: Graph, schema_ns: Namespace) -> None:
         """Populate the graph with class declarations and axioms."""
         classes = self._class_info["classes"]
-        class2superclass = self._class_info["direct_class2superclass"]
+        class2superclasses = self._class_info["direct_class2superclasses"]
         class2disjoints = self._class_info["class2disjoints"]
 
         for class_name in tqdm(classes, desc="Writing classes", unit="classes", colour="red"):
             class_uri = schema_ns[class_name]
             graph.add((class_uri, RDF.type, OWL.Class))
 
-            # Subclass relations
-            if class_name in class2superclass:
-                superclass_name = class2superclass[class_name]
+            # Subclass relations: emit one triple per direct superclass.
+            for superclass_name in class2superclasses.get(class_name, []):
                 if superclass_name == "owl:Thing":
                     graph.add((class_uri, RDFS.subClassOf, OWL.Thing))
                 else:
@@ -397,18 +406,41 @@ class SchemaGraphBuilder:
         rel2patterns = self._relation_info["rel2patterns"]
 
         # INFO:
+        # Domains and ranges are stored as list[str] for OWL compatibility.
+        # At this stage of the pipeline, exactly ONE domain and ONE range
+        # per relation are expected because we only generate one.
+        # This is enforced explicitly here.
+
         rel2dom_raw = self._relation_info["rel2dom"]  # dict[str, list[str]]
         rel2range_raw = self._relation_info["rel2range"]  # dict[str, list[str]]
-        rel2dom = {
-            rel: dom_list[0]
-            for rel, dom_list in rel2dom_raw.items()
-            if dom_list
-        }
-        rel2range = {
-            rel: range_list[0]
-            for rel, range_list in rel2range_raw.items()
-            if range_list
-        }
+
+        rel2dom: dict[str, str] = {}
+        for rel, dom_list in rel2dom_raw.items():
+            if not dom_list:
+                continue
+
+            if len(dom_list) != 1:
+                message = (
+                    "Expected exactly one domain for relation "
+                    f"{rel!r}, but got {len(dom_list)}: {dom_list!r}"
+                )
+                raise ValueError(message)
+
+            rel2dom[rel] = dom_list[0]
+
+        rel2range: dict[str, str] = {}
+        for rel, range_list in rel2range_raw.items():
+            if not range_list:
+                continue
+
+            if len(range_list) != 1:
+                message = (
+                    "Expected exactly one range for relation "
+                    f"{rel!r}, but got {len(range_list)}: {range_list!r}"
+                )
+                raise ValueError(message)
+
+            rel2range[rel] = range_list[0]
 
 
         rel2inverse = self._relation_info["rel2inverse"]
@@ -460,11 +492,18 @@ class SchemaGraphBuilder:
             if relation_name in rel2inverse:
                 graph.add((relation_uri, OWL.inverseOf, schema_ns[rel2inverse[relation_name]]))
 
-            # subPropertyOf
+            # subPropertyOf (single direct parent expected; stored as list[str] for OWL compatibility)
             if relation_name in rel2superrel:
-                graph.add(
-                    (relation_uri, RDFS.subPropertyOf, schema_ns[rel2superrel[relation_name]])
-                )
+                superrels = rel2superrel[relation_name]
+
+                if len(superrels) != 1:
+                    message = (
+                        "Expected exactly one direct super-property for relation "
+                        f"{relation_name!r}, but got {len(superrels)}: {superrels!r}"
+                    )
+                    raise ValueError(message)
+
+                graph.add((relation_uri, RDFS.subPropertyOf, schema_ns[superrels[0]]))
 
 
 # ================================================================================================ #

@@ -1,3 +1,13 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+
 """
 Relation Generator Module
 =========================
@@ -78,7 +88,6 @@ import random
 from typing import TYPE_CHECKING, Any, cast
 
 import numpy as np
-from tabulate import tabulate
 
 from pygraft.types import build_relation_info
 
@@ -579,8 +588,15 @@ class RelationGenerator:
         rel2inverse = dict(self._rel2inverse)
 
         # --- RDFS subPropertyOf hierarchy ---
-        rel2superrel = dict(self._prop2superprop)
         subrelations = list(self._subproperties)
+        rel2superrel: dict[str, list[str]] = {
+            subprop: [superprop] for subprop, superprop in self._prop2superprop.items()
+        }
+
+        # --- disjointness mappings (placeholder until implemented) ---
+        rel2disjoints: dict[str, list[str]] = {}
+        rel2disjoints_symmetric: list[str] = []
+        rel2disjoints_extended: dict[str, list[str]] = {}
 
         # --- RDFS/OWL domain and range ---
         rel2dom_lists = {rel: [dom] for rel, dom in self._rel2dom.items()}
@@ -599,8 +615,11 @@ class RelationGenerator:
             transitive_relations=transitive_relations,
             inverseof_relations=inverseof_relations,
             rel2inverse=rel2inverse,
-            rel2superrel=rel2superrel,
             subrelations=subrelations,
+            rel2superrel=rel2superrel,
+            rel2disjoints=rel2disjoints,
+            rel2disjoints_symmetric=rel2disjoints_symmetric,
+            rel2disjoints_extended=rel2disjoints_extended,
             rel2dom=rel2dom_lists,
             rel2range=rel2range_lists,
         )

@@ -10,15 +10,89 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Installed dev dependency [prek](https://github.com/j178/prek) & used in conjunction with local but uncommitted `.pre-commit-config.yaml`. The goal is to enhance the robustness of my changes while not troubling the 2nd dev of my team if they want to do stuff. **THIS SHALL BE ADDED ONLY AT THE END OF THE DEV PHASE ONCE EVRY THING IS CLEARED & OK**
 
+
+
+## [0.0.8] Ontology Extraction Feature
+
+### Breaking Changes
+
+- Removed `create_json_template` and `create_yaml_template` in favor of a single public `create_config()` API.
+- Configuration template filenames are now fixed to `pygraft_config.json` or `pygraft_config.yml` and can no longer be customized.
+
 ### Added
 
+- Introduced `namespaces.py`, providing full namespace extraction for RDF ontologies (prefixes, base IRI, ontology metadata, undeclared namespaces).
+- Added `extraction.py`, implementing the namespace extraction runner and serving as the entry point for the full ontology extraction pipeline
+- Added `queries.py`, providing a centralized loader for SPARQL query resources used during ontology extraction.
+- Added `classes.py`, implementing full class extraction and generating `class_info.json`.
+- Added `relations.py`, implementing full relations extraction and generating `relation_info.json`.
+- Added SPARQL query resources for ontology extraction:
+  - **Classes**:
+    - `class2disjoints.rq`
+    - `class2disjoints_extended.rq`
+    - `classes.rq`
+    - `direct_class2subclasses.rq`
+    - `transitive_class2subclasses.rq`
+  - **Relations**:
+    - `relations.rq`
+    - `rel2patterns.rq`
+    - `inverseof_relations.rq`
+    - `subrelations.rq`
+    - `rel2dom_rel2range.rq`
+    - `rel2disjoints.rq`
+    - `rel2disjoints_extended.rq`
+
 ### Changed
+
+- Updated internal callers and the Typer CLI `init` command to rely exclusively on the new `create_config()` API.
+- **class_info.json** (`direct_class2superclasses`): Switched to a list-based structure to support OWL multi-inheritance.
+- **relation_info.json** (`rel2superrel`): Switched to a list-based structure to prepare relation hierarchies for OWL multi-parent models while preserving current output behavior.
+
+
+### Fixed
+
+- Fixed KG serialization issues where classes or relations written as CURIEs (e.g. `bot:Site`) produced broken IRIs and unstable `nsX` prefixes; this happened because all identifiers were blindly placed under the internal base namespace, and is now resolved by expanding CURIEs via `namespaces_info.json` when available while keeping the legacy behavior as a fallback. (REF: 7e97bf41)
+
+- Fixed cases where KG generation would almost stop (sometimes producing only a few triples) for ontologies with multiple domain and/or range classes on relations; this was caused by the legacy PyGraft behavior treating domain/range as single values instead of conjunctive constraints, and is now resolved by sampling entities that satisfy all required classes, allowing large KGs to be generated reliably again. (REF: c1e71845)
+
+- Fixed excessive rejection sampling caused by relations that could not be instantiated under conjunctive domain/range constraints in the current generation run; relations with empty head or tail candidate pools are now detected after entity typing and explicitly disabled (sampling weight = 0), preventing wasted attempts and premature termination when `relation_usage_uniformity` is high. (REF: d35920b1)
+
+- Fixed inverse domain/range disjointness filtering in KG generation after the schema upgrade to list-based `rel2dom` / `rel2range`; the inverse-conflict cleanup step was still reading legacy single-value mappings, effectively becoming a no-op and allowing inconsistent inverse triples to survive. The filter now correctly enforces disjointness against all required domain and range classes. (REF: f6442411)
+
+- Fixed inference-based oversampling to fully support list-based `rel2superrel` by allowing relations to have multiple direct super-relations instead of incorrectly assuming a single parent, ensuring subproperty inference remains compatible with OWL multi-parent hierarchies. (REF: f6442411)
+
+
+## [0.0.7] CLI Modernization
+
+Switched from the argparse CLI to an upgraded [Typer](https://typer.tiangolo.com/) CLI.
+
+### Added
+
+- Added a new Typer-based CLI implementation (`cli.py`) providing a modern, more ergonomic alternative to the legacy argparse CLI.
+- Introduced a structured subcommand-based CLI: `help`, `init`, `schema`, `kg`, `build`
+- Added user-facing outputs for the subcommands, we do not rely on log-level information as default but as optional.
+
+### Changed
+
+- `create_json_template` and `create_yaml_template` now return the created file path for easier API use & CLI echo.
+- Replaced old `--log` flag with modern `-l` / `--log-level` option, including improved help text.
+- `reasoner()` now returns a boolean consistency flag instead of relying on an exception path, making HermiT results explicit in the API while preserving existing logging behavior.
+- `generate_schema()` now returns a `(schema_path, is_consistent)` tuple so callers (including the CLI) can access both the output file location and the HermiT consistency result.
+- Updated the CLI header. Replaced text2art banner with a clean Rich-based rule.
+
+### Removed
+
+- Removed old argparse `cli.py`
+
+## [0.0.6] - Subgraph matching patterns and tools
+
+TODO: To be added
 
 ## [0.0.5] - Legacy Code Modernization
 
 "Small overview of the global thing here but only when the full changelog is done, do not write here for now"
 
-## Improvements
+### Improvements
 
 - Introduced a unified RNG strategy across all generators (classes, relations, KG).  
   Each generator now uses its own deterministic RNG when a seed is provided, ensuring reproducibility in tests and experiments while keeping default runs fully stochastic.
@@ -32,8 +106,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Reworked the triple generation pipeline around explicit, well-defined phases.  
   Sampling, validation, inference-based augmentation, and constraint filtering now run through structured helpers, improving readability, debuggability, and long-term maintainability.
 
-
-## Changed
+### Changed
 
 - Migrated the project from a flat layout to a modern `src/` directory structure
 - Modules were reorganized into dedicated packages based on their roles (e.g. `generators/, utils/, resources/`)
@@ -48,7 +121,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   This makes the constraint and triple-generation flow easier to follow while keeping the external behavior and outputs unchanged.
 
 - Reworked the user configuration format to explicitly group parameters into `general`, `classes`, `relations`, and `kg` sections.
-  This improves clarity around which settings affect each generation stage, reduces ambiguity between global and local parameters,   and makes the configuration surface more intuitive and discoverable.
+  This improves clarity around which settings affect each generation stage, reduces ambiguity between global and local parameters, and makes the configuration surface more intuitive and discoverable.
 
 - Separated schema/KG generation from HermiT reasoning for clearer responsibilities, and updated KG serialization so instance files contain only triples (no embedded ontology).
 
@@ -56,8 +129,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Standardized logging throughout PyGraft with clearer INFO milestones, DEBUG-level internal logs, and consistent absolute paths for all file operations.
 
-
-## Fixed
+### Fixed
 
 - Corrected inverse range–disjointness filtering, which previously evaluated disjointness on the head of a triple but removed triples based on the tail.  
   This mismatch caused both false removals and missed violations. The updated `_filter_inverse_domain_range_disjoint_conflicts()` now applies head-based validation consistently, matching the intended semantics.
@@ -81,9 +153,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Ensured HermiT reasoning works reliably across all supported output formats by normalizing non-XML schema/KG inputs into temporary RDF/XML files.  
   `_run_hermit_reasoner()` now handles RDF/XML conversion automatically and skips unnecessary conversions when inputs are already XML, ensuring robust and efficient reasoning.
 
-  
-
-## Added
+### Added
 
 - Introduced a new `types.py` module providing centralized type definitions for configuration files and all JSON artefacts used by PyGraft (e.g. `pygraft_config.{json/yml}`, `class_info`, `relation_info`, `kg_info`).
 - Added a `-V/--version` CLI flag to display the installed `pygraft` version.
@@ -93,18 +163,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Introduced centralized builder functions in `types.py` for `class_info`, `relation_info`, and `kg_info`, and integrated them across all generator modules. This removes duplicated dictionary assembly, enforces a single canonical JSON structure, and greatly simplifies future schema evolution.
 
-
-## Removed
+### Removed
 
 - The former `utils.py` module was broken down into more focused components all organized under the `utils/` package : `reasoning.py` (HermiT integration), `cli.py`, `templates.py`, `paths.py`, and `config.py`
 - Removed the redundant `generate()` public API, which duplicated the logic of `generate_schema()` and `generate_kg()`.  
   The CLI now handles the combined workflow (`--gen generate`) explicitly, and the ASCII header output was moved fully into the CLI to avoid duplicate prints.
 
-
-  
 ## [0.0.4] - PEP 621 Migration & Tooling Update (2025-11-27)
 
-## Added
+### Added
 
 - Introduced modern development tooling:
     - [Ruff](https://github.com/astral-sh/ruff) for linting and formatting
@@ -113,14 +180,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
     - [EditorConfig](https://editorconfig.org/), `.python-version`, and a consistent project-level configuration setup
     - Added initial `CHANGELOG.md` and updated `CONTRIBUTING.md` for a clearer workflow.
 
-## Changed
+### Changed
 
 - Migrated the project to a modern PEP 621 build system using Hatchling.
     - Switched to dynamic versioning via git tags using `hatch-vcs` (e.g. `v0.0.4` → `0.0.4`, dev installs show `0.0.5.dev0+...`).
 - Renamed `pygraft/main.py` to `pygraft/cli.py` and updated the console entrypoint i.g. `pygraft --help` is now the official way to invoke the tool.
 - Raised minimum Python version to 3.10 (3.8 EOL, 3.9 close behind).
 
-## Removed
+### Removed
 
 - Deleted legacy `setup.py` and `setup.cfg` files.
 

@@ -34,13 +34,16 @@ Additional features will be provided in the next versions of PyGraft. You want t
 
 - [ ] Fix the conflict between the following properties `rdfs:subPropertyOf`, `owl:FunctionalProperty`, and `owl:InverseFunctionalProperty`, as a non-zero value for the three of them at the same time can lead to inconsistent KGs.
 - [ ] Allow explanations for inconsistencies to be parsed from HermiT API (aka Pellet). This would make it possible to remove a subset of triples from inconsistent KGs to make them consistent, without needing the user to run the KG generation pipeline again. This is especially true for very large graphs, or if the user comes with an already existing schema which is not perfectly consistent.
+- [ ] Defining unitest tests reusing the ontology dataset
 
 **Low Priority**
 
 - [ ] Facilitate the generation of larger KGs (this would imply removing any dependency to [rdflib](https://github.com/RDFLib/rdflib/)).
 - [ ] Add support for literals.
 - [ ] JSON Schema to challenge user configurations 
-- [ ] Switch from Sphinx/Furo to MkDocs 
+- [ ] Switch from Sphinx/Furo to MkDocs
+- [ ] Cleaning/normalizing DocStrings
+- 
 
 ## Styleguides
 

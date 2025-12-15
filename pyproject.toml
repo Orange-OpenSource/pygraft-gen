@@ -12,11 +12,13 @@ readme = "README.md"
 license = { file = "LICENSE.txt" }
 
 authors = [
+    { name = "Nicolas Hubert", email = "nicotab540@gmail.com" },
     { name = "Ovidiu Pascal", email = "ovidiu.pascal@orange.com" },
     { name = "Lionel Tailhardat", email = "lionel.tailhardat@orange.com" },
 ]
 
 maintainers = [
+    { name = "Nicolas Hubert", email = "nicotab540@gmail.com" },
     { name = "Ovidiu Pascal", email = "ovidiu.pascal@orange.com" },
     { name = "Lionel Tailhardat", email = "lionel.tailhardat@orange.com" },
 ]
@@ -28,9 +30,8 @@ dependencies = [
     "Owlready2>=0.41",
     "rdflib>=6.2.0",
     "pyyaml",
-    "tabulate",
-    "art",
     "tqdm",
+    "typer>=0.20.0",
 ]
 
 keywords = [
@@ -64,7 +65,8 @@ Issues = "https://github.com/nicolas-hbt/pygraft/issues"
 
 # ------------------------------------------- CLI ENTRY POINTS ------------------------------------------- #
 [project.scripts]
-pygraft = "pygraft.cli:main"
+pygraft = "pygraft.cli:app"
+
 
 # ---------------------------------------- DEV & DOCS DEPENDENCIES --------------------------------------- #
 [dependency-groups] # UV

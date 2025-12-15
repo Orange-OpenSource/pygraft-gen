@@ -1,3 +1,13 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+
 """Configuration loading and validation for PyGraft.
 
 This module is responsible for:
@@ -21,8 +31,6 @@ All other helpers are internal and may change without notice.
 
 from __future__ import annotations
 
-import re
-import unicodedata
 import json
 import logging
 from collections.abc import Mapping
@@ -31,6 +39,7 @@ from typing import TYPE_CHECKING, Literal
 
 import yaml
 
+from pygraft.paths import slugify_project_name
 from pygraft.types import (
     ClassGenConfigDict,
     KGGenConfigDict,
@@ -450,32 +459,6 @@ def _validate_kg_types(kg_cfg: KGGenConfigDict) -> None:
 # General Section Validation                                                                       #
 # ------------------------------------------------------------------------------------------------ #
 
-def _slugify_project_name(name: str) -> str:
-    """Convert an arbitrary user string into a filesystem-safe project name.
-
-    Rules:
-        - Lowercase everything.
-        - Remove accents/diacritics.
-        - Replace all non-alphanumeric characters with underscores.
-        - Collapse multiple underscores.
-        - Strip leading/trailing underscores.
-    """
-    # Normalize Unicode → remove accents
-    name = unicodedata.normalize("NFKD", name)
-    name = "".join(ch for ch in name if not unicodedata.combining(ch))
-
-    # Lowercase
-    name = name.lower()
-
-    # Replace non-alphanumeric with underscores
-    name = re.sub(r"[^a-z0-9]+", "_", name)
-
-    # Collapse multiple underscores
-    name = re.sub(r"_+", "_", name)
-
-    # Strip leading/trailing underscores
-    return name.strip("_")
-
 def _validate_general_section(general_cfg: GeneralConfigDict) -> None:
     """Validate RDF format, RNG seed, and project_name."""
     # At this point, types have already been validated by _validate_section_types.
@@ -501,7 +484,7 @@ def _validate_general_section(general_cfg: GeneralConfigDict) -> None:
 
     if name != "auto":
         # Sanitize automatically
-        sanitized = _slugify_project_name(name)
+        sanitized = slugify_project_name(name)
 
         if not sanitized:
             message = (

@@ -1,3 +1,13 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+
 """
 Class Generator Module
 ======================
@@ -93,8 +103,6 @@ import logging
 import random
 from typing import TYPE_CHECKING
 
-from tabulate import tabulate
-
 from pygraft.utils.schema import (
     calculate_average_depth,
     calculate_class_disjointness,
@@ -103,7 +111,7 @@ from pygraft.utils.schema import (
     generate_class2layer,
     get_max_depth,
 )
-from pygraft.types import build_class_info
+from pygraft.types import build_class_info, ClassStatisticsDict
 
 if TYPE_CHECKING:
     from pygraft.types import ClassInfoDict
@@ -295,7 +303,11 @@ class ClassGenerator:
             class_name: list(children)
             for class_name, children in self._class2subclasses_direct.items()
         }
-        direct_class2superclass: dict[str, str] = dict(self._class2superclass_direct)
+        # Internal hierarchy is single-parent, so we wrap each parent in a list to match the multi-parent external schema.
+        direct_class2superclasses: dict[str, list[str]] = {
+            child: [parent]
+            for child, parent in self._class2superclass_direct.items()
+        }
 
         # --- transitive mappings ---
         transitive_class2subclasses: dict[str, list[str]] = {
@@ -324,33 +336,32 @@ class ClassGenerator:
         }
         class2layer: dict[str, int] = generate_class2layer(self._layer2classes)
 
-        # --- statistics ingredients ---
-        hierarchy_depth = get_max_depth(self._layer2classes) or 0
-        avg_class_depth = round(calculate_average_depth(self._layer2classes), 2)
-        avg_children_per_parent = round(
-            calculate_inheritance_ratio(
-                self._class2superclass_direct,
-                self._class2subclasses_direct,
+        # --- statistics ---
+        statistics: ClassStatisticsDict = {
+            "num_classes": len(classes_copy),
+            "hierarchy_depth": get_max_depth(self._layer2classes) or 0,
+            "avg_class_depth": round(calculate_average_depth(self._layer2classes), 2),
+            "avg_children_per_parent": round(
+                calculate_inheritance_ratio(
+                    self._class2superclass_direct,
+                    self._class2subclasses_direct,
+                ),
+                2,
             ),
-            2,
-        )
-        avg_class_disjointness = round(
-            calculate_class_disjointness(self._disjoint_with, len(classes_copy)),
-            2,
-        )
+            "avg_class_disjointness": round(
+                calculate_class_disjointness(self._disjoint_with, len(classes_copy)),
+                2,
+            ),
+        }
 
         # --- build final structure ---
         return build_class_info(
-            num_classes=len(classes_copy),
-            hierarchy_depth=hierarchy_depth,
-            avg_class_depth=avg_class_depth,
-            avg_children_per_parent=avg_children_per_parent,
-            avg_class_disjointness=avg_class_disjointness,
+            statistics=statistics,
 
             classes=classes_copy,
 
             direct_class2subclasses=direct_class2subclasses,
-            direct_class2superclass=direct_class2superclass,
+            direct_class2superclasses=direct_class2superclasses,
 
             transitive_class2subclasses=transitive_class2subclasses,
             transitive_class2superclasses=transitive_class2superclasses,

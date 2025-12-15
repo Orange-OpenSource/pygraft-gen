@@ -1,3 +1,13 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+
 """Instance Generator Module.
 
 ============================
@@ -127,8 +137,11 @@ from pygraft.types import (
     build_kg_info,
     KGUserParameters,
     KGStatistics,
-
+    EntityId,
+    RelationId,
+    TripleSet,
 )
+
 from pygraft.utils.kg import (
     generate_random_numbers,
     get_fast_ratio,
@@ -337,6 +350,15 @@ class InstanceGenerator:
 
         self._graph: RDFGraph | None = None
 
+        # Namespaces (loaded with schema info).
+        self._ontology_prefix: str = "sc"
+        self._ontology_namespace: str = "http://pygraf.t/"
+        self._prefix2namespace: dict[str, str] = {}
+
+        self._rel2dom_list: dict[RelationId, list[str]] = {}
+        self._rel2range_list: dict[RelationId, list[str]] = {}
+        self._rel2disjoints_extended: dict[RelationId, list[RelationId]] = {}
+        self._rel2disjoints: dict[RelationId, list[RelationId]] = {}
 
     # ------------------------------------------------------------------------------------------------ #
     # Internal convenience                                                                            #
@@ -410,6 +432,10 @@ class InstanceGenerator:
         This method populates internal project_name dictionaries and validates
         configuration against the observed hierarchy depth.
 
+        It also loads `namespaces_info.json` if present in the same output directory.
+        If the file is missing, the generator falls back to the legacy URI minting
+        scheme (everything under the internal base namespace).
+
         Raises:
             FileNotFoundError: If one of the JSON files is missing.
             json.JSONDecodeError: If a JSON file is malformed.
@@ -425,6 +451,9 @@ class InstanceGenerator:
         with relation_info_path.open("r", encoding="utf8") as file:
             self._relation_info = cast(RelationInfoDict, json.load(file))
 
+        # New generation: optional namespaces mapping for CURIE expansion.
+        self._load_namespaces_info()
+
         hierarchy_depth = self._class_info["statistics"]["hierarchy_depth"]
         max_allowed = hierarchy_depth + 1
 
@@ -437,6 +466,80 @@ class InstanceGenerator:
                 "deeper hierarchy."
             )
             raise ValueError(message)
+
+    def _load_namespaces_info(self) -> None:
+        """Load namespaces_info.json if present, enabling CURIE-aware serialization.
+
+        Expected JSON shape:
+            {
+              "ontology": {"prefix": "noria", "namespace": "https://w3id.org/noria/ontology/"},
+              "prefixes": {"bot": "https://w3id.org/bot#", "foaf": "...", "_empty_prefix": "http://purl.org/faro/", ...},
+              "no_prefixes": [...]
+            }
+
+        Semantics:
+            - If the file exists, enable "new generation" serialization where
+              "prefix:LocalName" tokens are expanded using `prefixes`.
+            - If the file does not exist, keep legacy behavior and serialize all
+              tokens under `self._ontology_namespace`.
+            - If `prefixes` contains the sentinel key "_empty_prefix", we also expose
+              it under the real empty prefix "" so identifiers like ":Condition" can
+              be expanded correctly and rdflib can serialize them using Turtle ":".
+
+        This function must not raise if namespaces_info.json is missing.
+        """
+        namespaces_path = self._output_directory_path / "namespaces_info.json"
+        if not namespaces_path.exists():
+            logger.debug("No namespaces_info.json found at: %s", namespaces_path)
+            return
+
+        with namespaces_path.open("r", encoding="utf8") as file:
+            payload = cast(dict[str, Any], json.load(file))
+
+        ontology = cast(dict[str, Any], payload.get("ontology", {}))
+        prefixes = cast(dict[str, Any], payload.get("prefixes", {}))
+
+        self._ontology_prefix = cast(str, ontology.get("prefix", self._ontology_prefix))
+        self._ontology_namespace = cast(
+            str,
+            ontology.get("namespace", self._ontology_namespace),
+        )
+
+        self._prefix2namespace = {cast(str, k): cast(str, v) for k, v in prefixes.items()}
+
+        # Minimal fix: normalize sentinel empty-prefix key to real Turtle empty prefix.
+        empty_prefix_namespace = self._prefix2namespace.get("_empty_prefix")
+        if empty_prefix_namespace:
+            self._prefix2namespace[""] = empty_prefix_namespace
+
+    def _to_uri(self, identifier: str) -> URIRef:
+        """Convert an internal identifier into a stable URIRef.
+
+        Rules:
+            - Entities like "E123" always live in the ontology namespace.
+            - CURIEs like "bot:Site" are expanded using namespaces_info.json.
+            - Empty-prefix CURIEs like ":Condition" are supported when namespaces_info.json
+              provides "_empty_prefix" (normalized to prefix "").
+            - Legacy tokens like "bot_Site" are supported (underscore form).
+            - Unknown tokens fall back to the ontology namespace.
+        """
+        if identifier.startswith("E"):
+            return URIRef(self._ontology_namespace + identifier)
+
+        if ":" in identifier:
+            prefix, local = identifier.split(":", 1)
+            base = self._prefix2namespace.get(prefix)
+            if base:
+                return URIRef(base + local)
+            return URIRef(self._ontology_namespace + identifier)
+
+        if "_" in identifier:
+            prefix, local = identifier.split("_", 1)
+            base = self._prefix2namespace.get(prefix)
+            if base:
+                return URIRef(base + local)
+
+        return URIRef(self._ontology_namespace + identifier)
 
     def _build_kg_info(self) -> KGInfoDict:
         """Assemble and persist a compact summary of the generated KG.
@@ -514,8 +617,26 @@ class InstanceGenerator:
         """
         self._graph = RDFGraph()
 
-        kg_ns = Namespace("http://pygraf.t/")
-        self._graph.bind("sc", kg_ns)
+        # Always bind the ontology namespace:
+        # - "sc" as a stable prefix for entity IRIs
+        # - also bind the extracted ontology prefix if available
+        ontology_ns = Namespace(self._ontology_namespace)
+        self._graph.bind("sc", ontology_ns)
+
+        # Minimal fix: do not bind the sentinel as a literal prefix token.
+        if self._ontology_prefix and self._ontology_prefix != "_empty_prefix":
+            self._graph.bind(self._ontology_prefix, ontology_ns)
+
+        # Minimal fix: bind Turtle default ":" when empty prefix is available.
+        empty_prefix_namespace = self._prefix2namespace.get("")
+        if empty_prefix_namespace:
+            self._graph.bind("", Namespace(empty_prefix_namespace))
+
+        # Bind external prefixes from namespaces_info.json (new generation).
+        for prefix, ns in sorted(self._prefix2namespace.items()):
+            if prefix in {"_empty_prefix", ""}:
+                continue
+            self._graph.bind(prefix, Namespace(ns))
 
         for h, r, t in tqdm(
             self._instance_triples,
@@ -523,19 +644,15 @@ class InstanceGenerator:
             unit="triples",
             colour="red",
         ):
-            self._graph.add((URIRef(kg_ns + h), URIRef(kg_ns + r), URIRef(kg_ns + t)))
+            self._graph.add((self._to_uri(h), self._to_uri(r), self._to_uri(t)))
 
             if h in self._ent2classes_specific:
                 for class_name in self._ent2classes_specific[h]:
-                    self._graph.add(
-                        (URIRef(kg_ns + h), RDF.type, URIRef(kg_ns + class_name)),
-                    )
+                    self._graph.add((self._to_uri(h), RDF.type, self._to_uri(class_name)))
 
             if t in self._ent2classes_specific:
                 for class_name in self._ent2classes_specific[t]:
-                    self._graph.add(
-                        (URIRef(kg_ns + t), RDF.type, URIRef(kg_ns + class_name)),
-                    )
+                    self._graph.add((self._to_uri(t), RDF.type, self._to_uri(class_name)))
 
         if self._config.rdf_format == "xml":
             kg_path = self._output_directory_path / "kg.rdf"
@@ -754,102 +871,108 @@ class InstanceGenerator:
         return (set(compatible_classes) - set(base_classes)) | self._non_disjoint_classes
 
     def _generate_triples(self) -> None:
-        """Generate triples for the KG with consistency checks.
+        """Generate KG triples using conjunctive domain/range semantics.
 
-        This method performs rejection sampling of triples that respect
-        domain/range and logical constraints. When oversampling is enabled,
-        the method behaves as follows:
+        This method performs rejection sampling of triples while enforcing:
+        - conjunctive domain and range constraints,
+        - disjointness and logical consistency rules, and
+        - relation usage distribution constraints.
 
-        - If enable_fast_generation is False (or the fast ratio is 1), it tries to reach
-          `num_triples` via pure sampling. If it stops early because of too
-          many failed attempts, a post-processing oversampling phase is used
-          to fill the remaining gap up to `num_triples`.
-
-        - If enable_fast_generation is True and the fast ratio is greater than 1, it only
-          samples a smaller "base" KG of size approximately
-          `num_triples / fast_ratio` and then uses oversampling as a
-          post-processing step to reach `num_triples`. This acts as a
-          speed hack for restrictive configurations: we reuse patterns from
-          already accepted triples instead of continuously sampling new ones.
+        Relations whose domain or range constraints cannot be satisfied by any
+        entity are automatically disabled (sampling weight = 0) to avoid
+        wasting sampling attempts.
         """
-        # Map each class to the entities that are (transitively) typed with it.
+        # Build class → entities index (transitive typing).
         self._class2entities = {}
         for entity_id, classes in self._ent2classes_transitive.items():
             for class_name in classes:
                 self._class2entities.setdefault(class_name, []).append(entity_id)
 
-        # Keep track of "unseen" entities per class and a global pool of unseen entities.
+        # Track unseen entities per class to encourage coverage.
         self._class2unseen = copy.deepcopy(self._class2entities)
         self._unseen_entities_pool = list(
             set(itertools.chain.from_iterable(self._class2entities.values())),
         )
 
-        # Untyped entities are treated specially to try to give them at least one incident triple.
+        # Prepare pools for untyped entities.
         self._priority_untyped_entities = set(self._entities) - set(self._typed_entities)
         self._untyped_entities = list(copy.deepcopy(self._priority_untyped_entities))
 
-        # Cache domain/range/pattern metadata for faster access inside the sampling loop.
-        rel2dom_raw = self._relation_info["rel2dom"]  # dict[RelationId, list[str]]
-        rel2range_raw = self._relation_info["rel2range"]  # dict[RelationId, list[str]]
-
-        self._rel2dom = {
-            relation_id: dom_list[0]
-            for relation_id, dom_list in rel2dom_raw.items()
-            if dom_list
+        # Cache conjunctive domain/range metadata.
+        self._rel2dom_list = {
+            relation_id: list(dom_list)
+            for relation_id, dom_list in self._relation_info["rel2dom"].items()
         }
-        self._rel2range = {
-            relation_id: range_list[0]
-            for relation_id, range_list in rel2range_raw.items()
-            if range_list
+        self._rel2range_list = {
+            relation_id: list(range_list)
+            for relation_id, range_list in self._relation_info["rel2range"].items()
         }
         self._rel2patterns = self._relation_info["rel2patterns"]
 
-        # Storage for generated triples and relation-level allocation.
+        # NEW: cache property-disjointness (owl:propertyDisjointWith).
+        self._rel2disjoints = {
+            rel: list(v) for rel, v in self._relation_info.get("rel2disjoints", {}).items()
+        }
+        self._rel2disjoints_extended = {
+            rel: list(v)
+            for rel, v in self._relation_info.get("rel2disjoints_extended", {}).items()
+        }
+
+        # Identify satisfiable vs unsatisfiable relations.
+        all_relations: list[RelationId] = list(self._relation_info["relations"])
+        satisfiable_relations = [r for r in all_relations if self._relation_is_satisfiable(r)]
+        unsatisfiable_relations = [r for r in all_relations if r not in satisfiable_relations]
+
+        if unsatisfiable_relations:
+            logger.info(
+                "Disabling %d unsatisfiable relations (empty conjunctive domain/range pools).",
+                len(unsatisfiable_relations),
+            )
+            logger.debug("Unsatisfiable relations: %s", sorted(unsatisfiable_relations))
+
+        if not satisfiable_relations:
+            raise ValueError(
+                "No satisfiable relations found: all relations have empty "
+                "conjunctive domain/range pools."
+            )
+
+        # Initialize triple storage and per-relation allocation.
         self._instance_triples = set()
-        self._compute_triples_per_relation()
+        self._compute_triples_per_relation(allowed_relations=satisfiable_relations)
         self._last_oversample = 0
 
-        # Decide how many triples we try to obtain via direct sampling before oversampling.
-        # - Without enable_inference_oversampling (or with fast_ratio == 1): we sample up to num_triples.
-        # - With enable_inference_oversampling and fast_ratio > 1: we intentionally sample only a "base"
-        #   subset of size approximately num_triples / fast_ratio, then enable_inference_oversampling.
-        generation_target: int = self._config.num_triples
+        generation_target = self._config.num_triples
         if self._config.enable_inference_oversampling and self._fast_ratio > 1:
             generation_target = min(self._oversample_every, self._config.num_triples)
 
         failed_attempts = 0
         while len(self._instance_triples) < generation_target:
-            sampled_relation: RelationId = self._rng.choice(
-                self._relation_info["relations"],
+            sampled_relation = self._rng.choice(
+                satisfiable_relations,
                 p=self._relation_sampling_weights,
             )
-            new_triple = self._sample_triple_for_relation(sampled_relation)
+
+            triple = self._sample_triple_for_relation(sampled_relation)
             failed_attempts += 1
 
-            is_consistent = (
-                self._triple_is_consistent(new_triple)
-                if None not in new_triple
-                else False
-            )
-            if is_consistent:
-                self._instance_triples.add(cast(Triple, new_triple))
+            if None not in triple and self._triple_is_consistent(triple):
+                self._instance_triples.add(cast(Triple, triple))
                 failed_attempts = 0
 
-            if failed_attempts > 10:
+            if failed_attempts > 500:
                 logger.warning(
-                    "Stopping triple generation loop after %d failed attempts; "
-                    "current KG size: %d (sampling target: %d, final target: %d).",
+                    "Stopping triple generation after %d failed attempts; "
+                    "current KG size: %d (target: %d).",
                     failed_attempts,
                     len(self._instance_triples),
                     generation_target,
-                    self._config.num_triples,
                 )
                 break
 
-        # Post-processing oversampling in both use cases (Nico's intent):
-        # - Fill remaining gap to num_triples if sampling stopped early.
-        # - Inflate a smaller "base" KG (enable_fast_generation + restrictive configs).
-        if self._config.enable_inference_oversampling and len(self._instance_triples) < self._config.num_triples:
+        if (
+            self._config.enable_inference_oversampling
+            and len(self._instance_triples) < self._config.num_triples
+        ):
             logger.info(
                 "Oversampling via inference from %d to target %d triples.",
                 len(self._instance_triples),
@@ -857,127 +980,105 @@ class InstanceGenerator:
             )
             self._oversample_triples_via_inference()
 
-    def _compute_triples_per_relation(self) -> None:
-        """Distribute triples across relations based on configuration."""
-        self._num_relations = len(self._relation_info["relations"])
+    def _compute_triples_per_relation(self, *, allowed_relations: list[RelationId]) -> None:
+        """Compute sampling weights and target triple counts per relation.
 
+        Relations not included in `allowed_relations` are treated as disabled:
+        they receive zero sampling probability and zero allocated triples.
+
+        Args:
+            allowed_relations:
+                List of relations that are satisfiable and eligible for sampling.
+
+        Raises:
+            ValueError: If `allowed_relations` is empty.
+        """
+        if not allowed_relations:
+            raise ValueError("allowed_relations must be non-empty.")
+
+        self._num_relations = len(allowed_relations)
+
+        # Special case: fewer triples than relations.
         if self._config.num_triples < self._num_relations:
             # For very small KGs, use a uniform distribution over relations and
             # assign at most one triple per relation in order.
             uniform_weight = 1.0 / self._num_relations
             self._relation_sampling_weights = [uniform_weight] * self._num_relations
             self._triples_per_rel = {
-                rel: 1 if index < self._config.num_triples else 0
-                for index, rel in enumerate(self._relation_info["relations"])
+                rel: 1 if idx < self._config.num_triples else 0
+                for idx, rel in enumerate(allowed_relations)
             }
             return
 
-        mean = int(self._config.num_triples / len(self._relation_info["relations"]))
-        spread_coeff = (1 - self._config.relation_usage_uniformity) * mean
-        weights_array = generate_random_numbers(
-            mean,
-            spread_coeff,
-            self._num_relations,
-        )
+        mean = int(self._config.num_triples / self._num_relations)
+        spread = (1.0 - self._config.relation_usage_uniformity) * mean
 
-        # Keep attribute type as list[float] for static typing,
-        # but still use the ndarray for downstream numeric ops.
-        self._relation_sampling_weights = list(weights_array)
+        weights = generate_random_numbers(mean, spread, self._num_relations)
+        normalized = weights / float(np.sum(weights))
 
-        weights_array = weights_array * self._config.num_triples
+        self._relation_sampling_weights = list(normalized)
+
+        scaled = normalized * float(self._config.num_triples)
         self._triples_per_rel = {
             rel: int(np.ceil(tpr))
-            for rel, tpr in zip(self._relation_info["relations"], weights_array, strict=True)
+            for rel, tpr in zip(allowed_relations, scaled, strict=True)
         }
 
     def _sample_triple_for_relation(
         self,
         relation: RelationId,
     ) -> tuple[EntityId | None, RelationId, EntityId | None]:
-        """Generate a single triple for a given relation."""
-        required_domain_class = self._rel2dom.get(relation)
-        required_range_class = self._rel2range.get(relation)
-        token_dom = False
+        """Generate a single triple for a given relation (conjunctive dom/range)."""
+        dom_classes = self._rel2dom_list.get(relation, [])
+        rng_classes = self._rel2range_list.get(relation, [])
 
-        h: EntityId | None = None
-        t: EntityId | None = None
-
-        if required_domain_class:
-            head_candidates: list[EntityId] = self._class2unseen.get(
-                required_domain_class,
-                [],
-            )
-            h = self._rng.choice(head_candidates) if head_candidates else None
-
-            if h is not None and self._is_entity_compatible_with_class(
-                h,
-                required_domain_class,
-            ):
-                token_dom = True
-            else:
-                h = None
-                eligible_entities = self._class2entities.get(required_domain_class, [])
-                for _ in range(10):
-                    if not eligible_entities:
-                        break
-                    candidate = self._rng.choice(eligible_entities)
-                    if self._is_entity_compatible_with_class(candidate, required_domain_class):
-                        h = candidate
-                        break
-        else:
-            if self._untyped_entities:
-                if self._priority_untyped_entities:
-                    h = self._priority_untyped_entities.pop()
-                else:
-                    h = self._rng.choice(self._untyped_entities)
-            else:
-                h = (
-                    self._rng.choice(self._unseen_entities_pool)
-                    if self._unseen_entities_pool
-                    else None
-                )
-
-        if required_range_class:
-            range_candidates: list[EntityId] = self._class2unseen.get(
-                required_range_class,
-                [],
-            )
-            t = self._rng.choice(range_candidates) if range_candidates else None
-
-            if (
-                t is not None
-                and h is not None
-                and self._is_entity_compatible_with_class(t, required_range_class)
-            ):
-                self._class2unseen[required_range_class].remove(t)
-                if token_dom and required_domain_class:
-                    unseen_domain_entities = self._class2unseen.get(required_domain_class, [])
-                    if h in unseen_domain_entities:
-                        unseen_domain_entities.remove(h)
-            else:
-                t = None
-                eligible_entities = self._class2entities.get(required_range_class, [])
-                for _ in range(10):
-                    if not eligible_entities:
-                        break
-                    candidate = self._rng.choice(eligible_entities)
-                    if self._is_entity_compatible_with_class(candidate, required_range_class):
-                        t = candidate
-                        break
-        else:
-            if self._untyped_entities:
-                if self._priority_untyped_entities:
-                    t = self._priority_untyped_entities.pop()
-                else:
-                    t = self._rng.choice(self._untyped_entities)
-            else:
-                t = (
-                    self._rng.choice(self._unseen_entities_pool)
-                    if self._unseen_entities_pool
-                    else None
-                )
+        h = self._sample_entity_for_required_classes(dom_classes)
+        t = self._sample_entity_for_required_classes(rng_classes)
 
         return (h, relation, t)
+
+    def _sample_entity_for_required_classes(
+        self,
+        required_classes: list[str],
+    ) -> EntityId | None:
+        """Sample an entity that satisfies all required classes (conjunctive)."""
+        if not required_classes:
+            if self._priority_untyped_entities:
+                return self._priority_untyped_entities.pop()
+            if self._untyped_entities:
+                return cast(EntityId, self._rng.choice(self._untyped_entities))
+            if self._unseen_entities_pool:
+                return cast(EntityId, self._rng.choice(self._unseen_entities_pool))
+            return None
+
+        candidate_sets: list[set[EntityId]] = []
+        for cls in required_classes:
+            ents = self._class2entities.get(cls, [])
+            if not ents:
+                return None
+            candidate_sets.append(set(ents))
+
+        candidates = set.intersection(*candidate_sets) if candidate_sets else set()
+        if not candidates:
+            return None
+
+        unseen_sets: list[set[EntityId]] = []
+        for cls in required_classes:
+            unseen_sets.append(set(self._class2unseen.get(cls, [])))
+
+        preferred = set.intersection(*unseen_sets) if unseen_sets else set()
+        pool = list(preferred or candidates)
+
+        for _ in range(20):
+            ent = cast(EntityId, self._rng.choice(pool))
+            if all(self._is_entity_compatible_with_class(ent, cls) for cls in required_classes):
+                for cls in required_classes:
+                    unseen = self._class2unseen.get(cls)
+                    if unseen and ent in unseen:
+                        unseen.remove(ent)
+                return ent
+
+        return None
 
     def _triple_is_consistent(
         self,
@@ -999,21 +1100,38 @@ class InstanceGenerator:
 
         if (
             r in self._relation_info["functional_relations"]
-            and any(
-                existing_triple[:2] == (h, r)
-                for existing_triple in self._instance_triples
-            )
+            and any(existing_triple[:2] == (h, r) for existing_triple in self._instance_triples)
         ):
             return False
 
         if (
             r in self._relation_info["inversefunctional_relations"]
-            and any(
-                existing_triple[1:] == (r, t)
-                for existing_triple in self._instance_triples
-            )
+            and any(existing_triple[1:] == (r, t) for existing_triple in self._instance_triples)
         ):
             return False
+
+        # A pair (h,t) must not be connected by two disjoint properties.
+        #
+        # IMPORTANT:
+        # If the candidate relation r is symmetric, then (h,r,t) entails (t,r,h).
+        # So we must also block cases where a disjoint property already exists
+        # on the reversed pair (t, drel, h), even if drel itself is not symmetric.
+        disjoints = self._rel2disjoints_extended.get(r, [])
+        if disjoints:
+            symmetric_rels = set(self._relation_info.get("symmetric_relations", []))
+            r_is_symmetric = r in symmetric_rels
+
+            for drel in disjoints:
+                # Direct orientation conflict: (h, drel, t)
+                if (h, drel, t) in self._instance_triples:
+                    return False
+
+                # Reverse orientation conflict:
+                # - needed if drel is symmetric (existing behavior),
+                # - also needed if r is symmetric (because (t,r,h) will be inferred).
+                if (r_is_symmetric or drel in symmetric_rels) and (t, drel,
+                                                                   h) in self._instance_triples:
+                    return False
 
         return True
 
@@ -1042,23 +1160,21 @@ class InstanceGenerator:
                 self._instance_triples -= duplicates
 
     def _filter_domain_range_conflicts(self) -> None:
-        """Remove triples whose entities violate domain/range constraints."""
+        """Remove triples whose entities violate domain/range constraints (all required classes)."""
         to_remove: set[Triple] = set()
 
-        for triple in self._instance_triples:
-            h, r, t = triple
-            r2dom = self._rel2dom.get(r)
-            r2range = self._rel2range.get(r)
+        for h, r, t in self._instance_triples:
+            dom_classes = self._rel2dom_list.get(r, [])
+            rng_classes = self._rel2range_list.get(r, [])
 
-            if r2dom and h in self._ent2classes_transitive:
-                is_valid_dom = self._is_entity_compatible_with_class(h, r2dom)
-                if not is_valid_dom:
-                    to_remove.add(triple)
+            if h in self._ent2classes_transitive and dom_classes:
+                if not all(self._is_entity_compatible_with_class(h, cls) for cls in dom_classes):
+                    to_remove.add((h, r, t))
+                    continue
 
-            if r2range and t in self._ent2classes_transitive:
-                is_valid_range = self._is_entity_compatible_with_class(t, r2range)
-                if not is_valid_range:
-                    to_remove.add(triple)
+            if t in self._ent2classes_transitive and rng_classes:
+                if not all(self._is_entity_compatible_with_class(t, cls) for cls in rng_classes):
+                    to_remove.add((h, r, t))
 
         self._instance_triples -= to_remove
 
@@ -1171,9 +1287,8 @@ class InstanceGenerator:
             used_relations.add(relation)
             attempts = 0
 
-            subset_kg: set[Triple] = {
-                trip for trip in self._instance_triples if trip[1] == relation
-            }
+            subset_kg: set[Triple] = {trip for trip in self._instance_triples if
+                                      trip[1] == relation}
             if not subset_kg:
                 continue
 
@@ -1183,105 +1298,166 @@ class InstanceGenerator:
             elif chosen_id == 2:
                 inferred_triples = symmetric_inference(subset_kg)
             else:
-                super_relation = self._relation_info["rel2superrel"][relation]
-                inferred_triples = subproperty_inference(subset_kg, super_relation)
+                # NEW: rel2superrel maps to a list (0..N) of direct super-properties.
+                superrels = self._relation_info["rel2superrel"].get(relation, [])
+                if not superrels:
+                    continue
+
+                inferred_triples: set[Triple] = set()
+                for super_relation in superrels:
+                    inferred_triples |= subproperty_inference(subset_kg, super_relation)
 
             if not inferred_triples:
                 continue
 
-            self._instance_triples |= set(inferred_triples)
+            # NEW: enforce the same consistency gate for inferred triples too.
+            safe_inferred: set[Triple] = set()
+            for h, r, t in inferred_triples:
+                candidate = (h, r, t)
+                if candidate in self._instance_triples:
+                    continue
+                if self._triple_is_consistent(candidate):
+                    safe_inferred.add(candidate)
+
+            if not safe_inferred:
+                continue
+
+            self._instance_triples |= safe_inferred
 
             if len(self._instance_triples) >= self._config.num_triples:
                 return
 
     def _filter_domain_disjoint_conflicts(self) -> None:
-        """Check that domains/ranges are compatible with instantiated triples."""
-        for rel, dom in self._rel2dom.items():
-            if dom not in self._class2disjoints_extended:
-                continue
+        """Check that domains/ranges are compatible with instantiated triples (all required classes)."""
+        for rel in self._relation_info["relations"]:
+            dom_classes = self._rel2dom_list.get(rel, [])
+            rng_classes = self._rel2range_list.get(rel, [])
 
-            subset_kg = {trip for trip in self._instance_triples if trip[1] == rel}
-            disjoint_with_dom = self._class2disjoints_extended[dom]
-            wrong_heads: set[EntityId] = set()
+            if dom_classes:
+                subset = {trip for trip in self._instance_triples if trip[1] == rel}
+                bad_heads: set[EntityId] = set()
 
-            for h, _, _ in subset_kg:
-                if h in self._ent2classes_transitive:
-                    intersection = set(self._ent2classes_transitive[h]).intersection(
-                        disjoint_with_dom,
-                    )
-                    if intersection:
-                        wrong_heads.add(h)
+                for h, _, _ in subset:
+                    if h not in self._ent2classes_transitive:
+                        continue
+                    if not all(
+                        self._is_entity_compatible_with_class(h, cls) for cls in dom_classes):
+                        bad_heads.add(h)
 
-            problematic_triples = {
-                (head, relation, tail) for head, relation, tail in subset_kg if head in wrong_heads
-            }
-            self._instance_triples -= problematic_triples
+                self._instance_triples -= {(h, rel, t) for h, _, t in subset if h in bad_heads}
 
-        for rel, rng in self._rel2range.items():
-            if rng not in self._class2disjoints_extended:
-                continue
+            if rng_classes:
+                subset = {trip for trip in self._instance_triples if trip[1] == rel}
+                bad_tails: set[EntityId] = set()
 
-            subset_kg = {trip for trip in self._instance_triples if trip[1] == rel}
-            disjoint_with_range = self._class2disjoints_extended[rng]
-            wrong_tails: set[EntityId] = set()
+                for _, _, t in subset:
+                    if t not in self._ent2classes_transitive:
+                        continue
+                    if not all(
+                        self._is_entity_compatible_with_class(t, cls) for cls in rng_classes):
+                        bad_tails.add(t)
 
-            for _, _, t in subset_kg:
-                if t in self._ent2classes_transitive:
-                    intersection = set(self._ent2classes_transitive[t]).intersection(
-                        disjoint_with_range,
-                    )
-                    if intersection:
-                        wrong_tails.add(t)
-
-            problematic_triples = {
-                (head, relation, tail) for head, relation, tail in subset_kg if tail in wrong_tails
-            }
-            self._instance_triples -= problematic_triples
+                self._instance_triples -= {(h, rel, t) for h, _, t in subset if t in bad_tails}
 
     def _filter_inverse_domain_range_disjoint_conflicts(self) -> None:
-        """Check inverse relations for compatibility with disjointness."""
+        """Check inverse relations for compatibility with class disjointness.
+
+        This is a post-generation cleanup pass. For each inverse pair (r1, r2),
+        we remove (h, r1, t) triples when the implied inverse triple (t, r2, h)
+        would violate class disjointness against r2's domain/range constraints.
+
+        Notes:
+            - Domain/range are conjunctive lists (new format): an entity must satisfy
+              all required classes, but disjointness conflicts arise if the entity's
+              transitive types intersect with the disjoint set of any required class.
+            - This method uses the cached list-based maps: self._rel2dom_list / self._rel2range_list.
+        """
         rel2inverse = self._build_rel_inverse_map()
 
-        for r1 in rel2inverse:
-            r2 = rel2inverse[r1]
+        for r1, r2 in rel2inverse.items():
             subset_kg = {trip for trip in self._instance_triples if trip[1] == r1}
+            if not subset_kg:
+                continue
 
-            if r2 in self._rel2range and self._rel2range[r2] in self._class2disjoints_extended:
-                range_r2 = self._rel2range[r2]
-                disjoint_with_range = self._class2disjoints_extended[range_r2]
-                wrong_heads: set[EntityId] = set()
+            # For (h, r1, t), the implied inverse triple is (t, r2, h).
+            # So:
+            #   - h must be compatible with range(r2)
+            #   - t must be compatible with domain(r2)
+            r2_range_classes = self._rel2range_list.get(r2, [])
+            r2_domain_classes = self._rel2dom_list.get(r2, [])
 
-                for h, _, _ in subset_kg:
-                    if h in self._ent2classes_transitive:
-                        intersection = set(self._ent2classes_transitive[h]).intersection(
-                            disjoint_with_range,
-                        )
-                        if intersection:
-                            wrong_heads.add(h)
+            # Precompute "disjoint-with" sets for r2's required classes.
+            disjoint_with_r2_range: set[str] = set()
+            for cls in r2_range_classes:
+                disjoint_with_r2_range.update(self._class2disjoints_extended.get(cls, []))
 
-                problematic_triples = {
-                    (head, relation, tail)
-                    for head, relation, tail in subset_kg
-                    if head in wrong_heads
-                }
-                self._instance_triples -= problematic_triples
+            disjoint_with_r2_domain: set[str] = set()
+            for cls in r2_domain_classes:
+                disjoint_with_r2_domain.update(self._class2disjoints_extended.get(cls, []))
 
-            if r2 in self._rel2dom and self._rel2dom[r2] in self._class2disjoints_extended:
-                dom_r2 = self._rel2dom[r2]
-                disjoint_with_dom = self._class2disjoints_extended[dom_r2]
-                wrong_tails: set[EntityId] = set()
+            # If r2 has no dom/range constraints, nothing to enforce here.
+            if not disjoint_with_r2_range and not disjoint_with_r2_domain:
+                continue
 
-                for _, _, t in subset_kg:
-                    if t in self._ent2classes_transitive:
-                        intersection = set(self._ent2classes_transitive[t]).intersection(
-                            disjoint_with_dom,
-                        )
-                        if intersection:
-                            wrong_tails.add(t)
+            to_remove: set[Triple] = set()
 
-                problematic_triples = {
-                    (head, relation, tail)
-                    for head, relation, tail in subset_kg
-                    if tail in wrong_tails
-                }
-                self._instance_triples -= problematic_triples
+            # Remove triples whose head conflicts with r2's range.
+            if disjoint_with_r2_range:
+                for h, _, t in subset_kg:
+                    if h not in self._ent2classes_transitive:
+                        continue
+                    if set(self._ent2classes_transitive[h]).intersection(disjoint_with_r2_range):
+                        to_remove.add((h, r1, t))
+
+            # Remove triples whose tail conflicts with r2's domain.
+            if disjoint_with_r2_domain:
+                for h, _, t in subset_kg:
+                    if t not in self._ent2classes_transitive:
+                        continue
+                    if set(self._ent2classes_transitive[t]).intersection(disjoint_with_r2_domain):
+                        to_remove.add((h, r1, t))
+
+            if to_remove:
+                self._instance_triples -= to_remove
+
+    def _relation_is_satisfiable(self, relation: RelationId) -> bool:
+        """Check whether a relation can be instantiated under conjunctive constraints.
+
+        A relation is considered satisfiable if there exists at least one valid
+        head entity and at least one valid tail entity that respect all required
+        domain and range classes.
+
+        Domain and range semantics are conjunctive: an entity must belong to
+        *all* classes listed on that side of the relation.
+
+        Args:
+            relation:
+                Relation identifier to test for satisfiability.
+
+        Returns:
+            True if the relation has at least one feasible head and tail entity;
+            False otherwise.
+        """
+        dom_classes = self._rel2dom_list.get(relation, [])
+        rng_classes = self._rel2range_list.get(relation, [])
+
+        def _has_candidates(required_classes: list[str]) -> bool:
+            """Return True if there is at least one entity satisfying all classes."""
+            if not required_classes:
+                return bool(
+                    self._priority_untyped_entities
+                    or self._untyped_entities
+                    or self._unseen_entities_pool
+                )
+
+            candidate_sets: list[set[EntityId]] = []
+            for cls in required_classes:
+                entities = self._class2entities.get(cls, [])
+                if not entities:
+                    return False
+                candidate_sets.append(set(entities))
+
+            candidates = set.intersection(*candidate_sets) if candidate_sets else set()
+            return bool(candidates)
+
+        return _has_candidates(dom_classes) and _has_candidates(rng_classes)

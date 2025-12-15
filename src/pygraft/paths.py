@@ -1,13 +1,25 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
 from pathlib import Path
 import logging
+import re
+import unicodedata
 
 logger = logging.getLogger(__name__)
 
 # Public constant: default root directory for all PyGraft output artefacts.
-OUTPUT_ROOT: Path = Path("pygraft_output")
+OUTPUT_ROOT: Path = Path("output_pygraft")
 
 
 # ========================================================================== #
@@ -27,28 +39,29 @@ def resolve_project_folder(
 
     Args:
         project_name:
-            Either "auto" or a user-defined project name string. The value
-            is assumed to have been validated and slugified by config.py.
+            Either "auto" or a user-defined project name string.
         mode:
             Either "schema" (fresh or explicit schema run) or "kg" (reuse an
             existing schema run for KG generation).
         output_root:
             Optional base directory for all runs. When None, the global
-            OUTPUT_ROOT ("pygraft_output" under the current working
-            directory) is used. This parameter is intended for Python API
-            callers; the CLI always relies on OUTPUT_ROOT.
+            OUTPUT_ROOT under the current working directory is used.
 
     Returns:
         The final project folder name to use under the chosen output_root.
 
     Raises:
-        ValueError: If mode is not "schema" or "kg", or if project_name is
-            "auto" in KG mode and no previous run can be found.
+        ValueError: If mode is invalid, or if project_name is "auto" in KG
+            mode and no previous run exists.
     """
     base_root = output_root or OUTPUT_ROOT
 
+    # Defensive normalization
+    if project_name != "auto":
+        project_name = slugify_project_name(project_name)
+
     if mode == "schema":
-        # "auto" -> generate a new timestamp-based folder name.
+        # "auto" -> generate a new timestamp-based folder
         if project_name == "auto":
             run_name = _generate_timestamp_run_name()
         else:
@@ -58,7 +71,7 @@ def resolve_project_folder(
         return run_name
 
     if mode == "kg":
-        # "auto" -> reuse the most recent run folder under base_root.
+        # "auto" -> reuse most recent schema run
         if project_name == "auto":
             latest = _get_most_recent_subfolder(base_root)
             if latest is None:
@@ -69,7 +82,7 @@ def resolve_project_folder(
                 )
             return latest
 
-        # Explicit project name: do not create anything here; KG reuses an existing schema run.
+        # Explicit name -> reuse existing schema folder
         return project_name
 
     raise ValueError(f"Unknown mode {mode!r}. Expected 'schema' or 'kg'.")
@@ -78,6 +91,32 @@ def resolve_project_folder(
 # ========================================================================== #
 # INTERNAL HELPERS (private)                                                 #
 # ========================================================================== #
+
+def slugify_project_name(name: str) -> str:
+    """Convert an arbitrary user string into a filesystem-safe project name.
+
+    Rules:
+        - Lowercase everything.
+        - Remove accents/diacritics.
+        - Replace all non-alphanumeric characters with underscores.
+        - Collapse multiple underscores.
+        - Strip leading/trailing underscores.
+    """
+    # Normalize Unicode -> remove accents
+    name = unicodedata.normalize("NFKD", name)
+    name = "".join(ch for ch in name if not unicodedata.combining(ch))
+
+    # Lowercase
+    name = name.lower()
+
+    # Replace non-alphanumeric with underscores
+    name = re.sub(r"[^a-z0-9]+", "_", name)
+
+    # Collapse multiple underscores
+    name = re.sub(r"_+", "_", name)
+
+    # Strip leading/trailing underscores
+    return name.strip("_")
 
 def _generate_timestamp_run_name() -> str:
     """Return a sortable timestamp run name, e.g., '2025-12-05_13-22-44'."""

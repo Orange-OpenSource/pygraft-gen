@@ -2,6 +2,10 @@
 
 This folder contains the datasets and tooling for exemplifying or testing the **PyGraft-gen** project.
 
+## Reference ontologies
+
+The ontologies used for evaluating the PyGraft-gen framework are available in the [ontologies/](./ontologies) subfolder.
+
 ## Subgraph matching techniques
 
 Four families of subgraph matching techniques typically emerge:

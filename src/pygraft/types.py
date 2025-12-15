@@ -1,3 +1,13 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+
 """Type definitions for PyGraft data structures.
 
 This module centralizes the static types for configuration files and
@@ -192,7 +202,7 @@ class ClassInfoDict(TypedDict):
 
     # --- direct mappings ----
     direct_class2subclasses: dict[str, list[str]]
-    direct_class2superclass: dict[str, str]
+    direct_class2superclasses: dict[str, list[str]]
 
     # --- transitive mappings ---
     transitive_class2subclasses: dict[str, list[str]]
@@ -221,16 +231,12 @@ class ClassStatisticsDict(TypedDict):
 def build_class_info(
     *,
     # --- statistics  ---
-    num_classes: int,
-    hierarchy_depth: int,
-    avg_class_depth: float,
-    avg_children_per_parent: float,
-    avg_class_disjointness: float,
+    statistics: ClassStatisticsDict,
     # --- class list ---
     classes: list[str],
     # --- direct mappings ---
     direct_class2subclasses: dict[str, list[str]],
-    direct_class2superclass: dict[str, str],
+    direct_class2superclasses: dict[str, list[str]],
     # --- transitive mappings ---
     transitive_class2subclasses: dict[str, list[str]],
     transitive_class2superclasses: dict[str, list[str]],
@@ -248,19 +254,11 @@ def build_class_info(
     generators provide only raw values without re-implementing the layout.
     """
 
-    statistics: ClassStatisticsDict = {
-        "num_classes": int(num_classes),
-        "hierarchy_depth": int(hierarchy_depth),
-        "avg_class_depth": float(avg_class_depth),
-        "avg_children_per_parent": float(avg_children_per_parent),
-        "avg_class_disjointness": float(avg_class_disjointness),
-    }
-
     return {
         "statistics": statistics,
         "classes": list(classes),
         "direct_class2subclasses": dict(direct_class2subclasses),
-        "direct_class2superclass": dict(direct_class2superclass),
+        "direct_class2superclasses": dict(direct_class2superclasses),
         "transitive_class2subclasses": dict(transitive_class2subclasses),
         "transitive_class2superclasses": dict(transitive_class2superclasses),
         "class2disjoints": dict(class2disjoints),
@@ -269,6 +267,7 @@ def build_class_info(
         "layer2classes": dict(layer2classes),
         "class2layer": dict(class2layer),
     }
+
 
 
 # ---------------------------------------------------------------------------
@@ -307,8 +306,13 @@ class RelationInfoDict(TypedDict):
     rel2inverse: dict[str, str]
 
     # --- RDFS subPropertyOf hierarchy ---
-    rel2superrel: dict[str, str]
     subrelations: list[str]
+    rel2superrel: dict[str, list[str]]
+
+    # --- disjointness mappings ---
+    rel2disjoints: dict[str, list[str]]
+    rel2disjoints_symmetric: list[str]
+    rel2disjoints_extended: dict[str, list[str]]
 
     # --- RDFS/OWL domain and range ---
     rel2dom: dict[str, list[str]]
@@ -352,8 +356,12 @@ def build_relation_info(
     inverseof_relations: list[str],
     rel2inverse: dict[str, str],
     # --- RDFS subPropertyOf hierarchy ---
-    rel2superrel: dict[str, str],
     subrelations: list[str],
+    rel2superrel: dict[str, list[str]],
+    # --- disjointness mappings ---
+    rel2disjoints: dict[str, list[str]],
+    rel2disjoints_symmetric: list[str],
+    rel2disjoints_extended: dict[str, list[str]],
     # --- RDFS/OWL domain and range ---
     rel2dom: dict[str, list[str]],
     rel2range: dict[str, list[str]],
@@ -384,8 +392,11 @@ def build_relation_info(
         "transitive_relations": list(transitive_relations),
         "inverseof_relations": list(inverseof_relations),
         "rel2inverse": dict(rel2inverse),
-        "rel2superrel": dict(rel2superrel),
         "subrelations": list(subrelations),
+        "rel2superrel": dict(rel2superrel),
+        "rel2disjoints": dict(rel2disjoints),
+        "rel2disjoints_symmetric": list(rel2disjoints_symmetric),
+        "rel2disjoints_extended": dict(rel2disjoints_extended),
         "rel2dom": dict(rel2dom),
         "rel2range": dict(rel2range),
     }
