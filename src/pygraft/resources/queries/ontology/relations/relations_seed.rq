@@ -1,0 +1,146 @@
+#  Software Name: PyGraft-gen
+#  SPDX-FileCopyrightText: Copyright (c) Orange SA
+#  SPDX-License-Identifier: MIT
+#
+#  This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+#
+#  Authors: See CONTRIBUTORS.txt
+#  Software description: A RDF Knowledge Graph stochastic generation solution.
+#
+# --------------------------------------------------------------------------------------------------
+# FILE      : relations_seed.rq
+# AUTHOR    : Ovidiu PASCAL - Orange INNOV
+# DATE      : 2025-12-16
+# PURPOSE   : Define the single, shared "ontology-local object-style property universe"
+#             (the relations universe) used across all relation-extraction queries.
+#
+# INTENT    :
+#   PyGraft extraction is explicit-first and scope-limited: it captures what the ontology
+#   graph explicitly states about relations, without OWL reasoning or global OWL expansion.
+#
+#   This seed block exists to avoid duplicating the relation-universe definition across
+#   multiple queries (relations.rq, rel2patterns.rq, inverseOf, subPropertyOf, disjointness,
+#   dom/range, ...). By centralizing the universe here, we enforce a modular "single source
+#   of truth": changing the universe definition changes it everywhere, consistently.
+#
+#   PyGraft currently focuses exclusively on object properties. Datatype properties and
+#   literal-valued relations are intentionally excluded from extraction and generation.
+#
+# OUT OF SCOPE (BY DESIGN) :
+#   - owl:DatatypeProperty and literal-valued relations (incl. xsd:* ranges)
+#   - owl:AnnotationProperty
+#   - Anonymous / blank-node range expressions (owl:Restriction, union/intersection, etc.)
+#   - Any reasoning-derived facts not explicitly present as triples in the ontology graph
+#
+# OUTPUT    :
+#   - ?prop_uri : IRI of an ontology-local, object-style property that belongs to the
+#                shared relations universe.
+#
+# LOGIC     :
+#   1) Seed the universe from explicit owl:ObjectProperty declarations (IRI-only).
+#   2) Expand upward via rdfs:subPropertyOf* to include related properties.
+#   3) Re-apply the same guards after expansion to prevent datatype-ish properties from
+#      leaking into the universe through hierarchy links.
+#
+# NOTES     :
+#   - Pure SPARQL 1.1, no vendor extensions.
+#   - Explicit-only: no inference is applied here.
+#   - This block is injected verbatim into other queries; keep it stable and well-documented.
+# --------------------------------------------------------------------------------------------------
+
+{
+  SELECT DISTINCT ?prop_uri
+  WHERE {
+    # ------------------------------------------------------------------------
+    # Step 1: Compute valid owl:ObjectProperty seeds in this ontology
+    # ------------------------------------------------------------------------
+    {
+      SELECT DISTINCT ?seed
+      WHERE {
+        # 1.1: Explicit declaration as owl:ObjectProperty
+        ?seed a owl:ObjectProperty .
+        FILTER(isIRI(?seed))
+
+        # 1.2: Exclude datatype and annotation properties at the seed level
+        FILTER NOT EXISTS { ?seed a owl:DatatypeProperty }
+        FILTER NOT EXISTS { ?seed a owl:AnnotationProperty }
+
+        # 1.3: Explicitly ban blank-node ranges (anonymous class expressions)
+        FILTER NOT EXISTS {
+          ?seed rdfs:range ?seed_range_bnode .
+          FILTER(isBlank(?seed_range_bnode))
+        }
+
+        # 1.4: Exclude seeds whose range is literal/datatype-ish
+        FILTER NOT EXISTS {
+          ?seed rdfs:range ?seed_range .
+          FILTER(
+            isLiteral(?seed_range) ||
+            ?seed_range = rdfs:Literal ||
+            ?seed_range = rdfs:Datatype ||
+            ?seed_range = rdf:langString ||
+            STRSTARTS(STR(?seed_range), "http://www.w3.org/2001/XMLSchema#")
+          )
+        }
+
+        # 1.5: Exclude ranges that are subclasses of rdfs:Literal / rdfs:Datatype
+        FILTER NOT EXISTS {
+          ?seed rdfs:range ?seed_range2 .
+          FILTER(isIRI(?seed_range2))
+          FILTER EXISTS { ?seed_range2 rdfs:subClassOf* rdfs:Literal }
+        }
+
+        FILTER NOT EXISTS {
+          ?seed rdfs:range ?seed_range3 .
+          FILTER(isIRI(?seed_range3))
+          FILTER EXISTS { ?seed_range3 rdfs:subClassOf* rdfs:Datatype }
+        }
+      }
+    }
+
+    # ------------------------------------------------------------------------
+    # Step 2: Expand to all related properties via rdfs:subPropertyOf*
+    # ------------------------------------------------------------------------
+    ?seed rdfs:subPropertyOf* ?prop_uri .
+    FILTER(isIRI(?prop_uri))
+
+    # ------------------------------------------------------------------------
+    # Step 3: Re-apply exclusions at the expanded property level
+    # ------------------------------------------------------------------------
+
+    # 3.1: Exclude anything explicitly typed as Datatype/Annotation property
+    FILTER NOT EXISTS { ?prop_uri a owl:DatatypeProperty }
+    FILTER NOT EXISTS { ?prop_uri a owl:AnnotationProperty }
+
+    # 3.2: Ban blank-node ranges at the expanded level
+    FILTER NOT EXISTS {
+      ?prop_uri rdfs:range ?prop_range_bnode .
+      FILTER(isBlank(?prop_range_bnode))
+    }
+
+    # 3.3: Exclude properties whose range is literal/datatype-ish
+    FILTER NOT EXISTS {
+      ?prop_uri rdfs:range ?prop_range .
+      FILTER(
+        isLiteral(?prop_range) ||
+        ?prop_range = rdfs:Literal ||
+        ?prop_range = rdfs:Datatype ||
+        ?prop_range = rdf:langString ||
+        STRSTARTS(STR(?prop_range), "http://www.w3.org/2001/XMLSchema#")
+      )
+    }
+
+    # 3.4: Exclude ranges that are subclasses of rdfs:Literal / rdfs:Datatype
+    FILTER NOT EXISTS {
+      ?prop_uri rdfs:range ?prop_range2 .
+      FILTER(isIRI(?prop_range2))
+      FILTER EXISTS { ?prop_range2 rdfs:subClassOf* rdfs:Literal }
+    }
+
+    FILTER NOT EXISTS {
+      ?prop_uri rdfs:range ?prop_range3 .
+      FILTER(isIRI(?prop_range3))
+      FILTER EXISTS { ?prop_range3 rdfs:subClassOf* rdfs:Datatype }
+    }
+  }
+}

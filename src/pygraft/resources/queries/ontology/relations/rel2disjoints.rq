@@ -7,66 +7,72 @@
 #  Authors: See CONTRIBUTORS.txt
 #  Software description: A RDF Knowledge Graph stochastic generation solution.
 #
+# --------------------------------------------------------------------------------------------------
 # FILE      : rel2disjoints.rq
 # AUTHOR    : Ovidiu PASCAL - Orange INNOV
-# DATE      : 2025-12-15
-# PURPOSE   : Enumerate explicit owl:propertyDisjointWith relations between
-#             ontology-local object-style properties as pairs
-#             (?prop_uri -> ?disjoint_uri).
+# DATE      : 2025-12-12
+# PURPOSE   : Enumerate explicit owl:propertyDisjointWith relations between ontology-local
+#             object-style properties as pairs (?prop_uri -> ?disjoint_uri).
 #
 # INTENT    :
-#   Extract direct property-level disjointness for relation_info, restricted to
-#   the precomputed object-property universe selected by relations.rq.
+#   Extract direct property-level disjointness for relation_info using the shared
+#   ontology-local relations universe defined in relations_seed.rq.
 #
-#   The universe is materialized by relations.py as membership triples:
+#   The relations universe is injected via the marker line:
+#       # @RELATIONS_SEED
 #
-#       <propIRI> rdf:type pygraft:ChosenRelation .
-#
-#   This query consumes that universe and does not repeat seeding / filtering.
-#
-# LOGIC     :
-#   1) Restrict both sides to the precomputed object-property universe:
-#        ?prop_uri     a pygraft:ChosenRelation
-#        ?disjoint_uri a pygraft:ChosenRelation
-#
-#   2) Select explicit disjointness assertions:
-#        ?prop_uri owl:propertyDisjointWith ?disjoint_uri
-#
-#   3) Keep only IRIs and ignore trivial self-disjointness.
+#   This query returns only explicit owl:propertyDisjointWith triples as written in the
+#   ontology graph. Symmetry is NOT assumed at query time; any symmetric view is derived
+#   later in Python.
 #
 # OUTPUT    :
-#   - ?prop_uri     : IRI of the first property
-#   - ?disjoint_uri : IRI of a property declared disjoint with ?prop_uri
+#   - ?prop_uri     : IRI of the source property (ontology-local, object-style)
+#   - ?disjoint_uri : IRI of a property explicitly declared disjoint with ?prop_uri
+#
+# LOGIC     :
+#   1) Bind the shared relations universe (same as relations.rq) via the injected seed.
+#   2) Match explicit owl:propertyDisjointWith assertions.
+#   3) Require the disjoint side to also belong to the same relations universe by
+#      re-running the seed in a nested subquery and re-binding its output.
+#   4) Keep only IRIs and ignore trivial self-disjointness.
 #
 # NOTES     :
-#   - Pure SPARQL 1.1, no vendor extensions.
-#   - owl:propertyDisjointWith is symmetric in OWL, but this query returns only
-#     explicit triples as stated. Any symmetric view is derived later in Python.
-#   - Only explicit owl:propertyDisjointWith axioms are considered; no OWL
-#     reasoning is applied.
-#
-# ------------------------------------------------------------------------------
+#   - Pure SPARQL 1.1; no vendor extensions.
+#   - Explicit-only extraction: no OWL reasoning is applied.
+# --------------------------------------------------------------------------------------------------
 
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX pygraft: <http://pygraft.org/schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT
-    ?prop_uri
-    ?disjoint_uri
+  ?prop_uri
+  ?disjoint_uri
 WHERE {
-    # 1) Precomputed object-property universe (materialized by relations.py)
-    ?prop_uri a pygraft:ChosenRelation .
-    FILTER (isIRI(?prop_uri))
+  # --------------------------------------------------------------------------
+  # Step 1: Compute ontology-local object-style property universe (relations.rq)
+  # --------------------------------------------------------------------------
+  # @RELATIONS_SEED
 
-    # 2) Explicit propertyDisjointWith assertion (explicit direction only)
-    ?prop_uri owl:propertyDisjointWith ?disjoint_uri .
-    FILTER (isIRI(?disjoint_uri))
-    FILTER (?prop_uri != ?disjoint_uri)
+  # --------------------------------------------------------------------------
+  # Step 2: Explicit propertyDisjointWith assertion
+  # --------------------------------------------------------------------------
+  ?prop_uri owl:propertyDisjointWith ?disjoint_uri .
+  FILTER(isIRI(?disjoint_uri))
+  FILTER(?prop_uri != ?disjoint_uri)
 
-    # 3) Ensure disjoint side is also in the chosen relation universe
-    ?disjoint_uri a pygraft:ChosenRelation .
+  # --------------------------------------------------------------------------
+  # Step 3: Require disjoint side to be in the same property universe
+  # --------------------------------------------------------------------------
+  {
+    SELECT DISTINCT ?disjoint_uri
+    WHERE {
+      # @RELATIONS_SEED
+      BIND(?prop_uri AS ?disjoint_uri)
+    }
+  }
 }
-ORDER BY STR(?prop_uri)
-STR(?disjoint_uri)
+ORDER BY
+  STR(?prop_uri)
+  STR(?disjoint_uri)

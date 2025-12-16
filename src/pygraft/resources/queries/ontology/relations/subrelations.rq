@@ -7,59 +7,74 @@
 #  Authors: See CONTRIBUTORS.txt
 #  Software description: A RDF Knowledge Graph stochastic generation solution.
 #
+# --------------------------------------------------------------------------------------------------
 # FILE      : subrelations.rq
 # AUTHOR    : Ovidiu PASCAL - Orange INNOV
-# DATE      : 2025-12-15
-# PURPOSE   : Retrieve all rdfs:subPropertyOf links between declared OWL
-#             object properties as pairs (?subprop_uri -> ?superprop_uri).
+# DATE      : 2025-12-12
+# PURPOSE   : Retrieve explicit rdfs:subPropertyOf links between ontology-local
+#             object-style properties as pairs (?subprop_uri -> ?superprop_uri).
 #
 # INTENT    :
-#   Extract the explicit, one-hop subproperty hierarchy between ontology-local
-#   object-style properties for relation_info extraction and KG generation.
+#   Extract the explicit, one-hop subproperty hierarchy between relations for
+#   relation_info extraction and KG generation.
 #
-#   The property universe is defined once by relations.rq and materialized by
-#   relations.py as:
+#   Both sides of the subPropertyOf link are required to belong to the shared
+#   ontology-local relations universe defined in relations_seed.rq and injected
+#   via the marker line:
 #
-#       <propIRI> rdf:type pygraft:ChosenRelation .
+#       # @RELATIONS_SEED
 #
-#   This query consumes that universe (no repeated seeding / filtering).
-#
-# LOGIC     :
-#   1) Extract explicit subPropertyOf links (one-hop only):
-#        ?subprop_uri rdfs:subPropertyOf ?superprop_uri
-#   2) Require both sides to be part of the precomputed object-property universe:
-#        ?subprop_uri a pygraft:ChosenRelation
-#        ?superprop_uri a pygraft:ChosenRelation
-#   3) Keep only IRIs on both sides (defensive).
+#   No transitive closure or OWL reasoning is applied here.
 #
 # OUTPUT    :
-#   - ?subprop_uri   : IRI of the sub-property
-#   - ?superprop_uri : IRI of the super-property
+#   - ?subprop_uri   : IRI of the sub-property (ontology-local, object-style)
+#   - ?superprop_uri : IRI of the super-property (ontology-local, object-style)
+#
+# LOGIC     :
+#   1) Select explicit rdfs:subPropertyOf triples (one hop only).
+#   2) Enforce that both sub-property and super-property belong to the shared
+#      relations universe by re-running the seed in nested subqueries and
+#      re-binding its output.
+#   3) Keep only IRI-valued properties on both sides.
 #
 # NOTES     :
-#   - Pure SPARQL 1.1, no vendor extensions.
-#   - Only explicit (asserted) rdfs:subPropertyOf triples are returned.
-#   - No transitive closure is computed here; rdfs:subPropertyOf* should be
-#     derived later if needed.
-#
-# ------------------------------------------------------------------------------
+#   - Pure SPARQL 1.1; no vendor extensions.
+#   - Only asserted rdfs:subPropertyOf triples are returned.
+#   - Transitive closure (rdfs:subPropertyOf*) must be computed later as a
+#     derived structure if needed.
+# --------------------------------------------------------------------------------------------------
 
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX pygraft: <http://pygraft.org/schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT
-    ?subprop_uri
-    ?superprop_uri
+  ?subprop_uri
+  ?superprop_uri
 WHERE {
-    # 1) Explicit subPropertyOf link (one-hop)
-    ?subprop_uri rdfs:subPropertyOf ?superprop_uri .
-    FILTER (isIRI(?subprop_uri) && isIRI(?superprop_uri))
+  ### 1) Explicit subPropertyOf link (one hop only)
+  ?subprop_uri rdfs:subPropertyOf ?superprop_uri .
+  FILTER(isIRI(?subprop_uri) && isIRI(?superprop_uri))
 
-    # 2) Restrict both sides to the precomputed object-property universe
-    ?subprop_uri a pygraft:ChosenRelation .
-    ?superprop_uri a pygraft:ChosenRelation .
+  ### 2) Require the sub-property to belong to the shared relations universe
+  {
+    SELECT DISTINCT ?subprop_uri
+    WHERE {
+      # @RELATIONS_SEED
+      BIND(?prop_uri AS ?subprop_uri)
+    }
+  }
+
+  ### 3) Require the super-property to belong to the same relations universe
+  {
+    SELECT DISTINCT ?superprop_uri
+    WHERE {
+      # @RELATIONS_SEED
+      BIND(?prop_uri AS ?superprop_uri)
+    }
+  }
 }
-ORDER BY STR(?subprop_uri)
-STR(?superprop_uri)
+ORDER BY
+  STR(?subprop_uri)
+  STR(?superprop_uri)

@@ -7,72 +7,58 @@
 #  Authors: See CONTRIBUTORS.txt
 #  Software description: A RDF Knowledge Graph stochastic generation solution.
 #
+# --------------------------------------------------------------------------------------------------
 # FILE      : rel2patterns.rq
 # AUTHOR    : Ovidiu PASCAL - Orange INNOV
-# DATE      : 2025-12-15
-# PURPOSE   : Retrieve ontology-local object properties and their OWL
-#             characteristic types (patterns) as pairs
-#             (?prop_uri -> ?pattern_uri).
+# DATE      : 2025-12-11
+# PURPOSE   : Retrieve ontology-local object-style properties and their explicitly
+#             declared OWL characteristic types (patterns).
 #
 # INTENT    :
-#   Detect OWL "characteristics" (reflexive, functional, transitive, etc.)
-#   for the object-property universe selected by relations.rq.
+#   This query profiles relations by extracting OWL characteristic declarations
+#   (e.g. symmetric, transitive, functional) that are explicitly stated in the
+#   ontology graph.
 #
-#   This query no longer re-implements the object-property seeding logic.
-#   Instead, it consumes the universe materialized by relations.py as:
+#   The universe of properties is not defined here. Instead, it is delegated to
+#   relations_seed.rq and injected via the {{RELATIONS_SEED}} placeholder so that
+#   all relation extractors operate over the same ontology-local property universe.
 #
-#       ?prop_uri rdf:type pygraft:ChosenRelation .
-#
-# LOGIC     :
-#   1) Restrict to the precomputed object-property universe:
-#        ?prop_uri a pygraft:ChosenRelation
-#        - keep only IRIs (defensive)
-#
-#   2) Optionally bind any OWL characteristic type via a VALUES list:
-#        OPTIONAL { ?prop_uri a ?pattern_uri . VALUES ?pattern_uri { ... } }
+#   No OWL reasoning or inference is performed: only explicit rdf:type assertions
+#   present in the ontology are considered.
 #
 # OUTPUT    :
-#   - ?prop_uri    : IRI of a selected object property (from relations.rq universe)
-#   - ?pattern_uri : IRI of the OWL characteristic type (may be unbound)
+#   - ?prop_uri    : IRI of an ontology-local, object-style property
+#   - ?pattern_uri : IRI of an OWL characteristic type explicitly declared for
+#                    ?prop_uri (may be unbound)
 #
 # NOTES     :
-#   - Pure SPARQL 1.1, no vendor extensions.
-#   - Patterns are recorded only when explicitly declared in the ontology.
-#   - Properties with no declared characteristics are returned with an
-#     unbound ?pattern_uri.
-#
-# ------------------------------------------------------------------------------
+#   - Pure SPARQL 1.1; no vendor extensions.
+#   - Properties with no declared OWL characteristics are still returned, with
+#     ?pattern_uri left unbound.
+#   - Pattern normalization (e.g. stripping "Property" suffix) is handled in
+#     Python, not in SPARQL.
+# --------------------------------------------------------------------------------------------------
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX pygraft: <http://pygraft.org/schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT DISTINCT
-    ?prop_uri
-    ?pattern_uri
+SELECT DISTINCT ?prop_uri ?pattern_uri
 WHERE {
-    # 1) Precomputed object-property universe (materialized by relations.py)
-    ?prop_uri a pygraft:ChosenRelation .
-    FILTER (isIRI(?prop_uri))
+  # @RELATIONS_SEED
 
-    # 2) Optional OWL characteristic binding (explicit-only)
-    OPTIONAL {
-        ?prop_uri a ?pattern_uri .
-        VALUES ?pattern_uri {
-            owl:ReflexiveProperty
-            owl:IrreflexiveProperty
-            owl:SymmetricProperty
-            owl:AsymmetricProperty
-            owl:TransitiveProperty
-            owl:FunctionalProperty
-            owl:InverseFunctionalProperty
-        }
+  OPTIONAL {
+    ?prop_uri a ?pattern_uri .
+    VALUES ?pattern_uri {
+      owl:ReflexiveProperty
+      owl:IrreflexiveProperty
+      owl:SymmetricProperty
+      owl:AsymmetricProperty
+      owl:TransitiveProperty
+      owl:FunctionalProperty
+      owl:InverseFunctionalProperty
     }
+  }
 }
-ORDER BY STR(?prop_uri)
-    # NOTE:
-    # ?pattern_uri is OPTIONAL and may be unbound for properties with no OWL
-    # characteristics. COALESCE ensures a stable, always-defined sort key and
-    # prevents RDFLib from failing when ordering rows with unbound variables.
-COALESCE(STR(?pattern_uri), "")
+ORDER BY STR(?prop_uri) COALESCE(STR(?pattern_uri), "")

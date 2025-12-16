@@ -7,53 +7,32 @@
 #  Authors: See CONTRIBUTORS.txt
 #  Software description: A RDF Knowledge Graph stochastic generation solution.
 #
+# --------------------------------------------------------------------------------------------------
 # FILE      : relations.rq
 # AUTHOR    : Ovidiu PASCAL - Orange INNOV
 # DATE      : 2025-12-15
+# PURPOSE   : List all ontology-local object-style properties that belong to the shared
+#             relations universe (used by relation_info extraction and KG generation).
 #
-# INTENT
-#   Collect the ontology-local universe of OWL object properties that are suitable for:
-#     - relation_info extraction (rel2dom, rel2range, rel2patterns, ...)
-#     - KG instance generation (domain / range compatible edges)
+# INTENT    :
+#   This query is the canonical entry-point for enumerating relations. It delegates the
+#   definition of the relations universe to relations_seed.rq (injected here via the
+#   {{RELATIONS_SEED}} placeholder) so that all relation extractors operate over one
+#   consistent, modular "single source of truth" property universe.
 #
-#   The goal is to identify object properties strictly from explicit OWL signals,
-#   without inference, repair, or usage-based heuristics.
+#   Output is an explicit-only, ontology-local snapshot: no OWL reasoning is applied.
+#   Namespace, prefix, and CURIE handling are intentionally delegated to Python.
 #
-#   Seeds include ANY property that is explicitly:
-#     - typed as owl:ObjectProperty, OR
-#     - typed as an OWL object-property characteristic (SymmetricProperty, etc.), OR
-#     - participates in owl:inverseOf, OR
-#     - participates in owl:propertyDisjointWith.
+# OUTPUT    :
+#   - ?prop_uri : IRI of an ontology-local, object-style property suitable for extraction
+#                and for generator edge sampling (domain/range constraints applied later).
 #
-#   Datatype-ish / literal-ish ranges are excluded, and blank-node ranges are
-#   explicitly banned to avoid anonymous class expressions (restrictions, unions, etc.).
-#
-# LOGIC
-#   Step 1: Identify valid object-property seeds from explicit OWL signals
-#     A property IRI is selected as a seed if it:
-#       - appears in at least one explicit object-property signal (type/characteristic/inverse/disjoint),
-#       - is an IRI (no blank nodes),
-#       - is NOT explicitly typed as owl:DatatypeProperty,
-#       - is NOT explicitly typed as owl:AnnotationProperty,
-#       - does NOT declare a blank-node rdfs:range,
-#       - does NOT declare a literal/datatype-like rdfs:range, including:
-#           rdfs:Literal, rdfs:Datatype, rdf:langString, any xsd:* datatype IRI,
-#           or any class that is rdfs:subClassOf* rdfs:Literal or rdfs:Datatype.
-#
-#   Step 2: Expand upward via rdfs:subPropertyOf*
-#     For each valid seed, collect all super-properties reachable via rdfs:subPropertyOf*.
-#
-#   Step 3: Re-apply exclusions at the expanded level
-#     Each collected property is filtered again with the same exclusions.
-#
-# OUTPUT
-#   - ?prop_uri : IRI of each selected OWL object property
-#
-# NOTES
+# NOTES     :
 #   - Pure SPARQL 1.1; no vendor extensions.
-#   - Namespace, prefix, and CURIE handling are performed in Python.
-#
-# ------------------------------------------------------------------------------
+#   - The injected seed block is responsible for all universe guards (datatype-ish ranges,
+#     annotation/datatype properties, blank-node ranges) and for rdfs:subPropertyOf*
+#     expansion + re-guarding.
+# --------------------------------------------------------------------------------------------------
 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -62,112 +41,6 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT ?prop_uri
 WHERE {
-    # --------------------------------------------------------------------------
-    # Step 1: Compute valid object-property seeds in this ontology
-    # --------------------------------------------------------------------------
-    {
-        SELECT DISTINCT ?seed
-        WHERE {
-            # 1.1: Explicit object-property signals (any of these makes it a SEED)
-            {
-                ?seed a ?seed_type .
-                VALUES ?seed_type {
-                    owl:ObjectProperty
-                    owl:ReflexiveProperty
-                    owl:IrreflexiveProperty
-                    owl:SymmetricProperty
-                    owl:AsymmetricProperty
-                    owl:TransitiveProperty
-                    owl:FunctionalProperty
-                    owl:InverseFunctionalProperty
-                }
-            } UNION {
-                { ?seed owl:inverseOf ?_other } UNION { ?_other owl:inverseOf ?seed }
-            } UNION {
-                {
-                    ?seed owl:propertyDisjointWith ?_other
-                } UNION {
-                    ?_other owl:propertyDisjointWith ?seed
-                }
-            }
-
-            FILTER (isIRI(?seed))
-
-            # 1.2: Exclude datatype and annotation properties at the seed level
-            FILTER NOT EXISTS { ?seed a owl:DatatypeProperty }
-            FILTER NOT EXISTS { ?seed a owl:AnnotationProperty }
-
-            # 1.3: Explicitly ban blank-node ranges (anonymous class expressions)
-            FILTER NOT EXISTS {
-                ?seed rdfs:range ?seed_range_bnode .
-                FILTER (isBlank(?seed_range_bnode))
-            }
-
-            # 1.4: Exclude seeds whose range is literal/datatype-ish
-            FILTER NOT EXISTS {
-                ?seed rdfs:range ?seed_range .
-                FILTER (
-                    isLiteral(?seed_range) ||
-                    ?seed_range = rdfs:Literal ||
-                    ?seed_range = rdfs:Datatype ||
-                    ?seed_range = rdf:langString ||
-                    STRSTARTS(STR(?seed_range), "http://www.w3.org/2001/XMLSchema#")
-                )
-            }
-
-            # 1.5: Exclude ranges that are subclasses of rdfs:Literal / rdfs:Datatype
-            FILTER NOT EXISTS {
-                ?seed rdfs:range ?seed_range2 .
-                FILTER (isIRI(?seed_range2))
-                FILTER EXISTS { ?seed_range2 rdfs:subClassOf* rdfs:Literal }
-            }
-            FILTER NOT EXISTS {
-                ?seed rdfs:range ?seed_range3 .
-                FILTER (isIRI(?seed_range3))
-                FILTER EXISTS { ?seed_range3 rdfs:subClassOf* rdfs:Datatype }
-            }
-        }
-    }
-
-    # --------------------------------------------------------------------------
-    # Step 2: Expand to all related properties via rdfs:subPropertyOf*
-    # --------------------------------------------------------------------------
-    ?seed rdfs:subPropertyOf* ?prop_uri .
-    FILTER (isIRI(?prop_uri))
-
-    # --------------------------------------------------------------------------
-    # Step 3: Re-apply exclusions at the expanded property level
-    # --------------------------------------------------------------------------
-
-    # 3.1: Exclude anything explicitly typed as Datatype/Annotation property
-    FILTER NOT EXISTS { ?prop_uri a owl:DatatypeProperty }
-    FILTER NOT EXISTS { ?prop_uri a owl:AnnotationProperty }
-
-    FILTER NOT EXISTS {
-        ?prop_uri rdfs:range ?prop_range_bnode .
-        FILTER (isBlank(?prop_range_bnode))
-    }
-
-    FILTER NOT EXISTS {
-        ?prop_uri rdfs:range ?prop_range .
-        FILTER (
-            isLiteral(?prop_range) ||
-            ?prop_range = rdfs:Literal ||
-            ?prop_range = rdfs:Datatype ||
-            ?prop_range = rdf:langString ||
-            STRSTARTS(STR(?prop_range), "http://www.w3.org/2001/XMLSchema#")
-        )
-    }
-
-    FILTER NOT EXISTS {
-        ?prop_uri rdfs:range ?prop_range2 .
-        FILTER (isIRI(?prop_range2))
-        FILTER EXISTS { ?prop_range2 rdfs:subClassOf* rdfs:Literal }
-    }
-    FILTER NOT EXISTS {
-        ?prop_uri rdfs:range ?prop_range3 .
-        FILTER (isIRI(?prop_range3))
-        FILTER EXISTS { ?prop_range3 rdfs:subClassOf* rdfs:Datatype }
-    }
+  # @RELATIONS_SEED
 }
 ORDER BY STR(?prop_uri)

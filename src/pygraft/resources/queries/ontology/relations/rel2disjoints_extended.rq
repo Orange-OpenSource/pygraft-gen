@@ -7,80 +7,115 @@
 #  Authors: See CONTRIBUTORS.txt
 #  Software description: A RDF Knowledge Graph stochastic generation solution.
 #
+# --------------------------------------------------------------------------------------------------
 # FILE      : rel2disjoints_extended.rq
 # AUTHOR    : Ovidiu PASCAL - Orange INNOV
-# DATE      : 2025-12-15
+# DATE      : 2025-12-12
 # PURPOSE   : Enumerate object-property disjointness propagated downward along
 #             rdfs:subPropertyOf* as pairs (?prop_uri -> ?disjoint_uri).
 #
 # INTENT    :
 #   Extended (derived) property disjointness = explicit owl:propertyDisjointWith
-#   + structural downward propagation over rdfs:subPropertyOf* (identity allowed),
-#   restricted to the precomputed object-property universe selected by relations.rq.
+#   treated as symmetric + structural downward propagation over rdfs:subPropertyOf*
+#   (identity allowed), restricted to the same ontology-local relations universe as
+#   relations.rq (defined in relations_seed.rq).
 #
-#   The universe is materialized by relations.py as membership triples:
-#
-#       <propIRI> rdf:type pygraft:ChosenRelation .
-#
-#   This query consumes that universe and does not repeat seeding / filtering.
-#
-# LOGIC     :
-#   1) Pick an explicit disjoint "super-property" pair (treat as symmetric):
-#        ?sup_left (owl:propertyDisjointWith | ^owl:propertyDisjointWith) ?sup_right
-#
-#   2) Propagate disjointness downward along rdfs:subPropertyOf*:
-#        ?prop_uri     rdfs:subPropertyOf* ?sup_left
-#        ?disjoint_uri rdfs:subPropertyOf* ?sup_right
-#
-#   3) Restrict all involved properties to the precomputed universe:
-#        ?sup_left      a pygraft:ChosenRelation
-#        ?sup_right     a pygraft:ChosenRelation
-#        ?prop_uri      a pygraft:ChosenRelation
-#        ?disjoint_uri  a pygraft:ChosenRelation
+#   This query derives a larger disjointness view that is still "structural-only":
+#   no OWL reasoning is applied beyond following explicit rdfs:subPropertyOf* links.
 #
 # OUTPUT    :
-#   - ?prop_uri     : IRI of the left-hand property after downward propagation
-#   - ?disjoint_uri : IRI of the right-hand property after downward propagation
+#   - ?prop_uri     : IRI of an ontology-local, object-style property
+#   - ?disjoint_uri : IRI of a property disjoint with ?prop_uri after downward propagation
+#
+# LOGIC     :
+#   1) Select an explicit disjoint super-property pair, treating owl:propertyDisjointWith
+#      as symmetric (match both directions).
+#   2) Propagate disjointness downward on both sides via rdfs:subPropertyOf*.
+#   3) Enforce ontology-local universe membership (relations.rq semantics) for:
+#        - both disjoint super-properties (?sup_left, ?sup_right)
+#        - both emitted properties (?prop_uri, ?disjoint_uri)
+#      Each check is implemented by re-running the shared seed and re-binding its output.
 #
 # NOTES     :
-#   - Pure SPARQL 1.1, no vendor extensions.
-#   - owl:propertyDisjointWith is treated as symmetric here to capture the
-#     "super-pair" even if the ontology asserts only one direction.
-#   - This is structural propagation only (no OWL reasoning beyond graph patterns).
-#
-# ------------------------------------------------------------------------------
+#   - Pure SPARQL 1.1; no vendor extensions.
+#   - Explicit-only + structural propagation: no OWL reasoning/inference.
+#   - The relations universe is injected via the marker line:
+#         # @RELATIONS_SEED
+# --------------------------------------------------------------------------------------------------
 
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX pygraft: <http://pygraft.org/schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT
-    ?prop_uri
-    ?disjoint_uri
+  ?prop_uri
+  ?disjoint_uri
 WHERE {
-    # --------------------------------------------------------------------------
-    # Step 1: Pick an explicit disjoint "super-property" pair (treat as symmetric)
-    # --------------------------------------------------------------------------
-    ?sup_left (owl:propertyDisjointWith | ^owl:propertyDisjointWith) ?sup_right .
-    FILTER (isIRI(?sup_left) && isIRI(?sup_right))
-    FILTER (?sup_left != ?sup_right)
+  # --------------------------------------------------------------------------
+  # Step 1: Pick an explicit disjoint "super-property" pair
+  #
+  # owl:propertyDisjointWith is symmetric by definition, so we treat it as
+  # symmetric here even if the ontology asserts only one direction.
+  # --------------------------------------------------------------------------
+  ?sup_left (owl:propertyDisjointWith | ^owl:propertyDisjointWith) ?sup_right .
+  FILTER(isIRI(?sup_left) && isIRI(?sup_right))
+  FILTER(?sup_left != ?sup_right)
 
-    # --------------------------------------------------------------------------
-    # Step 2: Propagate disjointness downward along rdfs:subPropertyOf*
-    # --------------------------------------------------------------------------
-    ?prop_uri rdfs:subPropertyOf* ?sup_left .
-    ?disjoint_uri rdfs:subPropertyOf* ?sup_right .
-    FILTER (isIRI(?prop_uri) && isIRI(?disjoint_uri))
-    FILTER (?prop_uri != ?disjoint_uri)
+  # --------------------------------------------------------------------------
+  # Step 2: Propagate disjointness downward along rdfs:subPropertyOf*
+  #
+  # Identity is allowed (a property is always a subPropertyOf* itself),
+  # but propagation is strictly downward: no upward inference is performed.
+  # --------------------------------------------------------------------------
+  ?prop_uri     rdfs:subPropertyOf* ?sup_left .
+  ?disjoint_uri rdfs:subPropertyOf* ?sup_right .
+  FILTER(isIRI(?prop_uri) && isIRI(?disjoint_uri))
+  FILTER(?prop_uri != ?disjoint_uri)
 
-    # --------------------------------------------------------------------------
-    # Step 3: Universe membership checks (relations.rq semantics)
-    # --------------------------------------------------------------------------
-    ?sup_left a pygraft:ChosenRelation .
-    ?sup_right a pygraft:ChosenRelation .
-    ?prop_uri a pygraft:ChosenRelation .
-    ?disjoint_uri a pygraft:ChosenRelation .
+  # --------------------------------------------------------------------------
+  # Step 3: Universe membership checks (relations.rq semantics)
+  #
+  # Each membership check is implemented by requiring the candidate IRI to be
+  # produced by the shared ontology-local universe query (relations_seed.rq),
+  # injected via the marker line "# @RELATIONS_SEED".
+  # --------------------------------------------------------------------------
+
+  # -- sup_left must belong to the ontology-local object-style property universe
+  {
+    SELECT DISTINCT ?sup_left
+    WHERE {
+      # @RELATIONS_SEED
+      BIND(?prop_uri AS ?sup_left)
+    }
+  }
+
+  # -- sup_right must belong to the same ontology-local universe
+  {
+    SELECT DISTINCT ?sup_right
+    WHERE {
+      # @RELATIONS_SEED
+      BIND(?prop_uri AS ?sup_right)
+    }
+  }
+
+  # -- emitted left-hand property must also be in the universe
+  {
+    SELECT DISTINCT ?prop_uri
+    WHERE {
+      # @RELATIONS_SEED
+    }
+  }
+
+  # -- emitted right-hand property must also be in the universe
+  {
+    SELECT DISTINCT ?disjoint_uri
+    WHERE {
+      # @RELATIONS_SEED
+      BIND(?prop_uri AS ?disjoint_uri)
+    }
+  }
 }
-ORDER BY STR(?prop_uri)
-STR(?disjoint_uri)
+ORDER BY
+  STR(?prop_uri)
+  STR(?disjoint_uri)
