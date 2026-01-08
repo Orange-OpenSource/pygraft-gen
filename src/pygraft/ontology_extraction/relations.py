@@ -36,56 +36,42 @@ def build_extracted_relation_info(
     graph: Graph,
     namespaces: NamespaceInfoDict,
 ) -> RelationInfoDict:
-    """Build RelationInfoDict extracted from an ontology.
+    """Build a minimal RelationInfoDict extracted from an ontology.
 
-    This function first computes the "object-property universe" using relations.rq,
-    then materializes it into a temporary working graph via rdf:type membership
-    triples. All subsequent SPARQL extractors run against this working graph,
-    so they share a single, consistent relation universe without duplicating
-    filter logic across queries.
+    For now this is scaffolding only: it returns an empty but structurally
+    complete RelationInfoDict so that downstream code can rely on the JSON
+    shape while we implement real extraction.
 
     Args:
         graph:
             Parsed ontology graph that contains the TBox axioms.
         namespaces:
-            Namespace information computed from the same graph.
+            Namespace information computed from the same graph. Currently
+            unused but reserved for later use to generate "prefix:basename"
+            identifiers for object properties.
 
     Returns:
-        RelationInfoDict with extracted relation structures and statistics.
+        RelationInfoDict with all mappings empty and statistics set to zero.
     """
-    # ------------------------------------------------------------------
-    # 0) Build a working graph that contains:
-    #    - the original ontology triples
-    #    - membership triples marking the chosen object-property universe
-    # ------------------------------------------------------------------
-    working_graph, relations = _build_relation_universe_working_graph(
+    # --- relation list ---
+    relations = _extract_relations(graph=graph, namespaces=namespaces)
+    # --- OWL pattern mappings ---
+    rel2patterns = _extract_rel2patterns(graph=graph, namespaces=namespaces)
+    # --- logical characteristics ---
+    characteristics = _build_relation_characteristics(rel2patterns=rel2patterns)
+    # --- inverse-of relationships ---
+    inverseof_relations, rel2inverse = _extract_inverseof_relations(
         graph=graph,
         namespaces=namespaces,
     )
-
-    # --- OWL pattern mappings ---
-    rel2patterns = _extract_rel2patterns(graph=working_graph, namespaces=namespaces)
-
-    # --- logical characteristics ---
-    characteristics = _build_relation_characteristics(rel2patterns=rel2patterns)
-
-    # --- inverse-of relationships ---
-    inverseof_relations, rel2inverse = _extract_inverseof_relations(
-        graph=working_graph,
-        namespaces=namespaces,
-    )
-
     # --- subPropertyOf hierarchy ---
-    subrelations, rel2superrel = _extract_subrelations(graph=working_graph, namespaces=namespaces)
-
+    subrelations, rel2superrel = _extract_subrelations(graph=graph, namespaces=namespaces)
     # --- disjointness mappings ---
-    rel2disjoints = _extract_rel2disjoints(graph=working_graph, namespaces=namespaces)
+    rel2disjoints = _extract_rel2disjoints(graph=graph, namespaces=namespaces)
     rel2disjoints_symmetric = _build_rel2disjoints_symmetric(rel2disjoints=rel2disjoints)
-    rel2disjoints_extended = _extract_rel2disjoints_extended(graph=working_graph, namespaces=namespaces)
-
+    rel2disjoints_extended = _extract_rel2disjoints_extended(graph=graph, namespaces=namespaces)
     # --- domain / range ---
-    rel2dom, rel2range = _extract_rel2dom_rel2range(graph=working_graph, namespaces=namespaces)
-
+    rel2dom, rel2range = _extract_rel2dom_rel2range(graph=graph, namespaces=namespaces)
     # --- statistics ---
     statistics: RelationStatistics = _compute_relation_statistics(
         relations=relations,
@@ -128,69 +114,72 @@ def build_extracted_relation_info(
     )
 
 
+
+# ------------------------------------------------------------------------------------------------ #
+# Query Loader Helpers                                                                             #
+# ------------------------------------------------------------------------------------------------ #
+def _load_relation_query_with_seed(query_filename: str) -> str:
+    """Load a relation query and inject the shared relations seed block when requested.
+
+    Injection is safe and deterministic:
+      - Only replaces lines whose stripped content is exactly "# @RELATIONS_SEED".
+      - Does not expand placeholders mentioned in comments or inline text.
+      - Preserves indentation of the marker line (useful for readability).
+
+    Args:
+        query_filename:
+            The filename of the .rq query to load.
+
+    Returns:
+        Query text with the shared seed block injected when requested.
+
+    Raises:
+        ValueError:
+            If the query mentions the marker token but never uses it as a
+            standalone line (likely a formatting mistake).
+    """
+    seed_marker = "# @RELATIONS_SEED"
+    query_text = load_relation_query(query_filename)
+
+    lines = query_text.splitlines(keepends=True)
+
+    marker_line_indexes: list[int] = []
+    for i, line in enumerate(lines):
+        if line.strip() == seed_marker:
+            marker_line_indexes.append(i)
+
+    if not marker_line_indexes:
+        if "@RELATIONS_SEED" in query_text:
+            msg = (
+                f"Query '{query_filename}' mentions '@RELATIONS_SEED' but does not contain "
+                f"'{seed_marker}' as a standalone line. Put it on its own line to enable safe injection."
+            )
+            raise ValueError(msg)
+        return query_text
+
+    seed_block = load_relation_query("relations_seed.rq").rstrip() + "\n"
+
+    rendered_lines: list[str] = []
+    for line in lines:
+        if line.strip() != seed_marker:
+            rendered_lines.append(line)
+            continue
+
+        # Preserve indentation (spaces/tabs before the placeholder).
+        indentation = line[: len(line) - len(line.lstrip())]
+        indented_seed_block = "".join(
+            f"{indentation}{seed_line}"
+            for seed_line in seed_block.splitlines(keepends=True)
+        )
+        rendered_lines.append(indented_seed_block)
+
+    return "".join(rendered_lines)
+
+
+
 # ================================================================================================ #
 # SPARQL Query Execution                                                                           #
 # ================================================================================================ #
-
-def _build_relation_universe_working_graph(
-    *,
-    graph: Graph,
-    namespaces: NamespaceInfoDict,
-) -> tuple[Graph, list[str]]:
-    """Build a temporary working graph tagged with the chosen relation universe.
-
-    The relation universe is defined by relations.rq. For each selected property IRI,
-    this function adds a membership triple:
-
-        <propIRI> rdf:type pygraft:ChosenRelation .
-
-    The returned graph contains all original ontology triples plus these membership
-    triples, enabling other SPARQL queries to restrict their property universe with
-    a single join pattern rather than repeating the relations.rq seed filters.
-
-    Args:
-        graph:
-            RDF graph containing the ontology TBox axioms.
-        namespaces:
-            Namespace metadata used to generate prefix:LocalName identifiers.
-
-    Returns:
-        (working_graph, relations) where:
-            - working_graph is a temporary graph containing ontology + membership triples
-            - relations is the sorted list of prefix:LocalName identifiers for the universe
-    """
-    from rdflib import Graph as RdfGraph
-    from rdflib import Namespace, RDF, URIRef
-
-    query_text = load_relation_query("relations.rq")
-    results: Iterable[Any] = graph.query(query_text)
-
-    # We keep both:
-    # - the raw IRIs for membership triples (URIRef)
-    # - the prefixed IDs for relation_info.json output
-    chosen_relation_iris: set[URIRef] = set()
-    chosen_relation_ids: set[str] = set()
-
-    for row in results:
-        prop_iri = get_row_str(row, "prop_uri")
-        chosen_relation_iris.add(URIRef(prop_iri))
-        chosen_relation_ids.add(iri_to_prefixed_name(prop_iri, namespaces))
-
-    # Temporary working graph: copy source triples, then tag universe membership.
-    working_graph = RdfGraph()
-    for triple in graph.triples((None, None, None)):
-        working_graph.add(triple)
-
-    pygraft = Namespace("http://pygraft.org/schema#")
-    working_graph.bind("pygraft", pygraft)
-
-    for prop_term in chosen_relation_iris:
-        working_graph.add((prop_term, RDF.type, pygraft.ChosenRelation))
-
-    return working_graph, sorted(chosen_relation_ids)
-
-
-
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -230,7 +219,7 @@ def _extract_relations(
                 "_missing:externalRelation"   # no known namespace matched
             }
     """
-    query_text = load_relation_query("relations.rq")
+    query_text = _load_relation_query_with_seed("relations.rq")
     results: Iterable[Any] = graph.query(query_text)
 
     prefixed_relations: set[str] = set()
@@ -302,7 +291,7 @@ def _extract_rel2patterns(
                 "noria:isPartOf": ["owl:Transitive"]
             }
     """
-    query_text = load_relation_query("rel2patterns.rq")
+    query_text = _load_relation_query_with_seed("rel2patterns.rq")
     results: Iterable[Any] = graph.query(query_text)
 
     rel_to_patterns: dict[str, set[str]] = {}
@@ -447,7 +436,7 @@ def _extract_inverseof_relations(
             If conflicting inverseOf declarations are found for the same
             relation (for example, A inverseOf B and A inverseOf C).
     """
-    query_text = load_relation_query("inverseof_relations.rq")
+    query_text = _load_relation_query_with_seed("inverseof_relations.rq")
     results: Iterable[Any] = graph.query(query_text)
 
     rel2inverse: dict[str, str] = {}
@@ -540,7 +529,7 @@ def _extract_subrelations(
         - Transitive closure should be computed later as a derived structure
           if needed by downstream components.
     """
-    query_text = load_relation_query("subrelations.rq")
+    query_text = _load_relation_query_with_seed("subrelations.rq")
     results: Iterable[Any] = graph.query(query_text)
 
     rel2superrel: dict[str, set[str]] = {}
@@ -609,7 +598,7 @@ def _extract_rel2disjoints(
         Mapping from relation identifier to a sorted list of relation identifiers
         explicitly declared disjoint with it (forward direction only).
     """
-    query_text = load_relation_query("rel2disjoints.rq")
+    query_text = _load_relation_query_with_seed("rel2disjoints.rq")
     results: Iterable[Any] = graph.query(query_text)
 
     rel_to_disjoints: dict[str, set[str]] = {}
@@ -698,7 +687,7 @@ def _extract_rel2disjoints_extended(
         disjoint with it under downward subPropertyOf propagation (forward
         direction only).
     """
-    query_text = load_relation_query("rel2disjoints_extended.rq")
+    query_text = _load_relation_query_with_seed("rel2disjoints_extended.rq")
     results: Iterable[Any] = graph.query(query_text)
 
     rel_to_disjoints: dict[str, set[str]] = {}
@@ -763,7 +752,7 @@ def _extract_rel2dom_rel2range(
             - rel2dom maps relation identifier -> sorted list of domain classes.
             - rel2range maps relation identifier -> sorted list of range classes.
     """
-    query_text = load_relation_query("rel2dom_rel2range.rq")
+    query_text = _load_relation_query_with_seed("rel2dom_rel2range.rq")
     results: Iterable[Any] = graph.query(query_text)
 
     rel_to_domains: dict[str, set[str]] = {}
