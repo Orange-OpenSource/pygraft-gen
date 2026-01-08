@@ -145,9 +145,6 @@ class KGGenConfigDict(TypedDict):
         num_triples: Target number of triples before augmentation.
         enable_fast_generation: Whether to use the fast seed-and-replicate KG
             generation mode, trading some diversity for speed.
-        enable_inference_oversampling: Whether to apply inference-based
-            oversampling (using inverse-of, symmetric, and subproperty rules)
-            to reach the desired triple count.
         relation_usage_uniformity: Controls how evenly triples are
             distributed across relations, with higher values producing more
             uniform usage.
@@ -165,7 +162,6 @@ class KGGenConfigDict(TypedDict):
     num_triples: int
 
     enable_fast_generation: bool
-    enable_inference_oversampling: bool
 
     relation_usage_uniformity: float
     prop_untyped_entities: float
@@ -419,7 +415,6 @@ class KGUserParameters(TypedDict):
     num_entities: int
     num_triples: int
     enable_fast_generation: bool
-    enable_inference_oversampling: bool
 
     # --- relation usage + typing balance ---
     relation_usage_uniformity: float

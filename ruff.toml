@@ -76,6 +76,7 @@ select = [
 
 ignore = [
     "E501", # line length -> formatter handles
+    "W505", # doc line too long -> formatter / doc rules handle
     "COM812", # trailing comma -> formatter handles
     "S311", # ignore cryptographic purposes warning
     "TC006", # allow unquoted typing.cast type expressions

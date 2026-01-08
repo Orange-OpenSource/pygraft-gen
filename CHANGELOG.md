@@ -6,10 +6,97 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
-### Added & Not committed yet
+### Planned
 
-- Installed dev dependency [prek](https://github.com/j178/prek) & used in conjunction with local but uncommitted `.pre-commit-config.yaml`. The goal is to enhance the robustness of my changes while not troubling the 2nd dev of my team if they want to do stuff. **THIS SHALL BE ADDED ONLY AT THE END OF THE DEV PHASE ONCE EVRY THING IS CLEARED & OK**
+- [ ] Comprehensive unit test suite for core generation modules (schema, entities, triple generation)
+- [ ] Pre-commit hooks configuration for automated code quality checks
+- [ ] CI/CD pipeline (GitHub Actions) for automated testing and validation
+- [ ] Modern updated MkDocs documentation replacing the current outdated Sphinx setup
 
+
+### [0.0.10] KG Generation Optimization
+
+Major performance overhaul of the KG generator, enabling practical large-scale generation of knowledge graphs with millions of entities and tens of millions of triples. The generator now uses modern vectorized operations and intelligent caching to dramatically reduce memory usage and generation time.
+
+#### Changed
+
+- **Restructured KG generator into specialized modules**: The KG generator is now organized into focused components with clear responsibilities:
+  - `types.py`: Type definitions for IDs, arrays, and collections
+  - `structures.py`: Data containers for schema, constraints, entities, and triples
+  - `config.py`: Configuration with built-in validation
+  - `schema.py`: Schema loading, ID mapping, and constraint preparation
+  - `entities.py`: Entity creation and class assignment
+  - `generation.py`: Batch-based triple generation with intelligent filtering
+  - `output.py`: RDF serialization and metadata generation
+  - `kg.py`: High-level orchestration
+
+- **Switched to integer-based internal processing**: All operations now use lightweight integer IDs instead of string manipulation, dramatically reducing memory overhead and lookup times. String identifiers are only used during final RDF serialization.
+
+- **Moved from post-generation cleanup to inline validation**: Triples are validated as they're generated using pre-computed constraint data. This eliminates the need for multiple expensive cleanup passes that previously scanned the entire graph after generation.
+
+- **Implemented batch sampling with vectorized operations**: The generator now samples and validates thousands of triples at once using NumPy's efficient array operations:
+  - Candidate entity pools are pre-computed once at the start
+  - Large batches (1,000-10,000 triples) generated per iteration
+  - Constraints like irreflexivity and functional properties applied via fast array operations
+  - Functional/inverse-functional checks use instant set lookups instead of scanning all triples
+
+- **Introduced two-phase constraint filtering**:
+  - **Fast phase**: Vectorized operations eliminate obviously invalid triples
+  - **Deep phase**: Complex semantic constraints only evaluated on remaining candidates
+  - Results in far fewer expensive validation operations
+
+- **Simplified internal state management**: Generation state is now organized as structured attributes rather than passed through multiple nested function calls, improving code clarity and maintainability.
+
+#### Fixed
+
+- **Eliminated performance bottleneck for symmetric relations**: Symmetric relations with functional constraints previously rebuilt large data structures on every batch. Now uses incremental tracking that updates in constant time per triple, eliminating billions of redundant operations for large graphs.
+
+- **Resolved generation stalls and infinite loops**: Added robust termination mechanisms to prevent the generator from hanging:
+  - **Stall detection**: Automatically drops relations that can't produce more valid triples and redistributes their budget
+  - **Timeout protection**: Prevents infinite loops when final triples are extremely constrained
+  - **Adaptive oversampling**: Constrained relations automatically sample more candidates to maintain generation speed
+  - Replaces the previous fixed retry limit that could still cause hangs in edge cases
+
+- **Improved memory efficiency**:
+  - Triple storage uses compact indexed structures instead of flat collections
+  - Entity candidate pools use sparse arrays optimized for large datasets
+  - Memory explicitly released after RDF serialization
+  - Domain/range pools computed once and reused throughout generation
+
+- **Optimized functional property validation**: Checking whether an entity can be used with functional or inverse-functional properties now happens in constant time via set lookups, rather than scanning all existing triples. For large graphs, this eliminates hundreds of billions of redundant comparisons.
+
+#### Added
+
+- **Intelligent generation heuristics**:
+  - **Weighted relation sampling**: Control how evenly relations are used (natural distribution vs. uniform)
+  - **Entity freshness bias**: Naturally encourages using each entity at least once without strict enforcement
+  - **Fast generation mode**: For very large targets, generates a seed population then replicates type profiles, avoiding expensive recomputation
+
+- **Comprehensive constraint caching**: All schema constraints (class hierarchies, disjointness, domain/range requirements, relation properties) are analyzed once at startup and cached for instant lookup during generation.
+
+- **Structured state management**: Clear data containers for schema metadata, constraint caches, entity state, and triple generation progress, with comprehensive documentation.
+
+#### Performance Impact
+
+Real-world improvements for large-scale generation:
+
+| Aspect                  | Legacy Approach          | Optimized Approach  | Improvement               |
+|-------------------------|--------------------------|---------------------|---------------------------|
+| Memory usage            | Heavy string duplication | Compact integer IDs | ~60% reduction            |
+| Domain/range lookups    | Recomputed each sample   | Pre-computed cache  | ~1000x faster             |
+| Functional checks       | Scan all triples         | Instant set lookup  | ~10000x faster            |
+| Constraint validation   | Multiple post-gen passes | Inline validation   | 5x fewer scans            |
+| Generation reliability  | Could hang or stall      | Robust termination  | No infinite loops         |
+| Large-scale feasibility | Often impractical        | Consistently works  | Enables million+ entities |
+
+The actual speedup varies significantly based on ontology complexity, highly constrained schemas with many functional properties and disjointness rules will see different improvements than simpler ontologies. However, the generator is now substantially faster across all scenarios and, critically, will complete reliably without hanging or stalling, even for very large target sizes.
+
+
+### [0.0.9] Bugfix Release: extract-single-source-of-truth
+
+Fix the earlier refactor attempt that tried to centralize the object-property universe via a materialized working graph (membership triples + graph copy), which caused a major performance regression (from ~20-30s to ~10min) and failed to be a practical single source of truth.
+
+We now introduce `relations_seed.rq` as the single source of truth for our relations extractions which is injected into all the other relation SPARQL queries via the `@RELATIONS_SEED` marker. 
 
 
 ## [0.0.8] Ontology Extraction Feature

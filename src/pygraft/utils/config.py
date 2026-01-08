@@ -414,11 +414,6 @@ def _validate_kg_types(kg_cfg: KGGenConfigDict) -> None:
         "enable_fast_generation",
         kg_cfg["enable_fast_generation"],
     )
-    kg_cfg["enable_inference_oversampling"] = _ensure_bool_type(
-        "kg",
-        "enable_inference_oversampling",
-        kg_cfg["enable_inference_oversampling"],
-    )
 
     kg_cfg["relation_usage_uniformity"] = _ensure_numeric_type(
         "kg",

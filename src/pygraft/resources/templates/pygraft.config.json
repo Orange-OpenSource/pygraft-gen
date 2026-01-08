@@ -35,7 +35,6 @@
     "num_triples": 30000,
 
     "enable_fast_generation": true,
-    "enable_inference_oversampling": false,
 
     "relation_usage_uniformity": 0.9,
     "prop_untyped_entities": 0.0,

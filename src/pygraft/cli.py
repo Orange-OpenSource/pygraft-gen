@@ -36,6 +36,7 @@ import importlib.metadata as importlib_metadata
 import logging
 from pathlib import Path
 from typing import cast
+import json
 
 import click
 import typer
@@ -136,6 +137,9 @@ def _run_schema(config_path: Path) -> None:
 
 def _run_kg(config_path: Path, *, explain_inconsistency: bool) -> None:
     """Generate the KG and print a concise summary for the CLI."""
+    project_name = json.load(open(config_path)).get('general', {}).get('project_name', 'Unknown')
+    typer.echo(typer.style(f"\n>>> Generating KG: {project_name}\n", fg=typer.colors.CYAN))
+
     pellet_explanations: list[str] = []
 
     _, kg_file, is_consistent = generate_kg(
@@ -348,6 +352,17 @@ def extract(
     ontology = ontology.expanduser()
     print_ascii_header()
 
+    # Show status message before extraction
+    typer.echo()
+    typer.echo(
+        typer.style(
+            ">>> Extracting ontology... This may take up to 2 minutes, please wait.",
+            fg=typer.colors.YELLOW,
+            bold=True,
+        )
+    )
+    typer.echo()
+
     namespaces_path, class_info_path, relation_info_path = extract_ontology(ontology)
 
     # ------------------------------------------------------------------
@@ -461,29 +476,28 @@ def extract(
     )
     typer.echo(
         "    Controls synthetic KG generation (size, density, typing, consistency).\n"
-        "    You are encouraged to modify these parameters."
     )
 
     typer.echo()
 
     typer.echo(
         typer.style(
-            "What you should NOT edit:",
-            fg=typer.colors.RED,
+            "What you should edit with caution:",
+            fg=typer.colors.MAGENTA,
             bold=True,
         )
     )
     typer.echo(
         typer.style(
             "  • general",
-            fg=typer.colors.RED,
+            fg=typer.colors.MAGENTA,
         )
     )
     typer.echo(
-        "    Automatically managed by PyGraft (project name, RDF format).\n"
-        "    Do not modify this section."
+        "    - project_name: Must match the ontology-based folder name for 'kg' command.\n"
+        "    - rdf_format: Must match the ontology format {'ttl', 'rdf'}.\n"
+        "    - rng_seed: Null by default (stochastic generation), set to integer for deterministic."
     )
-
     typer.echo()
 
     typer.echo(

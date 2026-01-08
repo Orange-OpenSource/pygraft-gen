@@ -24,7 +24,8 @@ from pathlib import Path
 import shutil
 
 from pygraft.generators.classes import ClassGenerator, ClassGeneratorConfig
-from pygraft.generators.kg import InstanceGenerator, InstanceGeneratorConfig
+from pygraft.generators.kg.kg import InstanceGenerator
+from pygraft.generators.kg.config import InstanceGeneratorConfig
 from pygraft.generators.relations import RelationGenerator, RelationGeneratorConfig
 from pygraft.generators.schema import SchemaBuilder, SchemaBuilderConfig
 from pygraft.paths import resolve_project_folder, slugify_project_name, OUTPUT_ROOT
@@ -303,7 +304,6 @@ def generate_kg(
         num_triples=kg_cfg["num_triples"],
 
         enable_fast_generation=kg_cfg["enable_fast_generation"],
-        enable_inference_oversampling=kg_cfg["enable_inference_oversampling"],
 
         relation_usage_uniformity=kg_cfg["relation_usage_uniformity"],
         prop_untyped_entities=kg_cfg["prop_untyped_entities"],
