@@ -15,7 +15,7 @@ A major evolution of [PyGraft](https://github.com/nicolas-hbt/pygraft), original
 - Generate an RDF Knowledge Graph from a user-provided ontology
 
 <!-- Using raw GitHub URL so image renders on PyPI -->
-![pygraft-gen_framework](https://raw.githubusercontent.com/Orange-OpenSource/pygraft-gen/main/docs/assets/images/pygraft-gen_framework.png)
+![pygraft-gen_framework](https://raw.githubusercontent.com/Orange-OpenSource/pygraft-gen/master/docs/assets/images/pygraft-gen_framework.png)
 
 ## Installation 
 
