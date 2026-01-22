@@ -19,7 +19,7 @@ from __future__ import annotations
 from typing import TypeAlias, TypedDict
 
 # ================================================================================================ #
-# Pygraft User Configuration File (pygraft_config.{json/yml})                                      #
+# Pygraft Configuration File : pygraft.config.{json/yml}                                           #
 # ================================================================================================ #
 
 
@@ -27,21 +27,21 @@ class PyGraftConfigDict(TypedDict):
     """Top-level configuration driving schema and KG generation.
 
     This mirrors the grouped structure of `pygraft_config.{json,yml}`, with
-    four main sections:
+    three main sections:
 
-    - general:  Global output, RDF format, and RNG settings.
-    - classes:  Class hierarchy generation parameters.
-    - relations:Relation (object property) generation parameters.
-    - kg:       Knowledge graph instance generation parameters.
+    - general: Global output, RDF format, and RNG settings.
+    - schema:  Schema generation parameters (classes and relations).
+    - kg:      Knowledge graph instance generation parameters.
     """
 
     general: GeneralConfigDict
-    classes: ClassGenConfigDict
-    relations: RelationGenConfigDict
+    schema: SchemaConfigDict
     kg: KGGenConfigDict
 
 
-# --- General ------------------------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------------------------ #
+# General Section                                                                                  #
+# ------------------------------------------------------------------------------------------------ #
 
 
 class GeneralConfigDict(TypedDict):
@@ -64,7 +64,24 @@ class GeneralConfigDict(TypedDict):
     rng_seed: int | None
 
 
-# --- Classes ------------------------------------------------------------------------------------ #
+# ------------------------------------------------------------------------------------------------ #
+# Schema Section                                                                                   #
+# ------------------------------------------------------------------------------------------------ #
+
+
+class SchemaConfigDict(TypedDict):
+    """Schema configuration wrapping class and relation generation parameters.
+
+    Attributes:
+        classes: Class hierarchy generation parameters.
+        relations: Relation (object property) generation parameters.
+    """
+
+    classes: ClassGenConfigDict
+    relations: RelationGenConfigDict
+
+
+# --- Classes --- #
 
 
 class ClassGenConfigDict(TypedDict):
@@ -88,7 +105,7 @@ class ClassGenConfigDict(TypedDict):
     avg_disjointness: float
 
 
-# --- Relations ---------------------------------------------------------------------------------- #
+# --- Relations --- #
 
 
 class RelationGenConfigDict(TypedDict):
@@ -134,7 +151,9 @@ class RelationGenConfigDict(TypedDict):
     prop_subproperties: float
 
 
-# --- KG ----------------------------------------------------------------------------------------- #
+# ------------------------------------------------------------------------------------------------ #
+# Kg Section                                                                                       #
+# ------------------------------------------------------------------------------------------------ #
 
 
 class KGGenConfigDict(TypedDict):
@@ -175,12 +194,8 @@ class KGGenConfigDict(TypedDict):
 
 
 # ================================================================================================ #
-# Info Files                                                                                       #
+# Class Info JSON                                                                                  #
 # ================================================================================================ #
-
-# ---------------------------------------------------------------------------
-# Class info (class_info.json)
-# ---------------------------------------------------------------------------
 
 
 class ClassInfoDict(TypedDict):
@@ -249,7 +264,6 @@ def build_class_info(
     This function centralizes the structure of class_info.json so that
     generators provide only raw values without re-implementing the layout.
     """
-
     return {
         "statistics": statistics,
         "classes": list(classes),
@@ -265,10 +279,9 @@ def build_class_info(
     }
 
 
-
-# ---------------------------------------------------------------------------
-# Relation info (relation_info.json)
-# ---------------------------------------------------------------------------
+# ================================================================================================ #
+# Relation Info JSON                                                                               #
+# ================================================================================================ #
 
 
 class RelationInfoDict(TypedDict):
@@ -367,7 +380,6 @@ def build_relation_info(
     This function centralizes the structure of relation_info.json so that
     generators provide only raw values without re-implementing the layout.
     """
-
     rel2patterns_json: dict[str, list[str]] = {}
     for relation_id, patterns in rel2patterns.items():
         if isinstance(patterns, set):
@@ -398,15 +410,17 @@ def build_relation_info(
     }
 
 
-# ---------------------------------------------------------------------------
-# KG info (kg_info.json)
-# ---------------------------------------------------------------------------
+# ================================================================================================ #
+# KG Info JSON                                                                                     #
+# ================================================================================================ #
+
 
 class KGInfoDict(TypedDict):
     """Top-level structure of kg_info.json."""
 
     user_parameters: KGUserParameters
     statistics: KGStatistics
+
 
 class KGUserParameters(TypedDict):
     """User-defined parameters for KG generation."""
@@ -456,7 +470,6 @@ def build_kg_info(
         "user_parameters": user_parameters,
         "statistics": statistics,
     }
-
 
 
 # ---------------------------------------------------------------------------

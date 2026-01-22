@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 
 # ------------------------------------------- PROJECT METADATA ------------------------------------------- #
 [project]
-name = "pygraft"
+name = "pygraft-gen"
 dynamic = ["version"]
-description = "PyGraft: Configurable generation of Schemas & Knowledge Graphs"
+description = "PyGraft-gen: Configurable generation of Schemas & Knowledge Graphs"
 readme = "README.md"
 license = { file = "LICENSE.txt" }
 
@@ -41,13 +41,18 @@ keywords = [
     "Schema",
     "Semantic Web",
     "Synthetic Data Generator",
+    "RDF",
+    "OWL",
+    "RDFS",
+    "Linked Data",
+    "Graph Generation",
+    "Ontology Extraction",
 ]
 
 
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "Topic :: Software Development :: Build Tools",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
@@ -56,12 +61,13 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Scientific/Engineering :: Information Analysis",
+    "Typing :: Typed",
 ]
 
 [project.urls]
-Homepage = "https://github.com/nicolas-hbt/pygraft"
-Repository = "https://github.com/nicolas-hbt/pygraft.git"
-Issues = "https://github.com/nicolas-hbt/pygraft/issues"
+Homepage = "https://github.com/Orange-OpenSource/pygraft-gen"
+Repository = "https://github.com/Orange-OpenSource/pygraft-gen.git"
+Issues = "https://github.com/Orange-OpenSource/pygraft-gen/issues"
 
 
 # ------------------------------------------- CLI ENTRY POINTS ------------------------------------------- #
@@ -81,8 +87,10 @@ dev = [
 ]
 
 docs = [
-    "sphinx>=7.4,<8.2",
-    "furo>=2024.1.29",
+    "mkdocs>=1.6.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.5.0",
+    "mkdocs-material[imaging]>=9.7.1",
+    "mkdocstrings[python]>=1.0.0",
 ]
 
 
@@ -97,8 +105,10 @@ dev = [
 ]
 
 docs = [
-    "sphinx>=7.4,<8.2",
-    "furo>=2024.1.29",
+    "mkdocs>=1.6.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.5.0",
+    "mkdocs-material[imaging]>=9.7.1",
+    "mkdocstrings[python]>=1.0.0",
 ]
 
 

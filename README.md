@@ -1,38 +1,62 @@
 # PyGraft-gen
 
-The **PyGraft-gen** framework is a tool for generating RDFS/OWL ontologies and knowledge graphs.
-It helps to test AI pipelines by creating synthetic data with reliable knowledge structure and characteristic graph patterns.
+Generate synthetic RDFS/OWL ontologies and RDF Knowledge Graphs at scale.
+
+**PyGraft-gen** creates synthetic Knowledge Graphs with reliable structure and constraint-aware generation, making it ideal for testing AI pipelines, benchmarking graph algorithms, and advancing research in scenarios where real data is sensitive or unavailable. 
+
 It also aims to advance the topic of generating realistic RDF Knowledge Graphs through parametric generation.
 
-Fundamentally, *PyGraft-gen* is a major evolution of the *[PyGraft](https://github.com/nicolas-hbt/pygraft)* project initially developed by Nicolas HUBERT.
-At the core of *PyGraft-gen*, a stochastic generation approach is used to produce ontologies and knowledge graphs.
+A major evolution of [PyGraft](https://github.com/nicolas-hbt/pygraft), originally developed by Nicolas Hubert and awarded Best Resource Paper at ESWC 2024. **PyGraft-gen** uses stochastic generation to produce ontologies and Knowledge Graphs while respecting OWL constraints.
 
-Typical workflows with *PyGraft-gen* are:
-- Produce a synthetic RDFS/OWL ontology,
-- Produce an RDF knowledge graph from a synthetic ontology,
-- Produce an RDF knowledge graph from a user-provided ontology.
+**Typical workflows are:**
 
-![pygraft-gen_framework](docs/diagrams/pygraft-gen_framework.png)
+- Generate a synthetic RDFS/OWL ontology from statistical parameters
+- Generate an RDF Knowledge Graph from a synthetic ontology
+- Generate an RDF Knowledge Graph from a user-provided ontology
+
+<!-- Using raw GitHub URL so image renders on PyPI -->
+![pygraft-gen_framework](https://raw.githubusercontent.com/Orange-OpenSource/pygraft-gen/main/docs/assets/images/pygraft-gen_framework.png)
+
+## Installation 
+
+```bash
+pip install pygraft-gen
+
+uv add pygraft-gen
+
+poetry add pygraft-gen
+```
+
+**Requirements:** Python 3.10+, Java (optional, for reasoning)
+
+See the [installation documentation](https://orange-opensource.github.io/pygraft-gen/getting-started/installation/) for more details. 
 
 ## Usage
 
-To install the *PyGraft-gen* framework:
-- Git clone this repository,
-- Create and activate a [Python virtual environment](https://www.w3schools.com/python/python_virtualenv.asp),
-- Install requirements: `pip3 install -e .`
-
-To run the *PyGraft-gen* tool:
-- Call the tool from a terminal and check for the available CLI options: `pygraft`
-
-See also the *Repository Structure* for navigating into this repository:
-```
-pygraft-gen
-├───docs <code and usage directions>
-├───evaluation <subgraph matching patterns and tools>
-└───src <the PyGraft-gen implementation>
+```bash
+pygraft --help
 ```
 
-If you would like to contribute to the *PyGraft-gen* project, please check the [CONTRIBUTING](CONTRIBUTING.md) document.
+See the [quickstart documentation](https://orange-opensource.github.io/pygraft-gen/getting-started/quickstart/) for complete examples.
+
+## Documentation
+
+Full documentation at **[orange-opensource.github.io/pygraft-gen](https://orange-opensource.github.io/pygraft-gen/)**.
+
+## Repository Structure
+
+```
+pygraft-gen/
+|-- src/          # PyGraft-gen library
+|-- docs/         # Documentation source
++-- evaluation/   # Subgraph matching research (experimental)
+```
+
+The `evaluation/` directory contains ongoing research on subgraph matching patterns and is separate from the main library.
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) to get started, or the [contributing documentation](https://orange-opensource.github.io/pygraft-gen/about/contributing/) for more details.
 
 ## Copyright
 

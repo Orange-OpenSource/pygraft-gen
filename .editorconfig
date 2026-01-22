@@ -60,9 +60,7 @@ indent_size = 2
 # ---------------------------------------------------------
 [*.{json,yml,yaml}]
 indent_style = space
-
-# Python ecosystem prefers 4 spaces for readability.
-indent_size = 4
+indent_size = 2
 
 # ---------------------------------------------------------
 # SPARQL queries (W3C / RDF ecosystem)

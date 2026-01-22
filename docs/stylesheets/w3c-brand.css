@@ -1,0 +1,92 @@
+/*
+ * Software Name: PyGraft-gen
+ * SPDX-FileCopyrightText: Copyright (c) Orange SA
+ * SPDX-License-Identifier: MIT
+ *
+ * This software is distributed under the MIT license, the text of which is available at https://opensource.org/license/MIT/ or see the "LICENSE" file for more details.
+ *
+ * Authors: See CONTRIBUTORS.txt
+ * Software description: A RDF Knowledge Graph stochastic generation solution.
+ *
+ */
+
+
+/* ========================================================================================
+   W3C / SEMANTIC WEB BRAND COLORS
+   Based on W3C standards and Semantic Web technologies color palette
+   Source: https://www.w3.org/
+   ======================================================================================== */
+
+:root {
+  /* Override Material's default colors with W3C Blue */
+  --md-primary-fg-color: #005A9C !important;              /* W3C Blue - Main brand color */
+  --md-primary-fg-color--light: #0074D9 !important;       /* Lighter variant for hover states */
+  --md-primary-fg-color--dark: #004080 !important;        /* Darker blue - Better contrast */
+
+  /* Accent Color */
+  --md-accent-fg-color: #0074D9 !important;
+  --md-accent-fg-color--transparent: #0074D910 !important;
+}
+
+/* Dark Mode Theme */
+[data-md-color-scheme="slate"] {
+  /* Primary Blue Colors (adjusted for dark mode visibility) */
+  --md-primary-fg-color: #0074D9 !important;
+  --md-primary-fg-color--light: #3399FF !important;
+  --md-primary-fg-color--dark: #005A9C !important;
+
+  /* Accent Color */
+  --md-accent-fg-color: #3399FF !important;
+  --md-accent-fg-color--transparent: #3399FF10 !important;
+}
+
+
+/* ========================================================================================
+   ADDITIONAL CUSTOMIZATIONS
+   ======================================================================================== */
+
+/* Navigation tabs with W3C blue */
+.md-tabs {
+  background-color: #005A9C !important;
+}
+
+/* Ensure links use W3C blue */
+.md-content a {
+  color: #005A9C;
+}
+
+.md-content a:hover {
+  color: #0074D9;
+}
+
+/* ========================================================================================
+   EXTERNAL LINK ICONS
+   Adds SVG icon to external links
+   ======================================================================================== */
+
+/* Add external link icon to all links with target="_blank" */
+.md-content a[target="_blank"]:after {
+  content: "";
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  margin-left: 0.25em;
+  background-image: url('../assets/images/external-link.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  vertical-align: text-top;
+  opacity: 0.6;
+}
+
+/* Make icon more visible on hover */
+.md-content a[target="_blank"]:hover:after {
+  opacity: 1;
+}
+
+/* Don't add icon to certain elements */
+.md-header a[target="_blank"]:after,
+.md-nav a[target="_blank"]:after,
+.md-button[target="_blank"]:after,
+.md-footer a[target="_blank"]:after {
+  content: none;
+}
