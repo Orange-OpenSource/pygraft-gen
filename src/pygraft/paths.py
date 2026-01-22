@@ -52,7 +52,7 @@ def resolve_project_folder(
 
     Raises:
         ValueError: If mode is invalid, or if project_name is "auto" in KG
-            mode and no previous run exists.
+            mode and no previous synthetic schema run exists.
     """
     base_root = output_root or OUTPUT_ROOT
 
@@ -71,18 +71,21 @@ def resolve_project_folder(
         return run_name
 
     if mode == "kg":
-        # "auto" -> reuse most recent schema run
+        # "auto" -> reuse most recent SYNTHETIC schema run (timestamped only)
         if project_name == "auto":
-            latest = _get_most_recent_subfolder(base_root)
+            latest = _find_latest_synthetic_schema(base_root)
             if latest is None:
                 raise ValueError(
-                    "project_name='auto' but no previous PyGraft output folder exists. "
-                    f"Checked under {base_root}. Generate a schema first or specify "
-                    "an explicit project_name."
+                    "project_name='auto' in KG mode requires a synthetic schema, but none found. "
+                    f"Checked for timestamped folders under {base_root}.\n"
+                    "Either:\n"
+                    "  1. Run 'pygraft schema' with project_name='auto' first, or\n"
+                    "  2. Specify an explicit project_name (e.g., 'noria', 'bot') for extracted ontologies."
                 )
+            logger.info("Auto-selected synthetic schema: %s", latest)
             return latest
 
-        # Explicit name -> reuse existing schema folder
+        # Explicit name -> reuse existing schema folder (extracted ontology)
         return project_name
 
     raise ValueError(f"Unknown mode {mode!r}. Expected 'schema' or 'kg'.")
@@ -122,6 +125,36 @@ def _generate_timestamp_run_name() -> str:
     """Return a sortable timestamp run name, e.g., '2025-12-05_13-22-44'."""
     return datetime.now(tz=timezone.utc).strftime("%Y-%m-%d_%H-%M-%S")
 
+def _find_latest_synthetic_schema(output_root: Path) -> str | None:
+    """Find the most recently created synthetic (timestamped) schema folder.
+
+    Only looks for folders matching the timestamp pattern: YYYY-MM-DD_HH-MM-SS
+    Ignores named folders like 'noria', 'bot', 'foaf', etc.
+
+    Args:
+        output_root: Base directory containing schema folders.
+
+    Returns:
+        Name of the most recent synthetic schema folder, or None if not found.
+    """
+    if not output_root.exists():
+        return None
+
+    # Pattern to match timestamp folders: YYYY-MM-DD_HH-MM-SS
+    timestamp_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}$')
+
+    # Find all subdirectories that match the timestamp pattern
+    synthetic_folders = [
+        entry for entry in output_root.iterdir()
+        if entry.is_dir() and timestamp_pattern.match(entry.name)
+    ]
+
+    if not synthetic_folders:
+        return None
+
+    # Return the most recently created one
+    most_recent = max(synthetic_folders, key=lambda path: path.stat().st_ctime)
+    return most_recent.name
 
 def _initialize_folder(output_root: Path, folder_name: str) -> str:
     """Create or reuse a folder under output_root and return its name.

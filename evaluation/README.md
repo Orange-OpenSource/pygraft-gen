@@ -24,7 +24,7 @@ For 4, it needs training. As we rely on very few example, we don't go with this 
 
 Patterns (use cases) for subgraph matching are implemented in the [./patterns](./patterns) subfolder.
 We provide the three patterns depicted in the following figure. We refer to these as *resilience*, *topology*, and *unreach*.
-![uc_full.png](../docs/diagrams/uc_full.png)
+![uc_full.png](../docs/assets/images/uc_full.png)
 
 #### Editing patterns
 

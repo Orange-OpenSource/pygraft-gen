@@ -1,0 +1,239 @@
+# ========================================================================================
+# SITE METADATA
+# ========================================================================================
+site_name: PyGraft-gen
+site_description: Tool for generating RDFS/OWL ontologies and Knowledge Graphs
+site_author:  Ovidiu Pascal, Lionel Tailhardat, Nicolas Hubert
+site_url: https://orange-opensource.github.io/pygraft-gen/
+
+# ========================================================================================
+# REPOSITORY
+# ========================================================================================
+repo_name: Orange/pygraft-gen
+repo_url: https://github.com/Orange-OpenSource/pygraft-gen
+
+
+# ========================================================================================
+# THEME CONFIGURATION
+# ========================================================================================
+theme:
+  name: material
+
+  # Brand Assets
+  logo: assets/images/pygraft-gen-logo.svg
+  favicon: assets/images/pygraft-gen-logo.svg
+
+  # Color Palette - Uses W3C/Semantic Web brand colors via custom CSS
+  palette:
+    # Light mode
+    - scheme: default
+      primary: blue          # Will be overridden with W3C blue via CSS
+      accent: light blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Dark mode
+    - scheme: slate
+      primary: blue          # Will be overridden with W3C blue via CSS
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+  # Navigation & UI Features
+  features:
+    # Top Navigation
+    - navigation.tabs          # Converts top-level nav to horizontal tabs
+    - navigation.tabs.sticky   # Keeps tabs visible when scrolling
+
+    # Left Sidebar Navigation
+    - navigation.sections      # Sections in nav are expandable
+    - navigation.expand        # Auto-expand nav sections
+    - navigation.indexes       # Makes section index pages clickable
+    - navigation.top           # "Back to top" button appears on scroll
+
+    # Right Sidebar (Table of Contents)
+    - toc.follow               # TOC follows scroll position
+
+    # Code Block Features
+    - content.code.copy        # Copy button on code blocks
+    - content.code.annotate    # Allow annotations in code blocks
+
+    # Content Features
+    - content.tabs.link        # Enable linked content tabs
+
+    # Performance Features
+    - navigation.instant       # Fast page loads
+    - navigation.tracking      # URL updates on scroll
+
+# ========================================================================================
+# PLUGINS
+# ========================================================================================
+plugins:
+  # Search functionality
+  - search
+
+  # Git metadata for last updated dates
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+  # Social media preview cards (Open Graph images for link sharing)
+  - social:
+      cards_layout: default/variant
+      cards_layout_options:
+        background_color: "#005A9C"  # W3C/Semantic Web blue
+        color: "#FFFFFF"
+
+  # Python API documentation generator
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]  # Add this if your code is in src/
+          options:
+            # Docstrings
+            docstring_style: google
+            docstring_section_style: list  # Cleaner than tables for longer descriptions
+
+            # Signatures
+            show_signature_annotations: true
+            separate_signature: true
+            signature_crossrefs: true
+
+            # Display
+            show_source: false
+            show_root_heading: false
+            heading_level: 2
+
+            # Members
+            members_order: source  # Keep source order, not alphabetical
+
+
+# ========================================================================================
+# MARKDOWN EXTENSIONS
+# ========================================================================================
+markdown_extensions:
+  # Table of Contents
+  - toc:
+      permalink: "#"                      # Anchor link icon on hover
+      permalink_title: Anchor link to this section
+
+  # Admonitions (callout boxes)
+  - admonition                            # Basic admonitions
+  - pymdownx.details                      # Collapsible admonitions
+
+  # Code Blocks
+  - pymdownx.highlight                    # Syntax highlighting
+  - pymdownx.superfences:                 # Advanced code blocks + diagrams
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+  # Math Support (LaTeX)
+  - pymdownx.arithmatex:
+      generic: true
+      tex_inline_wrap: ['$', '$']
+      tex_block_wrap: ['$$', '$$']
+
+  # Content Grids & Cards
+  - attr_list                             # Required for grid cards
+  - md_in_html                            # Markdown inside HTML elements
+
+  # Icons & Emojis
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+  # Content Tabs
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  # Task Lists
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+
+# ========================================================================================
+# EXTRA JAVASCRIPT
+# ========================================================================================
+# LaTeX/Math rendering support
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+
+# ========================================================================================
+# EXTRA CSS
+# ========================================================================================
+# W3C/Semantic Web brand colors
+extra_css:
+  - stylesheets/w3c-brand.css
+
+
+# ========================================================================================
+# NAVIGATION STRUCTURE
+# ========================================================================================
+nav:
+  # Home Page
+  - Home: index.md
+
+  # Getting Started Section
+  - Getting Started:
+      - getting-started/index.md
+      - Fundamentals: getting-started/fundamentals.md
+      - Installation: getting-started/installation.md
+      - Quickstart: getting-started/quickstart.md
+
+  # Core Concepts Section
+  - Concepts:
+    - concepts/index.md
+    - OWL Constraints: concepts/owl-constraints.md
+    - Schema Generation: concepts/schema-generation.md
+    - Ontology Extraction: concepts/ontology-extraction.md
+    - KG Generation: concepts/kg-generation.md
+    - Consistency Checking: concepts/consistency-checking.md
+
+  # Technical Reference Section
+  - Reference:
+      - reference/index.md
+      - CLI: reference/cli.md
+      - API: reference/api.md
+      - Files & Outputs:
+          - reference/files/index.md
+          - Configuration: reference/files/config.md
+          - Namespaces Info: reference/files/namespaces-info.md
+          - Class Info: reference/files/class-info.md
+          - Relation Info: reference/files/relation-info.md
+          - KG Info: reference/files/kg-info.md
+
+  # About & Meta Information
+  - About:
+    - about/index.md
+    - Changelog: about/changelog.md
+    - Contributing: about/contributing.md
+    - Development: about/development.md
+    - Authors: about/authors.md
+    - Publications: about/publications.md
+    - License: about/license.md
+
+
+# ========================================================================================
+# COPYRIGHT
+# ========================================================================================
+copyright: Copyright &copy; 2024-2025 Orange SA & Nicolas Hubert
+
+
+# ========================================================================================
+# EXTRA CONFIGURATION
+# ========================================================================================
+extra:
+
+  # Social links (appears in footer)
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Orange-OpenSource/pygraft-gen
+      name: PyGraft-gen on GitHub
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/pygraft/
+      name: PyGraft on PyPI

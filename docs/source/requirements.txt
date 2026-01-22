@@ -1,6 +1,0 @@
-wheel
-setuptools
-sphinx
-sphinx_rtd_theme
-sphinxcontrib-bibtex
-sphinxemoji

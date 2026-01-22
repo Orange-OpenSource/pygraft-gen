@@ -89,21 +89,19 @@ OwlReadyInconsistentOntologyError = owlready2.OwlReadyInconsistentOntologyError
 OwlReadyJavaError = cast(type[BaseException], getattr(owlready2, "OwlReadyJavaError", RuntimeError))
 
 # ================================================================================================ #
-# Public Reasoner Helper                                                                           #
+# Public Reasoner Functions                                                                        #
 # ================================================================================================ #
 
 
-def reasoner(
+def reasoner_hermit(
     *,
     schema_file: str | Path,
     kg_file: str | Path | None = None,
     infer_property_values: bool = False,
     debug: bool = False,
     keep_tmp_file: bool = False,
-    explain_inconsistency: bool = False,
-    explanation_sink: list[str] | None = None,
 ) -> bool:
-    """Run the HermiT reasoner on a schema or on a schema+KG combination.
+    """Run HermiT reasoner for fast consistency checking.
 
     The input files are normalized to RDF/XML only when they are not already
     in RDF/XML format (e.g., ".ttl", ".nt"). In schema+KG mode, the schema and
@@ -116,11 +114,6 @@ def reasoner(
         infer_property_values: Whether to infer property values during reasoning.
         debug: Enable Owlready2 internal debugging.
         keep_tmp_file: Preserve the temporary RDF/XML file used for reasoning.
-        explain_inconsistency: Run a Pellet explain pass when inconsistency is detected.
-        explanation_sink:
-            Optional list used to collect a human-readable Pellet explanation when
-            inconsistency is detected. When provided, the explanation is appended
-            to the list instead of being logged.
 
     Returns:
         True if the schema or schema+KG is consistent, False if it is inconsistent.
@@ -165,14 +158,6 @@ def reasoner(
     except OwlReadyInconsistentOntologyError:
         logger.info("(HermiT) Inconsistent %s", resource_label)
         is_consistent = False
-
-        if explain_inconsistency:
-            explanation = _try_log_pellet_explanation(
-                graph=graph,
-                resource_label=resource_label,
-            )
-            if explanation is not None and explanation_sink is not None:
-                explanation_sink.append(explanation)
     finally:
         graph.destroy()
 
@@ -184,6 +169,99 @@ def reasoner(
                 logger.warning("Failed to delete temporary reasoner input file: %s", temp_to_cleanup)
 
     return is_consistent
+
+
+def reasoner_pellet(
+    *,
+    schema_file: str | Path,
+    kg_file: str | Path | None = None,
+    infer_property_values: bool = False,
+    debug: bool = False,
+    keep_tmp_file: bool = False,
+) -> tuple[bool, str | None]:
+    """Run Pellet reasoner for consistency checking with detailed explanations.
+
+    The input files are normalized to RDF/XML only when they are not already
+    in RDF/XML format (e.g., ".ttl", ".nt"). In schema+KG mode, the schema and
+    the KG are merged into a temporary RDF/XML ontology used solely for
+    reasoning. Temporary files are deleted unless keep_tmp_file is True.
+
+    When the ontology is inconsistent, Pellet attempts to provide a detailed
+    explanation of which axioms are causing the inconsistency.
+
+    Args:
+        schema_file: Path to the schema ontology.
+        kg_file: Optional path to a KG generated from the schema.
+        infer_property_values: Whether to infer property values during reasoning.
+        debug: Enable Owlready2 internal debugging.
+        keep_tmp_file: Preserve the temporary RDF/XML file used for reasoning.
+
+    Returns:
+        Tuple of (is_consistent, explanation):
+            - is_consistent: True if consistent, False if inconsistent.
+            - explanation: Human-readable explanation string if inconsistent,
+              None if consistent or if explanation could not be generated.
+    """
+    _configure_java_heap_best_effort()
+
+    schema_path = Path(schema_file).resolve()
+    temp_to_cleanup: Path | None = None
+
+    if kg_file is None:
+        # Schema-only: if we know it is RDF/XML (config format="xml"), no need
+        # to re-serialize. Otherwise, normalize to a temporary RDF/XML file.
+        if schema_path.suffix == ".rdf":
+            ontology_path = schema_path
+            logger.debug("Selected RDF/XML schema file for reasoning from: %s", ontology_path)
+        else:
+            temp_to_cleanup = _build_temp_schema_graph(schema_path)
+            ontology_path = temp_to_cleanup
+
+        resource_label = "schema"
+    else:
+        # Schema + KG mode
+        kg_path = Path(kg_file).resolve()
+        temp_to_cleanup = _build_temp_schema_kg_graph(schema_path, kg_path)
+        ontology_path = temp_to_cleanup
+        resource_label = "KG"
+
+    graph: OntologyHandle = get_ontology(str(ontology_path)).load()
+    logger.debug("Loaded ontology for reasoning from: %s", ontology_path)
+
+    is_consistent = True
+    explanation: str | None = None
+
+    try:
+        # Run Pellet with explain mode enabled
+        # Note: Pellet will raise OwlReadyInconsistentOntologyError if inconsistent
+        with _suppress_owlready2_output():
+            sync_reasoner_pellet(
+                graph,
+                infer_property_values=infer_property_values,
+                debug=debug,
+                keep_tmp_file=keep_tmp_file,
+            )
+        logger.info("(Pellet) Consistent %s", resource_label)
+    except OwlReadyInconsistentOntologyError:
+        logger.info("(Pellet) Inconsistent %s", resource_label)
+        is_consistent = False
+
+        # Try to extract explanation from Pellet
+        explanation = _try_log_pellet_explanation(
+            graph=graph,
+            resource_label=resource_label,
+        )
+    finally:
+        graph.destroy()
+
+        if temp_to_cleanup is not None and not keep_tmp_file:
+            try:
+                temp_to_cleanup.unlink(missing_ok=True)
+                logger.debug("Deleted temporary reasoner input file: %s", temp_to_cleanup)
+            except OSError:
+                logger.warning("Failed to delete temporary reasoner input file: %s", temp_to_cleanup)
+
+    return is_consistent, explanation
 
 
 # ================================================================================================ #

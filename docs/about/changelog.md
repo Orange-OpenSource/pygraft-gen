@@ -2,39 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project tries to adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/){target="_blank" rel="noopener"}, and this project tries to adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html){target="_blank" rel="noopener"}.
 
 ## [Unreleased]
 
 *Changes committed but not yet released will appear here.*
 
-> [!NOTE]  
-> **Roadmap**
->
-> Planned features are tracked in [Contributing](./contributing.md/#desirable-features), not here. Unreleased is for completed work awaiting release.
+!!! info "Roadmap"
+    Planned features are tracked in [Contributing](./contributing.md/#desirable-features), not here. Unreleased is for completed work awaiting release.
 
 ---
 
 ## v0.0.11 (2026-01-22)
 
-[:octocat: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.11)
+[:fontawesome-brands-github: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.11){target="_blank" rel="noopener"}
 
 **Documentation Overhaul & CLI Restructuring**
 
 *Migrated documentation from Sphinx/Furo to MkDocs Material, restructured CLI into modular architecture, and introduced standalone consistency explanation*
 
-> [!WARNING]  
-> **Breaking Changes**
->
-> - Configuration files must now nest `classes` and `relations` under a new `schema` key
-> - Removed `explain_inconsistency` parameter from `generate_kg()`
-> - Removed `--explain` flag from `kg` and `build` commands
-> - Removed `reasoner()` orchestrator from `pygraft.utils.reasoning`
+!!! warning "Breaking Changes"
+    - Configuration files must now nest `classes` and `relations` under a new `schema` key
+    - Removed `explain_inconsistency` parameter from `generate_kg()`
+    - Removed `--explain` flag from `kg` and `build` commands
+    - Removed `reasoner()` orchestrator from `pygraft.utils.reasoning`
 
 ### Added
 
 - **Standalone explain command**: New `pygraft explain` CLI command and `explain_kg()` API for analyzing KG inconsistencies with flexible reasoner selection (`--reasoner hermit|pellet|both`)
-- **Separated reasoner functions**: Split monolithic `reasoner()` into `reasoner_hermit()` and `reasoner_pellet()` for clear separation of concerns
+- **Separated reasoner functions**: Split `reasoner()` into `reasoner_hermit()` and `reasoner_pellet()` for clear separation of concerns
 
 ### Changed
 
@@ -52,7 +48,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## v0.0.10 (2026-01-08)
 
-[:octocat: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.10)
+[:fontawesome-brands-github: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.10){target="_blank" rel="noopener"}
 
 **KG Generation Optimization**
 
@@ -95,12 +91,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## v0.0.9 (2026-01-08)
 
-[:octocat: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.9)
+[:fontawesome-brands-github: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.9){target="_blank" rel="noopener"}
 
-> [!TIP]  
-> **Performance Restored**
->
-> This release fixes the critical performance regression introduced in [v0.0.8](#v008-2025-12-15)
+!!! success "Performance Restored"
+    This release fixes the critical performance regression introduced in [v0.0.8](#v008-2025-12-15)
 
 **Ontology Extraction (Performance Fix)**
 
@@ -122,12 +116,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## v0.0.8 (2025-12-15)
 
-[:octocat: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.8)
+[:fontawesome-brands-github: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.8){target="_blank" rel="noopener"}
 
-> [!CAUTION]  
-> **Critical Performance Issue - Do Not Use**
->
-> This release contains a severe performance regression (20-30x slowdown) in ontology extraction that makes it impractical for use. **Please use [v0.0.9](#v009-2026-01-08) or later instead.** This entry is preserved for historical reference only.
+!!! danger "Critical Performance Issue - Do Not Use"
+    This release contains a severe performance regression (20-30x slowdown) in ontology extraction that makes it impractical for use. **Please use [v0.0.9](#v009-2026-01-08) or later instead.** This entry is preserved for historical reference only.
 
 **Ontology Extraction**
 
@@ -166,7 +158,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 **CLI Modernization**
 
-*Migrated from argparse to [Typer](https://typer.tiangolo.com/) for improved ergonomics and maintainability*
+*Migrated from argparse to [Typer](https://typer.tiangolo.com/){target="_blank" rel="noopener"} for improved ergonomics and maintainability*
 
 ### Added
 
@@ -237,11 +229,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Modern development tooling stack:
-    - [Ruff](https://github.com/astral-sh/ruff) for linting and formatting
-    - [Pyright](https://github.com/microsoft/pyright)/[Basedpyright](https://docs.basedpyright.com/latest/) for static type checking
-    - [Codespell](https://github.com/codespell-project/codespull) for spell-checking
-    - Project-wide configuration via [EditorConfig](https://editorconfig.org/) and `.python-version`
-- Initial `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/) format
+    - [Ruff](https://github.com/astral-sh/ruff){target="_blank" rel="noopener"} for linting and formatting
+    - [Pyright](https://github.com/microsoft/pyright){target="_blank" rel="noopener"}/[Basedpyright](https://docs.basedpyright.com/latest/){target="_blank" rel="noopener"} for static type checking
+    - [Codespell](https://github.com/codespell-project/codespell){target="_blank" rel="noopener"} for spell-checking
+    - Project-wide configuration via [EditorConfig](https://editorconfig.org/){target="_blank" rel="noopener"} and `.python-version`
+- Initial `CHANGELOG.md` following [Keep a Changelog](https://keepachangelog.com/){target="_blank" rel="noopener"} format
 - Updated `CONTRIBUTING.md` with clearer development workflow
 
 ### Changed
@@ -257,7 +249,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## v0.0.3 (2023-09-08)
 
-*Derived from [PyGraft v0.0.3 PyPI](https://pypi.org/project/pygraft/0.0.3/) release*
+*Derived from [PyGraft v0.0.3 PyPI](https://pypi.org/project/pygraft/0.0.3/){target="_blank" rel="noopener"} release*
 
 ### Added
 
@@ -276,7 +268,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## v0.0.2 (2023-09-07)
 
-*Derived from [PyGraft v0.0.2 PyPI](https://pypi.org/project/pygraft/0.0.2/) release*
+*Derived from [PyGraft v0.0.2 PyPI](https://pypi.org/project/pygraft/0.0.2/){target="_blank" rel="noopener"} release*
 
 ### Fixed
 
@@ -284,7 +276,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## v0.0.1 (2023-09-07)
 
-*Derived from [PyGraft v0.0.1 PyPI](https://pypi.org/project/pygraft/0.0.1/) release*
+*Derived from [PyGraft v0.0.1 PyPI](https://pypi.org/project/pygraft/0.0.1/){target="_blank" rel="noopener"} release*
 
 ### Added
 

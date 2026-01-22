@@ -31,9 +31,9 @@ All other helpers are internal and may change without notice.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import json
 import logging
-from collections.abc import Mapping
 from pathlib import Path
 from typing import TYPE_CHECKING, Literal
 
@@ -42,10 +42,11 @@ import yaml
 from pygraft.paths import slugify_project_name
 from pygraft.types import (
     ClassGenConfigDict,
+    GeneralConfigDict,
     KGGenConfigDict,
     PyGraftConfigDict as RuntimePyGraftConfigDict,
     RelationGenConfigDict,
-    GeneralConfigDict,
+    SchemaConfigDict,
 )
 
 if TYPE_CHECKING:
@@ -57,13 +58,17 @@ logger = logging.getLogger(__name__)
 # Constants                                                                                        #
 # ------------------------------------------------------------------------------------------------ #
 
-# Top-level keys: "general", "classes", "relations", "kg".
+# Top-level keys: "general", "schema", "kg".
 REQUIRED_CONFIG_KEYS: frozenset[str] = frozenset(RuntimePyGraftConfigDict.__annotations__.keys())
 
 # Section-level required keys, derived from the TypedDicts.
+# --- general
 REQUIRED_GENERAL_KEYS: frozenset[str] = frozenset(GeneralConfigDict.__annotations__.keys())
+# --- schema
+REQUIRED_SCHEMA_KEYS: frozenset[str] = frozenset(SchemaConfigDict.__annotations__.keys())
 REQUIRED_CLASS_KEYS: frozenset[str] = frozenset(ClassGenConfigDict.__annotations__.keys())
 REQUIRED_RELATION_KEYS: frozenset[str] = frozenset(RelationGenConfigDict.__annotations__.keys())
+# --- kg
 REQUIRED_KG_KEYS: frozenset[str] = frozenset(KGGenConfigDict.__annotations__.keys())
 
 # Target of validation: which parts of the pipeline will consume this config.
@@ -101,9 +106,7 @@ def load_config(path: str | Path) -> PyGraftConfigDict:
         with config_path.open(encoding="utf8") as file:
             data = yaml.safe_load(file)
     else:
-        message = (
-            f"Unknown config format {config_path.suffix}. Use .json, .yaml, or .yml."
-        )
+        message = f"Unknown config format {config_path.suffix}. Use .json, .yaml, or .yml."
         raise ValueError(message)
 
     logger.info("Loaded configuration file from: %s", config_path)
@@ -122,8 +125,8 @@ def validate_user_config(
     callers should use. It enforces:
 
     - Structural validity:
-        - All required top-level keys ("general", "classes", "relations", "kg")
-          are present.
+        - All required top-level keys ("general", "schema", "kg") are present.
+        - The "schema" section contains "classes" and "relations" subsections.
         - All required keys inside each section are present.
         - No unexpected keys are included at any level.
     - Serialization validity:
@@ -156,9 +159,13 @@ def validate_user_config(
     # Scalar type validation for all known fields.
     _validate_section_types(config)
 
+    # General
     general_cfg = config["general"]
-    classes_cfg = config["classes"]
-    relations_cfg = config["relations"]
+    # Schema
+    schema_cfg = config["schema"]
+    classes_cfg = schema_cfg["classes"]
+    relations_cfg = schema_cfg["relations"]
+    # KG
     kg_cfg = config["kg"]
 
     _validate_general_section(general_cfg)
@@ -209,13 +216,19 @@ def _validate_section_keys(config: PyGraftConfigDict) -> None:
     """Validate that each section uses the expected nested keys.
 
     This leverages the section-level TypedDicts to enforce that "general",
-    "classes", "relations", and "kg" have exactly the fields we expect and
-    nothing else.
+    "schema", and "kg" have exactly the fields we expect and nothing else.
+    The "schema" section is validated at two levels: first as a container
+    with "classes" and "relations" keys, then each subsection is validated
+    for its own expected keys.
     """
     sections_to_validate: list[tuple[str, Mapping[str, object], frozenset[str]]] = [
+        # General
         ("general", config["general"], REQUIRED_GENERAL_KEYS),
-        ("classes", config["classes"], REQUIRED_CLASS_KEYS),
-        ("relations", config["relations"], REQUIRED_RELATION_KEYS),
+        # Schema
+        ("schema", config["schema"], REQUIRED_SCHEMA_KEYS),
+        ("schema.classes", config["schema"]["classes"], REQUIRED_CLASS_KEYS),
+        ("schema.relations", config["schema"]["relations"], REQUIRED_RELATION_KEYS),
+        # KG
         ("kg", config["kg"], REQUIRED_KG_KEYS),
     ]
 
@@ -249,11 +262,7 @@ def _validate_mapping_keys(
     if extra:
         parts.append(f"unexpected keys: {', '.join(extra)}")
 
-    message = (
-        f"Invalid configuration in section {section_name!r}: "
-        + "; ".join(parts)
-        + "."
-    )
+    message = f"Invalid configuration in section {section_name!r}: " + "; ".join(parts) + "."
     raise ValueError(message)
 
 
@@ -269,9 +278,12 @@ def _validate_section_types(config: PyGraftConfigDict) -> None:
     can assume all values have the correct primitive types (str, int, float,
     bool, or None where explicitly allowed).
     """
+    # General
     _validate_general_types(config["general"])
-    _validate_class_types(config["classes"])
-    _validate_relation_types(config["relations"])
+    # Schema
+    _validate_class_types(config["schema"]["classes"])
+    _validate_relation_types(config["schema"]["relations"])
+    # KG
     _validate_kg_types(config["kg"])
 
 
@@ -454,16 +466,14 @@ def _validate_kg_types(kg_cfg: KGGenConfigDict) -> None:
 # General Section Validation                                                                       #
 # ------------------------------------------------------------------------------------------------ #
 
+
 def _validate_general_section(general_cfg: GeneralConfigDict) -> None:
     """Validate RDF format, RNG seed, and project_name."""
     # At this point, types have already been validated by _validate_section_types.
 
     # --- rdf_format ---
     if general_cfg["rdf_format"] not in {"xml", "ttl", "nt"}:
-        message = (
-            f"Invalid rdf_format {general_cfg['rdf_format']!r}. "
-            "Allowed: 'xml', 'ttl', 'nt'."
-        )
+        message = f"Invalid rdf_format {general_cfg['rdf_format']!r}. Allowed: 'xml', 'ttl', 'nt'."
         raise ValueError(message)
 
     # --- rng_seed ---
@@ -475,17 +485,15 @@ def _validate_general_section(general_cfg: GeneralConfigDict) -> None:
 
     name = name.strip()
     if not name:
-        raise ValueError("project_name cannot be empty. Use 'auto' or a string.")
+        msg = "project_name cannot be empty. Use 'auto' or a string."
+        raise ValueError(msg)
 
     if name != "auto":
         # Sanitize automatically
         sanitized = slugify_project_name(name)
 
         if not sanitized:
-            message = (
-                f"project_name {name!r} has no usable characters after "
-                "sanitization."
-            )
+            message = f"project_name {name!r} has no usable characters after sanitization."
             raise ValueError(message)
 
         general_cfg["project_name"] = sanitized
@@ -612,26 +620,15 @@ def _validate_schema_config(
     )
 
     # --- Relation generation: cross-parameter constraints ------------------- #
-    if (
-        relations_cfg["prop_symmetric_relations"]
-        + relations_cfg["prop_asymmetric_relations"]
-        > 1.0
-    ):
-        message = (
-            "Proportions of owl:Asymmetric and owl:Symmetric relations "
-            "cannot exceed 1."
-        )
+    if relations_cfg["prop_symmetric_relations"] + relations_cfg["prop_asymmetric_relations"] > 1.0:
+        message = "Proportions of owl:Asymmetric and owl:Symmetric relations cannot exceed 1."
         raise ValueError(message)
 
     if (
-        relations_cfg["prop_reflexive_relations"]
-        + relations_cfg["prop_irreflexive_relations"]
+        relations_cfg["prop_reflexive_relations"] + relations_cfg["prop_irreflexive_relations"]
         > 1.0
     ):
-        message = (
-            "Proportions of owl:Reflexive and owl:Irreflexive relations "
-            "cannot exceed 1."
-        )
+        message = "Proportions of owl:Reflexive and owl:Irreflexive relations cannot exceed 1."
         raise ValueError(message)
 
     # Subproperty vs functional / inverse-functional:
@@ -653,10 +650,7 @@ def _validate_schema_config(
     )
 
     if not valid_combo:
-        message = (
-            "Invalid combination of subproperties, functional, and "
-            "inverse-functional values."
-        )
+        message = "Invalid combination of subproperties, functional, and inverse-functional values."
         raise ValueError(message)
 
     logger.debug("Validated Schema configuration")
@@ -676,10 +670,7 @@ def _validate_profile_side(profile_side: str) -> None:
     allowed_values = {"both", "partial"}
     if profile_side not in allowed_values:
         allowed_str = ", ".join(sorted(allowed_values))
-        message = (
-            f"Invalid profile_side: {profile_side!r}. "
-            f"Allowed values are: {allowed_str}."
-        )
+        message = f"Invalid profile_side: {profile_side!r}. Allowed values are: {allowed_str}."
         raise ValueError(message)
 
 

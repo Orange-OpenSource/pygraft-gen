@@ -14,19 +14,21 @@ PyGraft provides APIs for generating synthetic RDF knowledge graphs
 from OWL ontologies with configurable size, typing, and constraint
 enforcement.
 
-Exported Functions:
-    create_config: Create a validated configuration dictionary.
-    generate_schema: Generate OWL schema (classes + relations).
-    extract_ontology: Extract metadata from existing ontology.
-    generate_kg: Generate instance-level KG triples.
+**Exported Functions:**
 
-Exported Types:
-    ClassInfoDict: Type for class_info.json structure.
-    RelationInfoDict: Type for relation_info.json structure.
-    PyGraftConfigDict: Type for configuration dictionary.
-    KGInfoDict: Type for kg_info.json structure.
+- `create_config`: Create a validated configuration dictionary.
+- `generate_schema`: Generate OWL schema (classes + relations).
+- `extract_ontology`: Extract metadata from existing ontology.
+- `generate_kg`: Generate instance-level KG triples.
+- `explain_kg`: Analyze KG for logical inconsistencies.
+
+**Exported Types:**
+
+- `ClassInfoDict`: Type for class_info.json structure.
+- `RelationInfoDict`: Type for relation_info.json structure.
+- `PyGraftConfigDict`: Type for configuration dictionary.
+- `KGInfoDict`: Type for kg_info.json structure.
 """
-
 from __future__ import annotations
 
 import importlib.metadata as importlib_metadata
@@ -38,6 +40,7 @@ from pygraft.pygraft import (
     extract_ontology,
     generate_kg,
     generate_schema,
+    explain_kg,
 )
 
 # Type definitions (for type-safe user code)
@@ -54,6 +57,7 @@ __all__ = [
     "generate_schema",
     "extract_ontology",
     "generate_kg",
+    "explain_kg",
     # Types
     "ClassInfoDict",
     "RelationInfoDict",
