@@ -11,11 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 > [!NOTE]  
 > **Roadmap**
 >
-> Planned features are tracked in [Contributing](./contributing.md/#desirable-features), not here. Unreleased is for completed work awaiting release.
+> Planned features are tracked in [CONTRIBUTING](CONTRIBUTING.md/#desirable-features), not here. Unreleased is for completed work awaiting release.
 
 ---
 
-## v0.0.11 (2026-01-22)
+## v0.0.11 (2026-01-23)
 
 [:octocat: GitHub release](https://github.com/Orange-OpenSource/pygraft-gen/releases/tag/v0.0.11)
 
