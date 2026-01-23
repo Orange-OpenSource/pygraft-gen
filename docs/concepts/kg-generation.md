@@ -2,19 +2,27 @@
 
 KG generation creates synthetic Knowledge Graph instances from extracted ontology metadata. Entities are created, assigned types, and connected with triples that respect ontology constraints.
 
+!!! note "Why This Page is Detailed"
+    The KG generator is the core of PyGraft-gen's architecture — it's what enables generation at scales previously impractical (1M+ entities, 10M+ triples). This page is intentionally exhaustive because understanding these internals is essential for troubleshooting, performance tuning, and future extensions.
+
 **On this page:**
 
-- [Overview](#overview) - Understanding the generation pipeline
-- [How Constraints Are Enforced](#how-constraints-are-enforced) - What rules PyGraft-gen respects
-- [The Generation Pipeline](#the-generation-pipeline) - Four phases of generation
-- [Configuration Parameters](#configuration-parameters) - Tuning generation behavior
-- [Performance Characteristics](#performance-characteristics) - Runtime and memory expectations
-- [FAQ](#faq) - Common questions and troubleshooting
+- [Overview](#overview) — What KG generation does
+- [How Constraints Are Enforced](#how-constraints-are-enforced) — The rules PyGraft-gen respects
+- [The Generation Pipeline](#the-generation-pipeline) — Four phases at a glance
+- [Algorithm and Complexity](#algorithm-and-complexity) — Deep dive into how it works
+- [Performance Characteristics](#performance-characteristics) — Runtime and memory expectations
+- [Configuration Parameters](#configuration-parameters) — Tuning generation behavior
+- [Fast Generation Mode](#fast-generation-mode) — Speed optimization for large KGs
+- [FAQ](#faq) — Common questions and troubleshooting
+- [Limitations](#limitations) — Known constraints
 
+---
 
 ## Overview
 
 KG generation takes the three metadata files from [ontology extraction](ontology-extraction.md) and produces a Knowledge Graph:
+
 ```mermaid
 flowchart LR
   CI[class_info.json]
@@ -50,68 +58,15 @@ flowchart LR
   style INFO fill:#eee,stroke:#666,stroke-width:2px
 ```
 
-
 **Output files:**
 
-- :fontawesome-solid-project-diagram: `kg.{ttl|rdf|nt}` - The complete Knowledge Graph in your chosen RDF format
-- :fontawesome-solid-chart-bar: `kg_info.json` - Statistics and parameters documenting what was generated
+- :fontawesome-solid-project-diagram: `kg.{ttl|rdf|nt}` — The complete Knowledge Graph in your chosen RDF format
+- :fontawesome-solid-chart-bar: `kg_info.json` — Statistics and parameters documenting what was generated
 
 !!! warning "Extraction Scope"
-    The generator can only enforce constraints from the extracted metadata but cannot enforce constructs that weren't capture during extraction.  
+    The generator can only enforce constraints from the extracted metadata but cannot enforce constructs that weren't captured during extraction.
 
     :material-fire: See [What's Supported](../getting-started/quickstart.md/#whats-supported)
-
----
-
-## PyGraft-gen's Improvements
-
-??? info "Evolution from Original PyGraft"
-    PyGraft-gen introduces two major advancements over the original PyGraft:
-
-    **1. Ontology Extraction**  
-    Generate KGs from real-world ontologies instead of only synthetic schemas. Extract structure from existing [OWL](https://www.w3.org/TR/owl2-overview/){target="_blank" rel="noopener"}/[RDFS](https://www.w3.org/TR/rdf-schema/){target="_blank" rel="noopener"} ontologies and use it as the foundation for generation.
-
-    **2. Optimized KG Generator for Large-Scale Generation**  
-    A completely redesigned architecture enabling generation at scales previously impractical (1M+ entities, 10M+ triples).
-
-    ### Legacy PyGraft Limitations
-
-    The original PyGraft generator faced fundamental bottlenecks at scale:
-
-    - **String-based identifiers:** All entities, classes, and relations stored as Python strings throughout generation. This created substantial memory overhead and required string hashing for every lookup.
-
-    - **Generate-then-filter workflow:** Triples were generated first, then cleaned up in separate filter passes. Each filter scanned the entire triple set, resulting in millions of redundant examinations for large KGs.
-
-    - **Sequential one-at-a-time sampling:** Each triple sampled and validated individually. Functional property checks required scanning all existing triples per attempt, creating $O(n_{\text{triples}})$ cost per sample.
-
-    For a 10M triple KG, this approach meant 10M+ individual sampling operations with millions of full triple set scans.
-
-    ### PyGraft-gen's Optimized Design
-
-    PyGraft-gen uses an **integer-ID model with batch sampling and two-phase filtering**:
-
-    - **Integer-based identifiers:** Entities, classes, and relations use integer IDs internally. Strings only appear during serialization. This eliminates string overhead and enables efficient NumPy array operations.
-
-    - **Pre-computed constraint caches:** Domain/range pools, disjointness sets, and property characteristics computed once before generation. No repeated set intersections or dictionary lookups during sampling.
-
-    - **Batch sampling with vectorized filtering:** Sample large batches of candidate triples, then apply constraints in two phases:
-        - **Fast filtering**: Vectorized NumPy operations eliminate invalid candidates before generation (irreflexive, duplicates, functional constraints) - checks that don't depend on graph state
-        - **Deep validation**: Per-triple checks during generation as each triple is added - validates against the evolving graph state (domain/range typing, disjointness, transitive cycles)
-
-    - **Incremental constraint tracking:** Functional and inverse-functional properties maintain sets of used heads/tails. Constraint checks become $O(1)$ set membership tests instead of $O(n_{\text{triples}})$ scans.
-
-    **Adaptive mechanisms:**
-
-    - Oversample multiplier for constrained relations
-    - Stall detection drops unproductive relations
-    - Tail phase timeout prevents infinite loops
-    - Dynamic weight recomputation maintains distribution
-
-    **Performance impact:**
-
-    - Legacy: 10M triples = 10M sampling operations with $O(n_{\text{triples}})$ validation each
-    - PyGraft-gen: 10M triples = ~1,000 batch operations with $O(1)$ constraint checks
-    - Result: Hours reduced to minutes for large-scale generation
 
 ---
 
@@ -179,7 +134,6 @@ When detected during schema loading, the generator either stops (SEVERE errors) 
 
 Generation happens in four sequential phases, each building on the previous one.
 
-
 ### :fontawesome-solid-1: Schema Loading
 
 The first phase prepares everything needed for efficient generation by converting metadata into optimized internal structures.
@@ -232,8 +186,8 @@ If an entity receives disjoint classes, one is removed deterministically to main
 
 Builds lookup tables for the next phase:
 
-- `class2entities[Person] = [E1, E5, E12, ...]` - All entities of each class
-- `class2unseen[Person] = [E5, E12, ...]` - Entities not yet used in triples
+- `class2entities[Person] = [E1, E5, E12, ...]` — All entities of each class
+- `class2unseen[Person] = [E5, E12, ...]` — Entities not yet used in triples
 
 These enable fast candidate pool construction during triple generation.
 
@@ -241,7 +195,6 @@ These enable fast candidate pool construction during triple generation.
 ### :fontawesome-solid-3: Triple Generation
 
 The core phase where relational triples are created using batch sampling with constraint filtering.
-
 
 #### Setup Phase (One-Time)
 
@@ -262,35 +215,23 @@ Before generating any triples, the system prepares relation-specific data:
 **:fontawesome-solid-clipboard-check: Initialize tracking structures:**
 
 - Duplicate detection: `seen_pairs[relation] = {(h1,t1), (h2,t2), ...}`
-- Functional heads: `functional_heads[relation] = {E1, E5, ...}`
-- Inverse-functional tails: `invfunctional_tails[relation] = {E2, E8, ...}`
+- Functional constraints: `functional_heads[relation] = {h1, h2, ...}`
+- Inverse-functional: `invfunctional_tails[relation] = {t1, t2, ...}`
 
-#### Generation Loop (Iterative)
 
-Triples are generated in batches until the target count is reached:
+#### Generation Loop
 
-1. :fontawesome-solid-dice: **Sample a relation** using weighted probabilities
-2. :fontawesome-solid-users-between-lines: **Sample a batch of candidate entity pairs** from relation's pools
-   - Biases toward unseen entities (from `class2unseen`) to encourage coverage
-3. :fontawesome-solid-gauge-high: **Apply fast filtering** (vectorized constraint checks)
-4. :fontawesome-solid-magnifying-glass: **Apply deep validation** (per-triple constraint checks)
-5. :fontawesome-solid-check: **Accept valid triples** and update tracking structures
-   - Remove used entities from `class2unseen` pools
-6. :fontawesome-solid-arrows-rotate: **Adjust batch size** adaptively and drop stalled relations
+Sample batches of candidate triples and filter them through two phases:
 
-#### Two-Phase Filtering
-
-The generator applies constraints in two stages for efficiency:
-
-??? info ":fontawesome-solid-gauge-high: Fast Filtering (Vectorized)"
-    Applied to the entire batch before generation. These checks don't depend on graph state:
+??? info ":fontawesome-solid-bolt: Fast Filtering (Batch)"
+    Applied to all candidates using vectorized NumPy operations. Checks that don't need current graph state:
     
-    - **Irreflexivity**: `head == tail`
-    - **Duplicates**: `(head, tail)` already in `seen_pairs`
-    - **Functional**: `head` already in `functional_heads`
-    - **Inverse-functional**: `tail` already in `invfunctional_tails`
-    - **Asymmetric**: reverse edge exists
-    - **Symmetric duplicates**: reverse direction already generated
+    - **Irreflexive**: `head != tail`
+    - **Duplicate**: `(head, tail)` not already generated
+    - **Functional**: `head` not already used for this relation
+    - **Inverse-functional**: `tail` not already used for this relation
+    - **Asymmetric**: reverse edge doesn't exist
+    - **Symmetric duplicates**: reverse direction not already generated
 
 ??? info ":fontawesome-solid-magnifying-glass: Deep Validation (Per-Triple)"
     Applied during generation as each triple is added. These checks require type information or graph traversal:
@@ -330,26 +271,342 @@ The final phase writes the generated Knowledge Graph to disk with proper formatt
 - User parameters (requested counts, configuration)
 - Actual statistics (generated counts, averages, proportions)
 
+---
+
+## Algorithm and Complexity
+
+This section provides a detailed look at how the generation algorithm works and its computational complexity. Understanding this helps you predict performance and troubleshoot slow generation.
+
+!!! info "Notation"
+
+    Throughout this section, we use shorthand notation for readability. Here is what each symbol means:
+
+    | Symbol               | Full name                     | Source                                 |
+    |----------------------|-------------------------------|----------------------------------------|
+    | $n_\text{entities}$  | Number of entities            | `num_entities` config parameter        |
+    | $n_\text{triples}$   | Number of triples             | `num_triples` config parameter         |
+    | $n_\text{classes}$   | Number of classes             | From the schema (`class_info.json`)    |
+    | $n_\text{relations}$ | Number of relations           | From the schema (`relation_info.json`) |
+    | $\text{avg_depth}$   | Average class hierarchy depth | Depends on schema structure            |
+    | $\text{avg_types}$   | Average types per entity      | When multityping is enabled            |
+    | $\text{batch}$       | Batch size                    | 1K to 100K depending on KG scale       |
+
+    We express complexity using Big-O notation. For example, $O(n_\text{entities})$ means the operation's runtime grows linearly with the number of entities.
+
+### :fontawesome-solid-cubes: Design Philosophy
+
+PyGraft-gen uses an **integer-ID model with batch sampling and two-phase filtering** to achieve scalability:
+
+- **Integer-based identifiers:** Entities, classes, and relations use integer IDs internally. Strings only appear during serialization. This eliminates string overhead and enables efficient NumPy array operations.
+
+- **Pre-computed constraint caches:** Domain/range pools, disjointness sets, and property characteristics computed once before generation. No repeated set intersections or dictionary lookups during sampling.
+
+- **Batch sampling with vectorized filtering:** Sample large batches of candidate triples, then apply constraints in two phases — fast filtering eliminates most invalid candidates before expensive deep validation.
+
+- **Incremental constraint tracking:** Functional and inverse-functional properties maintain sets of used heads/tails. Constraint checks become constant-time set membership tests, i.e., $O(1)$, instead of scanning all existing triples which would cost $O(n_\text{triples})$.
+
+!!! success "Performance Impact"
+    - Naive approach: 10M triples = 10M sampling operations, each with $O(n_\text{triples})$ validation cost
+    - PyGraft-gen: 10M triples ≈ 1,000 batch operations with $O(1)$ constraint checks
+    - Result: Hours reduced to minutes for large-scale generation
+
+
+### :fontawesome-solid-1: Schema Loading
+
+Schema loading converts JSON metadata into optimized internal structures.
+
+```mermaid
+flowchart LR
+  A[Load JSON files] --> B[Build ID mappings]
+  B --> C[Initialize caches]
+  C --> D[Validate]
+  D --> E[Compute envelopes]
+```
+
+**Complexity breakdown:**
+
+| Step               | Operation                                   | Complexity                                                                             |
+|--------------------|---------------------------------------------|----------------------------------------------------------------------------------------|
+| Load JSON          | Parse class_info, relation_info             | Linear in schema size: $O(n_\text{classes} + n_\text{relations})$                      |
+| ID mappings        | Build bidirectional dictionaries            | Linear in schema size: $O(n_\text{classes} + n_\text{relations})$                      |
+| Class caches       | Layer mappings, transitive closures         | Linear in classes times hierarchy depth: $O(n_\text{classes} \times \text{avg_depth})$ |
+| Relation caches    | Domain/range sets, property characteristics | Linear in relations: $O(n_\text{relations})$                                           |
+| Validation         | Check forbidden combinations                | Linear in relations: $O(n_\text{relations})$                                           |
+| Disjoint envelopes | Union disjoint classes per relation         | Worst case relations times classes: $O(n_\text{relations} \times n_\text{classes})$    |
+
+!!! abstract "Total Complexity"
+    $O(n_\text{classes} \times \text{avg_depth} + n_\text{relations} \times n_\text{classes})$ in the worst case, but typically much faster because disjointness declarations are sparse in real ontologies.
+
+
+### :fontawesome-solid-2: Entity Typing
+
+Entity typing assigns classes to entities while respecting hierarchy and disjointness constraints.
+
+```mermaid
+flowchart LR
+  A[Initialize space] --> B[Assign most-specific]
+  B --> C[Add multitypes]
+  C --> D[Compute transitive]
+  D --> E[Resolve conflicts]
+```
+
+**Complexity breakdown:**
+
+| Step                            | Operation                                | Complexity                                                                                   |
+|---------------------------------|------------------------------------------|----------------------------------------------------------------------------------------------|
+| Initialize                      | Allocate arrays, select typed subset     | Linear in entities: $O(n_\text{entities})$                                                   |
+| Most-specific assignment        | Power-law sampling per entity            | Linear in entities: $O(n_\text{entities})$                                                   |
+| Multityping                     | Add additional classes per entity        | Linear in entities times avg types: $O(n_\text{entities} \times \text{avg_types})$           |
+| Transitive closure              | Add superclasses for each specific class | Linear in entities times hierarchy depth: $O(n_\text{entities} \times \text{avg_depth})$     |
+| Conflict resolution             | Check and repair disjoint violations     | Linear in entities times avg types squared: $O(n_\text{entities} \times \text{avg_types}^2)$ |
+| Profile replication (fast mode) | Copy profiles round-robin                | Linear in entities: $O(n_\text{entities})$                                                   |
+
+!!! abstract "Total Complexity"
+    $O(n_\text{entities} \times (\text{avg_depth} + \text{avg_types}^2))$, dominated by transitive closure computation and disjoint conflict resolution.
+
+
+### :fontawesome-solid-3: Triple Generation
+
+Triple generation is the performance-critical phase. It uses a batch sampling pipeline with two-phase filtering.
+
+#### :fontawesome-solid-screwdriver-wrench: Setup (One-Time)
+
+Before the main loop, the generator prepares per-relation data structures:
+
+| Step                | Operation                       | Complexity                                                                            |
+|---------------------|---------------------------------|---------------------------------------------------------------------------------------|
+| Class-entity index  | Build reverse mapping           | Linear in entities times avg types: $O(n_\text{entities} \times \text{avg_types})$    |
+| Candidate pools     | Intersect entities per relation | Worst case relations times entities: $O(n_\text{relations} \times n_\text{entities})$ |
+| Budget distribution | Compute weights and quotas      | Linear in relations: $O(n_\text{relations})$                                          |
+| Tracking init       | Create empty sets               | Linear in relations: $O(n_\text{relations})$                                          |
+
+!!! abstract "Setup Total Complexity"
+    $O(n_\text{relations} \times n_\text{entities})$ in the worst case, though typically faster when domain/range constraints are selective and filter out most entities.
+
+
+#### :fontawesome-solid-rotate: Main Loop
+
+The generation loop runs until the target triple count is reached:
+
+```mermaid
+flowchart LR
+  S[Sample relation] --> B[Sample batch]
+  B --> F[Fast filter]
+  F --> D[Deep validate]
+  D --> A[Accept valid]
+  A --> U[Update state]
+  U --> S
+```
+
+Each iteration processes a batch of candidates (typically 1K-100K depending on KG size):
+
+| Step              | Operation                             | Complexity per batch                                            |
+|-------------------|---------------------------------------|-----------------------------------------------------------------|
+| Sample relation   | Weighted random choice                | Constant time: $O(1)$                                           |
+| Sample candidates | Random from pools with freshness bias | Linear in batch size: $O(\text{batch})$                         |
+| Fast filtering    | Vectorized constraint masks           | Linear in batch size: $O(\text{batch})$                         |
+| Deep validation   | Per-survivor constraint checks        | Survivors times validation cost: $O(\text{survivors} \times V)$ |
+| Accept and record | Update tracking structures            | Linear in accepted count: $O(\text{accepted})$                  |
+
+**Number of iterations:** In the best case, approximately $\left\lceil \frac{n_{\text{triples}}}{\text{batch}} \right\rceil$ iterations. More iterations are needed when rejection rates are high due to tight constraints.
+
+!!! abstract "Loop Total Complexity"
+    $O(n_\text{triples} \times V)$ where $V$ is the average validation cost per triple. For most constraints, $V$ is constant, i.e., $O(1)$. The exception is transitive cycle detection, which requires graph traversal.
+
+
+##### :fontawesome-solid-filter: Two-Phase Filtering Details
+
+The two-phase approach separates cheap batch operations from expensive per-triple checks:
+
+=== ":fontawesome-solid-bolt: Fast Filtering (Phase 1)"
+
+    Applied to the entire batch using vectorized NumPy operations. Each check runs in linear time over the batch with constant-time lookups:
+
+    | Constraint          | Check                      | Cost per candidate                              |
+    |---------------------|----------------------------|-------------------------------------------------|
+    | Irreflexive         | `head != tail`             | Constant time via vectorized comparison: $O(1)$ |
+    | Duplicate           | `(h,t) in seen_pairs`      | Constant time via hash set lookup: $O(1)$       |
+    | Functional          | `h in functional_heads`    | Constant time via hash set lookup: $O(1)$       |
+    | Inverse-functional  | `t in invfunctional_tails` | Constant time via hash set lookup: $O(1)$       |
+    | Asymmetric          | `(t,h) in kg_pairs`        | Constant time via hash set lookup: $O(1)$       |
+    | Symmetric duplicate | `(t,h) in seen_pairs`      | Constant time via hash set lookup: $O(1)$       |
+
+    Fast filtering catches most constraint violations before deep validation begins, ensuring expensive checks only run on candidates that pass the cheap tests.
+
+=== ":fontawesome-solid-magnifying-glass: Deep Validation (Phase 2)"
+
+    Applied to each survivor individually. Most checks are constant-time thanks to pre-computed caches:
+
+    | Constraint              | Check                                | Cost per triple                                              |
+    |-------------------------|--------------------------------------|--------------------------------------------------------------|
+    | Domain/range typing     | Entity has required classes          | Constant time via set membership: $O(1)$                     |
+    | Disjoint envelope       | Entity not in forbidden classes      | Constant time via set intersection: $O(1)$                   |
+    | Inverse validation      | Inverse triple would be valid        | Constant time via recursive check: $O(1)$                    |
+    | Property disjointness   | No conflict with disjoint relations  | Linear in disjoint set size: $O(\vert\text{disjoints}\vert)$ |
+    | Subproperty inheritance | Super-property constraints satisfied | Linear in super-property count: $O(\vert\text{supers}\vert)$ |
+    | **Transitive cycle**    | No path from tail to head            | BFS traversal of relation subgraph: $O(V + E)$               |
+
+    Most constraints are constant-time, i.e., $O(1)$, due to pre-computed caches. The exception is **transitive cycle detection**, which requires graph traversal and can be expensive for dense transitive relations.
+
+
+##### :fontawesome-solid-circle-nodes: Transitive Cycle Detection
+
+For relations that are both transitive and (irreflexive or asymmetric), adding a triple $(h, r, t)$ could create a cycle in the transitive closure. The generator uses breadth-first search (BFS) to detect this:
+
+```mermaid
+flowchart TD
+  A[Start BFS from t] --> B[Follow existing edges for relation r]
+  B --> C{Reached h?}
+  C -->|Yes| D[Reject triple - cycle detected]
+  C -->|No more nodes| E[Accept triple]
+```
+
+!!! abstract "Cycle Detection Complexity"
+    The cost is proportional to the number of vertices and edges reachable from $t$ in the relation's subgraph, i.e., $O(V + E)$ where $V$ is vertices visited and $E$ is edges traversed. This is typically much smaller than the full graph because only edges of one specific relation are considered, the search stops as soon as $h$ is found, and most transitive relations have sparse connectivity.
+
+
+##### :fontawesome-solid-chart-line: Incremental Tracking
+
+Instead of scanning all existing triples to check constraints (which would cost linear time in the number of triples, i.e., $O(n_\text{triples})$), the generator maintains incremental tracking structures:
+
+| Structure                 | Purpose             | Update cost                       | Query cost                   |
+|---------------------------|---------------------|-----------------------------------|------------------------------|
+| `seen_pairs[r]`           | Duplicate detection | Constant time to add: $O(1)$      | Constant time lookup: $O(1)$ |
+| `functional_heads[r]`     | Functional property | Constant time to add: $O(1)$      | Constant time lookup: $O(1)$ |
+| `invfunctional_tails[r]`  | Inverse-functional  | Constant time to add: $O(1)$      | Constant time lookup: $O(1)$ |
+| `transitive_adjacency[r]` | Cycle detection     | Constant time to add edge: $O(1)$ | BFS traversal: $O(V + E)$    |
+
+!!! success "Key Optimization"
+    This is the key optimization that makes PyGraft-gen scale. In naive implementations, checking functional constraints requires scanning all existing triples for that relation, costing $O(n_\text{triples})$ per check. With incremental tracking, the same check costs constant time, i.e., $O(1)$.
+
+
+### :fontawesome-solid-4: Serialization
+
+Serialization writes the generated KG to disk:
+
+| Step                | Operation                 | Complexity                                                                        |
+|---------------------|---------------------------|-----------------------------------------------------------------------------------|
+| Build RDF graph     | Add triples to RDFLib     | Linear in triples: $O(n_\text{triples})$                                          |
+| Add type assertions | One per entity-class pair | Linear in entities times types: $O(n_\text{entities} \times \text{avg_types})$    |
+| Serialize           | Write to file             | Linear in output size: $O(n_\text{triples} + n_\text{entities})$                  |
+| Statistics          | Compute and write kg_info | Linear in triples: $O(n_\text{triples})$                                          |
+
+!!! abstract "Total Complexity"
+    $O(n_\text{triples} + n_\text{entities} \times \text{avg_types})$, dominated by type assertion generation when multityping is enabled. Linear in output size.
+
+
+### :fontawesome-solid-list-check:  Overall Complexity Summary
+
+
+| Phase                   | Complexity                                                                                            | What dominates                          |
+|-------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| Schema loading          | $O(n_\text{classes} \times \text{avg_depth} + n_\text{relations} \times n_\text{classes})$            | Disjoint envelope computation           |
+| Entity typing           | $O(n_\text{entities} \times (\text{avg_depth} + \text{avg_types}^2))$                                 | Transitive closure, conflict resolution |
+| Triple generation setup | $O(n_\text{relations} \times n_\text{entities})$                                                      | Candidate pool construction             |
+| Triple generation loop  | $O(n_\text{triples} \times V)$                                                                        | Validation cost $V$ per triple          |
+| Serialization           | $O(n_\text{triples} + n_\text{entities} \times \text{avg_types})$                                     | Linear scan of outputs                  |
+
+**In practice**, the triple generation loop dominates runtime for large KGs. The validation cost $V$ is constant, i.e., $O(1)$, for most constraints, but becomes a graph traversal cost, i.e., $O(V + E)$, for transitive relations with cycle detection.
 
 ---
 
+## Performance Characteristics
+
+Understanding performance helps you plan generation runs and troubleshoot issues.
+
+### Constraint Impact on Performance
+
+Some constraints are more expensive to validate than others:
+
+| Constraint Type              | Cost   | Complexity                                              | Notes                                   |
+|------------------------------|--------|---------------------------------------------------------|-----------------------------------------|
+| Irreflexive                  | Low    | Constant: $O(1)$                                        | Simple equality check                   |
+| Functional                   | Low    | Constant: $O(1)$                                        | Set membership via incremental tracking |
+| Inverse-functional           | Low    | Constant: $O(1)$                                        | Set membership via incremental tracking |
+| Domain/Range                 | Low    | Constant: $O(1)$                                        | Pre-filtered pools                      |
+| Symmetric                    | Low    | Constant: $O(1)$                                        | Duplicate check in seen_pairs           |
+| Asymmetric                   | Medium | Constant: $O(1)$                                        | Reverse edge lookup                     |
+| Disjointness                 | Medium | Linear in disjoint set: $O(\vert\text{disjoints}\vert)$ | Intersection with disjoint set          |
+| Inverse validation           | Medium | Constant: $O(1)$                                        | Recursive validation of inverse         |
+| Subproperty                  | Medium | Linear in supers: $O(\vert\text{supers}\vert)$          | Check inherited constraints             |
+| **Transitive + Irreflexive** | High   | BFS traversal: $O(V + E)$                               | Cycle detection in relation subgraph    |
+
+
+### Scale Expectations
+
+??? example ":fontawesome-solid-clock: Relative Scale Expectations"
+    - **Small** (1K-10K entities): Seconds
+    - **Medium** (10K-100K entities): Minutes
+    - **Large** (100K-1M entities): Tens of minutes
+    - **Very large** (1M+ entities): Hours
+
+??? info ":fontawesome-solid-gauge: Performance Factors"
+    **What affects speed:**
+    
+    - Hardware (CPU, RAM)
+    - Schema complexity (number of constraints, hierarchy depth)
+    - Configuration (`relation_usage_uniformity`, `enable_fast_generation`)
+    - Constraint density (how many relations have expensive properties like transitivity)
+
+??? warning ":material-speedometer-slow: What Slows Generation Down"
+    - **Transitive cycle detection**: Requires BFS graph traversal costing $O(V + E)$ for each candidate triple
+    - **Deep validation**: Each surviving candidate requires type checking against current state
+    - **Inverse relation validation**: Must validate both the triple and its inverse
+    - **Small candidate pools**: Tight constraints mean more sampling attempts per accepted triple
+
+
+### Memory Usage
+
+Memory requirements scale with graph size and schema complexity.
+
+**:fontawesome-solid-memory: Memory components:**
+
+- Entity structures: Linear in entities, i.e., $O(n_\text{entities})$
+- Triple storage: Linear in triples, i.e., $O(n_\text{triples})$
+- Constraint caches: Linear in schema size, i.e., $O(n_\text{classes} + n_\text{relations})$
+- Candidate pools: Linear in relations times average pool size, i.e., $O(n_\text{relations} \times \text{avg_pool_size})$
+
+??? info ":fontawesome-solid-chart-line: What Affects Memory"
+    - Number of entities and triples (primary drivers)
+    - Schema size (classes, relations, constraints)
+    - Number of active relations being tracked
+    - Whether consistency checking is enabled (reasoner memory overhead)
+
+??? tip ":fontawesome-solid-download: Memory-Saving Strategies"
+    **During generation:**
+    
+    - Use fast generation mode for large KGs
+    - Reduce `relation_usage_uniformity` (smaller pool tracking)
+    
+    **Post-generation:**
+    
+    Consistency checking runs as a separate step after the KG is serialized. It uses the [HermiT](http://www.hermit-reasoner.com/){target="_blank" rel="noopener"} reasoner via [Owlready2](https://owlready2.readthedocs.io/){target="_blank" rel="noopener"} which:
+
+    - Runs in its own JVM subprocess with independent memory
+    - Can be extremely memory-intensive on large KGs
+    - May exhaust Java heap space on very large graphs
+    
+    For large KGs (1M+ entities), disable `check_kg_consistency` to avoid memory issues and long validation times. 
+
+    See [Consistency Checking](consistency-checking.md) for details.
+
+---
 
 ## Configuration Parameters
 
-Once you understand the generation pipeline, you can fine-tune it using the configuration parameters in the `kg` section of your [config file](../reference/files/config.md/#kg).
+Now that you understand how the generation pipeline works, you can fine-tune it using the configuration parameters in the `kg` section of your [config file](../reference/files/config.md/#kg).
 
-
-| Parameter                   | Controls                                                |
-|-----------------------------|---------------------------------------------------------|
-| `num_entities`              | Total entity count                                      |
-| `num_triples`               | Target triple count                                     |
-| `prop_untyped_entities`     | Proportion without class assignment (0.0-1.0)           |
-| `avg_specific_class_depth`  | Target hierarchy depth for assigned classes             |
-| `multityping`               | Allow multiple most-specific classes per entity         |
-| `avg_types_per_entity`      | Target average class count when multityping enabled     |
-| `relation_usage_uniformity` | Triple distribution evenness across relations (0.0-1.0) |
-| `enable_fast_generation`    | Generate small prototype then scale up                  |
-| `check_kg_consistency`      | Run reasoner validation after generation                |
+| Parameter                   |   | Controls                                                |
+|-----------------------------|:--|---------------------------------------------------------|
+| `num_entities`              |   | Total entity count                                      |
+| `num_triples`               |   | Target triple count                                     |
+| `prop_untyped_entities`     |   | Proportion without class assignment (0.0-1.0)           |
+| `avg_specific_class_depth`  |   | Target hierarchy depth for assigned classes             |
+| `multityping`               |   | Allow multiple most-specific classes per entity         |
+| `avg_types_per_entity`      |   | Target average class count when multityping enabled     |
+| `relation_usage_uniformity` |   | Triple distribution evenness across relations (0.0-1.0) |
+| `enable_fast_generation`    |   | Generate small prototype then scale up                  |
+| `check_kg_consistency`      |   | Run reasoner validation after generation                |
 
 !!! tip "Complete Reference"
     See [Configuration Reference](../reference/files/config.md) for detailed parameter descriptions.
@@ -380,9 +637,7 @@ Once you understand the generation pipeline, you can fine-tune it using the conf
     - depth 2.0 → Student, Professor
     - depth 3.0 → GraduateStudent
 
-??? example "`enable_fast_generation`"
-    Generates a small prototype KG (10-20% of target), then replicates entity profiles to reach target size. Significantly faster for large KGs but produces less diverse entity typing patterns.
-
+---
 
 ## Fast Generation Mode
 
@@ -415,96 +670,6 @@ When `enable_fast_generation: true`, the generator creates a small prototype KG 
     - Testing configurations before full-scale runs
 
 ---
-
-## Performance Characteristics
-
-Understanding performance helps you plan generation runs and troubleshoot issues.
-
-### Time Complexity
-
-Where $n_e$ = `num_entities`, $n_t$ = `num_triples`, $n_c$ = number of classes, $n_r$ = number of relations:
-
-| Phase                                   | Complexity                        | Notes                                    |
-|-----------------------------------------|-----------------------------------|------------------------------------------|
-| :fontawesome-solid-1: Schema Loading    | $O(n_c + n_r)$                    | One-time setup                           |
-| :fontawesome-solid-2: Entity Typing     | $O(n_e \times \log(n_c))$         | Power-law sampling + transitive closures |
-| :fontawesome-solid-3: Triple Generation | $O(n_t \times \text{batch_size})$ | Fast filtering is vectorized             |
-| :fontawesome-solid-4: Serialization     | $O(n_t + n_e)$                    | Linear in outputs                        |
-
-??? info ":fontawesome-solid-gauge: Performance Factors"
-    **What affects speed:**
-    
-    - Hardware (CPU, RAM)
-    - Schema complexity (number of constraints, hierarchy depth)
-    - Configuration (`relation_usage_uniformity`, `enable_fast_generation`)
-
-??? example ":fontawesome-solid-clock: Relative Scale Expectations"
-    - **Small** (1K-10K entities): Seconds
-    - **Medium** (10K-100K entities): Minutes
-    - **Large** (100K-1M entities): Tens of minutes
-    - **Very large** (1M+ entities): Hours
-
-??? warning ":material-speedometer-slow: What Slows Generation Down"
-    - **Transitive cycle detection**: Requires graph traversal to prevent cycles ($O(\text{path_length})$ per check)
-    - **Deep validation**: Each surviving candidate requires type checking and constraint validation against the current KG state
-    - **Inverse relation validation**: Must validate both the requested triple and its inverse for compatibility
-    - **Small candidate pools**: Heavily constrained schemas (tight domain/range, many functional properties, extensive disjointness) require more sampling attempts per accepted triple
-
----
-
-### Memory Usage
-
-Memory requirements scale with graph size and schema complexity.
-
-**:fontawesome-solid-memory: Memory components:**
-
-- Entity structures: $O(n_e)$
-- Triple storage: $O(n_t)$
-- Constraint caches: $O(n_c + n_r)$
-- Candidate pools: $O(n_r \times \text{pool_size})$
-
-??? info ":fontawesome-solid-chart-line: What Affects Memory"
-    - Number of entities and triples (primary drivers)
-    - Schema size (classes, relations, constraints)
-    - Number of active relations being tracked
-    - Whether consistency checking is enabled (reasoner memory overhead)
-
-??? tip ":fontawesome-solid-download: Memory-Saving Strategies"
-    **During generation:**
-    
-    - Use fast generation mode for large KGs
-    - Reduce `relation_usage_uniformity` (smaller pool tracking)
-    
-    **Post-generation:**
-    
-    Consistency checking runs as a separate step after the KG is serialized. It uses the [HermiT](http://www.hermit-reasoner.com/){target="_blank" rel="noopener"} reasoner via [Owlready2](https://owlready2.readthedocs.io/){target="_blank" rel="noopener"} which:
-
-    - Runs in its own JVM subprocess with independent memory
-    - Can be extremely memory-intensive on large KGs
-    - May exhaust Java heap space on very large graphs
-    
-    For large KGs (1M+ entities), disable `check_kg_consistency` to avoid memory issues and long validation times. See [Consistency Checking](consistency-checking.md) for details.
-
----
-
-### Constraint Impact on Performance
-
-Some constraints are more expensive to validate than others:
-
-| Constraint Type                                             | Cost   | Notes                                             |
-|-------------------------------------------------------------|--------|---------------------------------------------------|
-| :fontawesome-solid-circle-check: Irreflexive                | Low    | $O(1)$ check (head == tail)                       |
-| :fontawesome-solid-circle-check: Functional                 | Low    | $O(1)$ set lookup                                 |
-| :fontawesome-solid-circle-check: Inverse-functional         | Low    | $O(1)$ set lookup                                 |
-| :fontawesome-solid-circle-check: Domain/Range               | Low    | $O(1)$ set membership (pre-filtered pools)        |
-| :fontawesome-solid-circle-check: Symmetric                  | Low    | $O(1)$ duplicate check                            |
-| :fontawesome-solid-circle-half-stroke: Asymmetric           | Medium | $O(1)$ reverse edge check                         |
-| :fontawesome-solid-circle-half-stroke: Disjointness         | Medium | $O(\text{disjoint_set_size})$ intersection checks |
-| :fontawesome-solid-circle-half-stroke: Inverse validation   | Medium | $O(1)$ + validation of inverse triple             |
-| :fontawesome-solid-circle-xmark: Transitive cycle detection | High   | $O(\text{path_length})$ graph traversal           |
-
----
-
 
 ## FAQ
 
@@ -540,7 +705,7 @@ This creates a **generation vs validation gap**: A KG can be generated "correctl
 
 ## What's Next
 
-- :fontawesome-solid-shield-halved: **[OWL Constraints](owl-constraints.md)** - Detailed constraint explanations
-- :fontawesome-solid-check-circle: **[Consistency Checking](consistency-checking.md)** - Validating generated KGs
-- :fontawesome-solid-sliders: **[Configuration Reference](../reference/files/config.md)** - All generation parameters
-- :fontawesome-solid-chart-simple: **[KG Info Reference](../reference/files/kg-info.md)** - Output statistics format
+- :fontawesome-solid-shield-halved: **[OWL Constraints](owl-constraints.md)** — Detailed constraint explanations
+- :fontawesome-solid-check-circle: **[Consistency Checking](consistency-checking.md)** — Validating generated KGs
+- :fontawesome-solid-sliders: **[Configuration Reference](../reference/files/config.md)** — All generation parameters
+- :fontawesome-solid-chart-simple: **[KG Info Reference](../reference/files/kg-info.md)** — Output statistics format

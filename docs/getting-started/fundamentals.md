@@ -61,8 +61,7 @@ Beyond the technical definition, Knowledge Graphs are powering critical systems 
     [Samsung](https://www.samsung.com/){target="_blank" rel="noopener"} has [acquired Oxford Semantic Technologies](https://news.samsung.com/global/samsung-electronics-announces-acquisition-of-oxford-semantic-technologies-uk-based-knowledge-graph-startup){target="_blank" rel="noopener"} (following [collaboration since 2018](https://techcrunch.com/2024/07/18/samsung-to-acquire-uk-based-knowledge-graph-startup-oxford-semantic-technologies/){target="_blank" rel="noopener"}) – integrating personal Knowledge Graphs with on-device AI to provide hyper-personalized experiences across mobile devices, TVs, and home appliances
 
 !!! info "Source Attribution"
-    Industry examples in this section are from course materials by [Fabien Gandon](http://fabien.info){target="_blank" rel="noopener"}, Senior Researcher at Université Côte d'Azur, Inria, CNRS, I3S, and Professor at Data ScienceTech Institute. All linked sources are from his course materials.
-
+    Industry examples adapted from course materials provided by [Inria Academy](https://www.inria-academy.fr/){target="_blank" rel="noopener"}, authored by [Fabien Gandon](http://fabien.info){target="_blank" rel="noopener"} (Université Côte d'Azur, Inria, CNRS, I3S).
 
 ## :fontawesome-solid-sitemap: What is an Ontology?
 
