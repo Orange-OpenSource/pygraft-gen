@@ -1,0 +1,78 @@
+# ============================================================================
+# PyPI Publishing Workflow
+# ============================================================================
+# Automatically publishes the package to PyPI when a GitHub Release is created.
+# Uses OIDC trusted publishing (no API tokens needed).
+#
+# Prerequisite:
+#   Configure trusted publisher on PyPI: https://pypi.org/manage/account/publishing/
+#
+# Optional (for larger teams):
+#   Create a "pypi" environment in GitHub repo Settings > Environments.
+#   This lets admins restrict who can approve PyPI deployments, useful when
+#   some maintainers have commit access but shouldn't publish to PyPI.
+#
+#   To enable: add `environment: pypi` under the publish job, and update the
+#   environment name field on PyPI's trusted publisher settings to match.
+# ============================================================================
+
+name: Publish to PyPI
+
+# ----------------------------------------------------------------------------
+# Trigger: Only runs when a GitHub Release is published (not on tag push)
+# This gives you a manual gate before anything goes to PyPI
+# ----------------------------------------------------------------------------
+on:
+  release:
+    types: [published]
+
+jobs:
+  # ==========================================================================
+  # Job 1: Build the package
+  # ==========================================================================
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repo with full history (fetch-depth: 0)
+      # Required for hatch-vcs to derive version from git tags
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Build both wheel (.whl) and source distribution (.tar.gz)
+      - name: Build package
+        run: |
+          pip install build
+          python -m build
+
+      # Save built artifacts for the publish job
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  # ==========================================================================
+  # Job 2: Publish to PyPI
+  # ==========================================================================
+  publish:
+    needs: build  # Wait for build to complete successfully
+    runs-on: ubuntu-latest
+
+    # Required for OIDC trusted publishing (generates the auth token)
+    permissions:
+      id-token: write
+
+    steps:
+      # Retrieve built artifacts from the build job
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      # Upload to PyPI using trusted publishing (no credentials needed)
+      - uses: pypa/gh-action-pypi-publish@release/v1
