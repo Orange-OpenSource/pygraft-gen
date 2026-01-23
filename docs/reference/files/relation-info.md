@@ -1,3 +1,8 @@
+---
+title: Relation Info
+description: Reference for relation_info.json — OWL property characteristics, domain/range, inverses, and subproperties.
+---
+
 # Relation Info
 
 This file captures object property constraints and characteristics extracted from your ontology, providing the metadata needed for KG generation to enforce relation semantics and OWL rules.

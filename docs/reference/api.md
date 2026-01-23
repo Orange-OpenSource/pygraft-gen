@@ -1,3 +1,8 @@
+---
+title: API Reference
+description: Python API for PyGraft-gen. 
+---
+
 # API Reference
 
 ::: pygraft

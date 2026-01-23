@@ -1,3 +1,8 @@
+---
+title: About
+description: About PyGraft-gen — changelog, contributing, development, authors, publications, and license.
+---
+
 # About
 
 PyGraft-gen is an evolution of [PyGraft](https://github.com/nicolas-hbt/pygraft){target="_blank" rel="noopener"}, extending it with real-world ontology extraction and large-scale performance optimization.

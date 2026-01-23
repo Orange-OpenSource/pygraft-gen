@@ -1,3 +1,8 @@
+---
+title: Authors & Contributors
+description: The team behind PyGraft-gen — core maintainers, advisors, and acknowledgments.
+---
+
 # Authors & Contributors
 
 PyGraft-gen is built and maintained by contributors from Orange SA and the open-source community.

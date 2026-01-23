@@ -1,3 +1,8 @@
+---
+title: Installation
+description: Install PyGraft-gen with pip, uv, or poetry.
+---
+
 # Installation
 
 Install PyGraft-gen using pip, [uv](https://docs.astral.sh/uv/){target="_blank" rel="noopener"} or [poetry](https://python-poetry.org/){target="_blank" rel="noopener"}.

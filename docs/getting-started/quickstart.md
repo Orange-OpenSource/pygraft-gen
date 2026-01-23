@@ -1,3 +1,8 @@
+---
+title: Quickstart
+description: Generate your first Knowledge Graph in under 5 minutes. Extract from existing ontologies or generate everything from scratch.
+---
+
 # Quickstart
 
 Generate your first Knowledge Graph in **under 5 minutes**.

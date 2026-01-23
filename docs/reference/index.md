@@ -1,3 +1,8 @@
+---
+title: Reference
+description: Complete technical reference — CLI commands, Python API, configuration files, and output formats.
+---
+
 # Reference
 
 Complete technical documentation for PyGraft-gen.

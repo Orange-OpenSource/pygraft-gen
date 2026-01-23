@@ -1,3 +1,8 @@
+---
+title: Publications
+description: Academic publications related to PyGraft/PyGraft-gen
+---
+
 # Publications
 
 Academic publications related to PyGraft and PyGraft-gen.

@@ -1,3 +1,8 @@
+---
+title: Consistency Checking
+description: Validate generated schemas and Knowledge Graphs with HermiT and Pellet OWL 2 reasoners.
+---
+
 # Consistency Checking
 
 Consistency checking validates that generated schemas and knowledge graphs are logically coherent according to [OWL](https://www.w3.org/TR/owl2-overview/){target="_blank" rel="noopener"} semantics.

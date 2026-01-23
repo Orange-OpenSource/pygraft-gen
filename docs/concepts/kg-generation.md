@@ -1,3 +1,8 @@
+---
+title: KG Generation
+description: Generate synthetic Knowledge Graph instances at scale.
+---
+
 # KG Generation
 
 KG generation creates synthetic Knowledge Graph instances from extracted ontology metadata. Entities are created, assigned types, and connected with triples that respect ontology constraints.

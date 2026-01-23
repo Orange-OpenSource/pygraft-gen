@@ -1,3 +1,8 @@
+---
+title: Namespaces Info
+description: Reference for namespaces_info.json — prefix mappings, ontology namespace, and IRI normalization.
+---
+
 # Namespaces Info
 
 This file provides namespace prefix mappings for normalizing IRIs to human-readable `prefix:LocalName` format across all extraction outputs.

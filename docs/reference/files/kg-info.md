@@ -1,3 +1,8 @@
+---
+title: KG Info
+description: Reference for kg_info.json — generation statistics comparing requested parameters vs actual results.
+---
+
 # KG Info
 
 This file provides summary statistics comparing your requested generation parameters against the actual measured results after KG generation.

@@ -1,3 +1,8 @@
+---
+title: Files & Outputs
+description: Documentation for all PyGraft-gen configuration files and generated outputs.
+---
+
 # Files & Outputs
 
 Documentation for all configuration files and generated outputs.

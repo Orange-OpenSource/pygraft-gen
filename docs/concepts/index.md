@@ -1,3 +1,8 @@
+---
+title: Core Concepts
+description: Deep dives into PyGraft-gen's architecture — OWL constraints, schema generation, ontology extraction, KG generation, and consistency checking.
+---
+
 # Concepts
 
 Deep dives into PyGraft-gen's core concepts and processes.

@@ -1,3 +1,8 @@
+---
+title: Schema Generation
+description: Create synthetic RDFS/OWL ontologies from statistical parameters.
+---
+
 # Schema Generation
 
 Schema generation creates synthetic [RDFS](https://www.w3.org/TR/rdf-schema/){target="_blank" rel="noopener"}/[OWL](https://www.w3.org/TR/owl2-overview/){target="_blank" rel="noopener"} ontologies from statistical parameters. You define constraints like hierarchy depth and number of relations, and PyGraft-gen generates a valid ontology.

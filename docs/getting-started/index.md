@@ -1,3 +1,8 @@
+---
+title: Getting Started
+description: Get up and running with PyGraft-gen. Learn the fundamentals, install the library, and generate your first Knowledge Graph.
+---
+
 # Getting Started
 
 Get up and running with PyGraft-gen:

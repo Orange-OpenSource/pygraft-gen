@@ -1,3 +1,8 @@
+---
+title: CLI Reference
+description: Command-line interface for PyGraft-gen. 
+---
+
 # `pygraft`
 
 PyGraft: Configurable generation of Schemas &amp; Knowledge Graphs

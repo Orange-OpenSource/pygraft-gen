@@ -1,3 +1,8 @@
+---
+title: License
+description: PyGraft-gen is licensed under the MIT License. Free for commercial and personal use.
+---
+
 # License
 
 PyGraft-gen is licensed under the MIT License.

@@ -1,3 +1,8 @@
+---
+title: PyGraft-gen Documentation
+description: Generate synthetic RDFS/OWL ontologies and RDF Knowledge Graphs at scale.
+---
+
 # PyGraft-gen
 
 <div class="hero" markdown>

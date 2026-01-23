@@ -1,3 +1,8 @@
+---
+title: Class Info
+description: Reference for class_info.json — class hierarchy, transitive closures, layer mappings, and disjointness constraints.
+---
+
 # Class Info
 
 This file captures the class hierarchy and constraints extracted from your ontology, providing the structural metadata needed for KG generation to enforce class relationships and disjointness rules.

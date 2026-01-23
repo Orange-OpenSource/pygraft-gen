@@ -1,3 +1,8 @@
+---
+title: Ontology Extraction
+description: Extract structure from existing OWL/RDFS ontologies. SPARQL-based, read-only, deterministic metadata extraction.
+---
+
 # Ontology Extraction
 
 Ontology extraction analyzes existing [RDFS](https://www.w3.org/TR/rdf-schema/){target="_blank" rel="noopener"}/[OWL](https://www.w3.org/TR/owl2-overview/){target="_blank" rel="noopener"} ontologies and extracts structured metadata that PyGraft-gen uses to generate synthetic Knowledge Graphs.

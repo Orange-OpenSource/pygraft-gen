@@ -1,3 +1,8 @@
+---
+title: Development Guide
+description: Developer setup for PyGraft-gen — installation, commit conventions, code standards, and documentation.
+---
+
 # Development Guide
 
 Technical guide for contributing code to PyGraft-gen.

@@ -1,3 +1,8 @@
+---
+title: Contributing
+description: How to contribute to PyGraft-gen — bug reports, feature requests, code contributions, and desirable features.
+---
+
 # Contributing to PyGraft-gen
 
 We would love for you to contribute to **PyGraft-gen** and help make it even better than it is today! Please contribute to this repository if any of the following is true:  

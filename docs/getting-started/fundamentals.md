@@ -1,3 +1,8 @@
+---
+title: Fundamentals
+description: Learn the core concepts behind PyGraft-gen — Knowledge Graphs, ontologies, RDF, OWL, and synthetic data generation.
+---
+
 # Fundamentals 
 
 This guide introduces the core concepts behind PyGraft-gen: ontologies, Knowledge Graphs, and why you'd want to generate synthetic versions of them.

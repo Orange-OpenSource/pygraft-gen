@@ -1,6 +1,11 @@
+---
+title: Configuration Reference
+description: Complete reference for pygraft.config.json — general settings, schema parameters, and KG generation options.
+---
+
 # Configuration File
 
-This page documents the structure of `pygraft_config.{json/yml}`, the main configuration file for PyGraft-gen.
+This page documents the structure of `pygraft.config.{json/yml}`, the main configuration file for PyGraft-gen.
 
 This file controls **all aspects of schema and Knowledge Graph generation**, including class hierarchies, relation characteristics, instance populations, and output formats.
 
@@ -92,8 +97,8 @@ Controls Knowledge Graph instance generation.
 
 PyGraft-gen supports both JSON and YAML configuration formats.
 ```bash
-pygraft init --format json  # Creates pygraft_config.json
-pygraft init --format yaml  # Creates pygraft_config.yml
+pygraft init --format json  # Creates pygraft.config.json
+pygraft init --format yaml  # Creates pygraft.config.yml
 ```
 
 Both formats are functionally equivalent - use whichever you prefer.
@@ -172,7 +177,7 @@ When using the **ontology extraction workflow** (`pygraft extract`), the configu
 
 Edit the generated config to set KG generation parameters in the `kg` section, then run:
 ```bash
-pygraft kg pygraft_config.json
+pygraft kg pygraft.config.json
 ```
 
 !!! warning "Schema Section is Read-Only"

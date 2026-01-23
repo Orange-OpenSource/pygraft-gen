@@ -1,3 +1,8 @@
+---
+title: OWL Constraints
+description: How PyGraft-gen enforces OWL 2 constraints.
+---
+
 # OWL Constraints
 
 PyGraft-gen enforces [OWL 2](https://www.w3.org/TR/owl2-overview/){target="_blank" rel="noopener"} constraints during generation to ensure your Knowledge Graphs are logically consistent. This page explains what these constraints mean and how they shape what gets generated.
