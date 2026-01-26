@@ -1,5 +1,5 @@
 ---
-title: PyGraft-gen Documentation
+title: Welcome to PyGraft-gen Documentation 
 description: Generate synthetic RDFS/OWL ontologies and RDF Knowledge Graphs at scale.
 ---
 
