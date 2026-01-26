@@ -20,8 +20,8 @@ theme:
   name: material
 
   # Brand Assets
-  logo: assets/images/pygraft-gen-logo.svg
-  favicon: assets/images/pygraft-gen-logo.svg
+  logo: assets/images/pygraft-gen-logo.svg        # Top-left nav logo (inside site)
+  favicon: assets/images/pygraft-gen-logo.png     # Browser tab + Google search
 
   # Color Palette - Uses W3C/Semantic Web brand colors via custom CSS
   palette:
